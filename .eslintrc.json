@@ -1,0 +1,67 @@
+{
+  "root": true,
+
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "ecmaFeatures": { "jsx": true },
+    "sourceType": "module",
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".md"]
+  },
+
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
+    "plugin:markdown/recommended"
+  ],
+
+  "plugins": ["react", "react-hooks", "import"],
+  "settings": { "react": { "version": "detect" } },
+
+  "rules": {
+    "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
+
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-no-undef": "off",
+    "react/prop-types": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react/no-unknown-property": ["error", { "ignore": ["css"] }],
+    "react/display-name": "off",
+
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+    ],
+
+    "no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+    ],
+
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always-and-inside-groups",
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+
+        "groups": ["builtin", "external", "parent", "index", "sibling"],
+        "pathGroups": [
+          { "pattern": "~/**", "group": "external" },
+          { "pattern": ".", "group": "sibling" }
+        ]
+      }
+    ],
+
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
+    ]
+  }
+}

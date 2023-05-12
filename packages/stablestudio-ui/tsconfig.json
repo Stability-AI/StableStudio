@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "@emotion/react",
+    "noEmit": true,
+    "baseUrl": "./",
+
+    "plugins": [{ "name": "typescript-styled-plugin" }]
+  }
+}

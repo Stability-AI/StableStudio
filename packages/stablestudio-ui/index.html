@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>StableStudio</title>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+    <link rel="stylesheet" href="./src/Theme/index.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="Inter.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+  </head>
+  <body>
+    <div
+      id="tooltip-root"
+      class="dark h-[100vh] w-[100vw] overflow-hidden text-white"
+    ></div>
+    <div id="modal-root" class="dark overflow-hidden text-white"></div>
+    <div id="app" class="dark"></div>
+
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>

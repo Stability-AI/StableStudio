@@ -1,0 +1,46 @@
+{
+  "name": "@stability/stablestudio-plugin-stability",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "clean": "rimraf lib && rimraf api-interfaces && rimraf node_modules",
+    "generate:proto": "tsx scripts/GenerateProto.ts",
+    "build:types": "ttsc --project tsconfig.json",
+    "build:javascript": "tsx scripts/Build.ts",
+    "build": "yarn build:types && yarn build:javascript",
+    "dev": "nodemon --watch src --ext ts,json --exec \"yarn build\""
+  },
+  "dependencies": {
+    "@protobuf-ts/grpcweb-transport": "^2.8.2",
+    "@protobuf-ts/runtime": "^2.8.1",
+    "@protobuf-ts/runtime-rpc": "^2.8.1"
+  },
+  "devDependencies": {
+    "@protobuf-ts/plugin": "^2.8.1",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
+    "concurrently": "^7.6.0",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "ts-proto": "^1.133.0",
+    "tsx": "^3.12.1",
+    "ttypescript": "^1.5.13",
+    "typescript": "4.8.4",
+    "typescript-transform-paths": "^3.4.4"
+  }
+}

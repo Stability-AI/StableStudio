@@ -1,0 +1,39 @@
+{
+  "name": "@stability/stablestudio-plugin-webgpu",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "clean": "rimraf lib && rimraf node_modules",
+    "build:types": "ttsc --project tsconfig.json",
+    "build:javascript": "tsx scripts/Build.ts",
+    "build": "yarn build:types && yarn build:javascript",
+    "dev": "nodemon --watch src --ext ts,tsx,json --exec \"yarn build\""
+  },
+  "dependencies": {
+    "@stability/stablestudio-plugin": "workspace:^"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "tsx": "^3.12.1",
+    "ttypescript": "^1.5.13",
+    "typescript": "4.8.4",
+    "typescript-transform-paths": "^3.4.4"
+  }
+}

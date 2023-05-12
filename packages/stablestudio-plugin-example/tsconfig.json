@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "noUncheckedIndexedAccess": false,
+
+    "outDir": "./lib",
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
+  }
+}

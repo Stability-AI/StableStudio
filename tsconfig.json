@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    // "noUncheckedIndexedAccess": true,
+
+    "strict": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "license": "MIT",
+  "packageManager": "yarn@3.3.0",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "postinstall": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\" && yarn build",
+    "stablestudio-plugin": "yarn workspace @stability/stablestudio-plugin",
+    "stablestudio-plugin-example": "yarn workspace @stability/stablestudio-plugin-example",
+    "stablestudio-plugin-stability": "yarn workspace @stability/stablestudio-plugin-stability",
+    "stablestudio-plugin-webgpu": "yarn workspace @stability/stablestudio-plugin-webgpu",
+    "stablestudio-plugin-webui": "yarn workspace @stability/stablestudio-plugin-webui",
+    "stablestudio-ui": "yarn workspace @stability/stablestudio-ui",
+    "dev:use-example-plugin": "cross-env VITE_USE_EXAMPLE_PLUGIN=true yarn dev",
+    "dev": "yarn workspaces foreach --all --interlaced --verbose --parallel --jobs unlimited run dev",
+    "build": "yarn workspaces foreach --all --interlaced --verbose --jobs unlimited run build",
+    "clean": "yarn workspaces foreach --all --interlaced --verbose --parallel --jobs unlimited run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
+    "rimraf": "^3.0.2",
+    "yarn": "^1.22.19"
+  },
+  "lint-staged": {
+    "./packages/ui/**/*.{ts,tsx,js,jsx,md}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  }
+}
