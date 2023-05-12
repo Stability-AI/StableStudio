@@ -591,7 +591,7 @@ function parseExtras(extras: any): any | undefined {
 const markdownDescription = `
 # Welcome to StableStudio!
 
-## [📖 README](https://github.com/Stability-AI/StableStudio) · [🎮 Discord](https://discord.com/channels/1002292111942635562/1072239614644994169) · [🌈 DreamStudio](https://dreamstudio.ai) · [💬 Discussion](https://github.com/Stability-AI/StableStudio/discussions)
+## [📖 README](https://github.com/Stability-AI/StableStudio) · [🎮 Discord](https://discord.com/channels/1002292111942635562/1025467151206854736) · [🌈 DreamStudio](https://dreamstudio.ai) · [💬 Discussion](https://github.com/Stability-AI/StableStudio/discussions)
 
 # Setup
 
