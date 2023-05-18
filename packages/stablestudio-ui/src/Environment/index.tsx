@@ -8,6 +8,7 @@ declare global {
   interface ImportMetaEnv {
     readonly VITE_GIT_HASH: string;
     readonly VITE_USE_EXAMPLE_PLUGIN: string;
+    readonly VITE_STABILITY_APIKEY: string;
   }
 }
 
@@ -20,6 +21,7 @@ export namespace Environment {
   const variables = {
     VITE_GIT_HASH: import.meta.env.VITE_GIT_HASH,
     VITE_USE_EXAMPLE_PLUGIN: import.meta.env.VITE_USE_EXAMPLE_PLUGIN ?? "false",
+    VITE_STABILITY_APIKEY: import.meta.env.VITE_STABILITY_APIKEY,
   } as const;
 
   export function get(name: VariableName): string {

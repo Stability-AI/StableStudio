@@ -11,6 +11,19 @@ import {
   Struct,
 } from "./Proto";
 
+const setApiKeyFromEnvVar = () => {
+  const envApiKey = import.meta.env.VITE_STABILITY_APIKEY;
+
+  const localStorageApiKey = localStorage.getItem("stability-apiKey");
+  if (localStorageApiKey) return localStorageApiKey;
+
+  if (envApiKey) {
+    localStorage.setItem("stability-apiKey", envApiKey);
+    return envApiKey;
+  }
+
+};
+
 const getStableDiffusionDefaultCount = () => 4;
 const getStableDiffusionDefaultInputFromPrompt = (prompt: string) => ({
   prompts: [
@@ -50,7 +63,13 @@ export const createPlugin = StableStudio.createPlugin<{
     | "deleteStableDiffusionImages"
     | "getStatus"
   > => {
+    
+    apiKey = setApiKeyFromEnvVar() || apiKey;
+
     if (!apiKey)
+
+
+
       return {
         createStableDiffusionImages: undefined,
         getStableDiffusionExistingImages: undefined,
@@ -427,7 +446,7 @@ export const createPlugin = StableStudio.createPlugin<{
       }),
     };
   };
-
+  
   return {
     ...functionsWhichNeedAPIKey(
       localStorage.getItem("stability-apiKey") ?? undefined
@@ -533,7 +552,6 @@ export const createPlugin = StableStudio.createPlugin<{
         placeholder: "sk-...",
         required: true,
         password: true,
-
         value: localStorage.getItem("stability-apiKey") ?? "",
       },
     },
