@@ -14,6 +14,7 @@ import { Modal } from "./Modal";
 import { Model, Models } from "./Model";
 import { Output, Outputs } from "./Output";
 import { Prompt, Prompts } from "./Prompt";
+import { Sampler } from "./Sampler";
 import { Search } from "./Search";
 import { Session } from "./Session";
 import { Sidebar } from "./Sidebar";
@@ -208,6 +209,7 @@ export declare namespace Image {
     Styles,
     Prompt,
     Prompts,
+    Sampler,
     Search,
     Session,
     Sidebar,
@@ -239,6 +241,7 @@ export namespace Image {
   Image.Styles = Styles;
   Image.Prompt = Prompt;
   Image.Prompts = Prompts;
+  Image.Sampler = Sampler;
   Image.Search = Search;
   Image.Session = Session;
   Image.Sidebar = Sidebar;

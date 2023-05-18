@@ -8,6 +8,7 @@ export function Advanced({
 }: App.Sidebar.Section.Props & { id: ID }) {
   const { setInput, input } = Generation.Image.Input.use(id);
   const areModelsEnabled = Generation.Image.Models.useAreEnabled();
+  const areSamplersEnabled = Generation.Image.Sampler.useAreEnabled();
 
   const onPromptStrengthChange = useCallback(
     (cfgScale: number) => {
@@ -160,6 +161,11 @@ export function Advanced({
         {areModelsEnabled && (
           <div className="-mx-2">
             <Generation.Image.Model.Dropdown id={id} />
+          </div>
+        )}
+        {areSamplersEnabled && (
+          <div className="-mx-2">
+            <Generation.Image.Sampler.Dropdown id={id} />
           </div>
         )}
       </div>

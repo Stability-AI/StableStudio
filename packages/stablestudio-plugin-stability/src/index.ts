@@ -28,6 +28,7 @@ const getStableDiffusionDefaultInputFromPrompt = (prompt: string) => ({
   model: "stable-diffusion-xl-beta-v2-2-2",
   style: "enhance",
 
+  sampler: { value: 0, name: "DDIM" },
   width: 512,
   height: 512,
 
@@ -49,6 +50,7 @@ export const createPlugin = StableStudio.createPlugin<{
     | "getStableDiffusionModels"
     | "deleteStableDiffusionImages"
     | "getStatus"
+    | "getStableDiffusionSamplers"
   > => {
     if (!apiKey)
       return {
@@ -156,7 +158,7 @@ export const createPlugin = StableStudio.createPlugin<{
           transform: Generation.TransformType.create({
             type: {
               oneofKind: "diffusion",
-              diffusion: Generation.DiffusionSampler.SAMPLER_DDIM,
+              diffusion: input.sampler.value ?? 0,
             },
           }),
 
@@ -407,6 +409,55 @@ export const createPlugin = StableStudio.createPlugin<{
             exclusiveStartImageID: images?.[images.length - 1]?.id,
           }))
         );
+      },
+
+      getStableDiffusionSamplers: () => {
+        return [
+          {
+            value: 0,
+            name: "DDIM",
+          },
+          {
+            value: 1,
+            name: "DDPM",
+          },
+          {
+            value: 2,
+            name: "K_EULER",
+          },
+          {
+            value: 3,
+            name: "K_EULER_ANCESTRAL",
+          },
+          {
+            value: 4,
+            name: "K_HEUN",
+          },
+          {
+            value: 5,
+            name: "K_DPM_2",
+          },
+          {
+            value: 6,
+            name: "K_DPM_2_ANCESTRAL",
+          },
+          {
+            value: 7,
+            name: "K_LMS",
+          },
+          {
+            value: 8,
+            name: "K_DPMPP_2S_ANCESTRAL",
+          },
+          {
+            value: 9,
+            name: "K_DPMPP_2M",
+          },
+          {
+            value: 10,
+            name: "K_DPMPP_SDE",
+          },
+        ];
       },
 
       getStableDiffusionModels: async () => {

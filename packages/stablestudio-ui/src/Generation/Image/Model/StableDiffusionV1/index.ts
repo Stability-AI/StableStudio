@@ -13,7 +13,7 @@ export namespace StableDiffusionV1 {
   export type Input = {
     id: ID;
     prompts: Generation.Image.Prompts;
-    sampler: string;
+    sampler: Generation.Image.Input.Sampler;
     cfgScale?: number;
     height: number;
     width: number;
@@ -54,7 +54,7 @@ export namespace StableDiffusionV1 {
         ],
 
         model: pluginDefaultInput?.model ?? "stable-diffusion-xl-beta-v2-2-2",
-        sampler: "SAMPLER_DDIM",
+        sampler: pluginDefaultInput?.sampler ?? { value: 0, name: "DDIM" },
         height: pluginDefaultInput?.width ?? 512,
         width: pluginDefaultInput?.height ?? 512,
         steps: pluginDefaultInput?.steps ?? 50,

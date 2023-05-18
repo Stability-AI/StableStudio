@@ -186,6 +186,8 @@ export type Plugin<P extends PluginTypeHelper = PluginTypeHelperDefault> = {
     StableDiffusionStyle[] | undefined
   >;
 
+  getStableDiffusionSamplers?: () => 
+    StableDiffusionSampler[] | undefined;
   /** Determines the default count passed to `createStableDiffusionImages` */
   getStableDiffusionDefaultCount?: () => number | undefined;
 
@@ -222,6 +224,7 @@ export type StableDiffusionInput = {
   width?: number;
   height?: number;
 
+  sampler?: StableDiffusionSampler;
   cfgScale?: number;
   steps?: number;
   seed?: number;
@@ -240,6 +243,10 @@ export type StableDiffusionPrompt = {
   weight?: number;
 };
 
+export declare type StableDiffusionSampler = {
+    name?: string;
+    value?: number;
+}
 /** This controls how a `StableDiffusionModel` is displayed in the UI */
 export type StableDiffusionModel = {
   id: ID;
