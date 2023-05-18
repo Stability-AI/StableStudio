@@ -24,6 +24,8 @@ export namespace Input {
     "stable-diffusion-x4-latent-upscaler",
   ] as const;
 
+  export type Sampler = StableDiffusionInput["sampler"];
+
   export type Modifiers = Partial<Input & { count: number }>;
 
   export const initial = (id: ID) =>
@@ -214,6 +216,7 @@ export namespace Input {
 
   export async function toInput(input: Input): Promise<StableDiffusionInput> {
     const pluginInput: StableDiffusionInput = {
+      sampler: input.sampler,
       cfgScale: input.cfgScale,
       height: input.height,
       width: input.width,

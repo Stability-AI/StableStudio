@@ -26,6 +26,7 @@ const getStableDiffusionDefaultInputFromPrompt = (prompt: string) => ({
   ],
 
   model: "stable-diffusion-xl-beta-v2-2-2",
+  sampler: { id: "0", name: "DDIM" },
   style: "enhance",
 
   width: 512,
@@ -49,6 +50,7 @@ export const createPlugin = StableStudio.createPlugin<{
     | "getStableDiffusionModels"
     | "deleteStableDiffusionImages"
     | "getStatus"
+    | "getStableDiffusionSamplers"
   > => {
     if (!apiKey)
       return {
@@ -145,6 +147,8 @@ export const createPlugin = StableStudio.createPlugin<{
           );
         }
 
+        console.log(input.sampler.id ? parseInt(input.sampler.id) : 0);
+
         const imageParams = Generation.ImageParameters.create({
           width: BigInt(width),
           height: BigInt(height),
@@ -156,7 +160,7 @@ export const createPlugin = StableStudio.createPlugin<{
           transform: Generation.TransformType.create({
             type: {
               oneofKind: "diffusion",
-              diffusion: Generation.DiffusionSampler.SAMPLER_DDIM,
+              diffusion: input.sampler.id ? parseInt(input.sampler.id) : 0,
             },
           }),
 
@@ -432,6 +436,20 @@ export const createPlugin = StableStudio.createPlugin<{
     ...functionsWhichNeedAPIKey(
       localStorage.getItem("stability-apiKey") ?? undefined
     ),
+
+    getStableDiffusionSamplers: () => [
+      { id: "0", name: "DDIM" },
+      { id: "1", name: "DDPM" },
+      { id: "2", name: "K Euler" },
+      { id: "3", name: "K Euler Ancestral" },
+      { id: "4", name: "K Heun" },
+      { id: "5", name: "K DPM 2" },
+      { id: "6", name: "K DPM 2 Ancestral" },
+      { id: "7", name: "K LMS" },
+      { id: "8", name: "K DPM++ 2S Ancestral" },
+      { id: "9", name: "K DPM++ 2M" },
+      { id: "10", name: "K DPM++ SDE" },
+    ],
 
     getStableDiffusionStyles: () => [
       {
