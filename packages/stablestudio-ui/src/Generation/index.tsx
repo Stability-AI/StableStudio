@@ -1,4 +1,3 @@
-// import { App } from "~/App";
 import { Shortcut } from "~/Shortcut";
 import { Theme } from "~/Theme";
 
@@ -6,7 +5,6 @@ import { Image, Images } from "./Image";
 
 export function Generation() {
   const createDream = Generation.Image.Session.useCreateDream();
-  // App.Breadcrumbs.useSet(["defaultProject", "generate"]);
 
   Shortcut.use(
     useMemo(

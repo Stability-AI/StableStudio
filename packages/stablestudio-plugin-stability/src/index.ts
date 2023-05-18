@@ -26,9 +26,9 @@ const getStableDiffusionDefaultInputFromPrompt = (prompt: string) => ({
   ],
 
   model: "stable-diffusion-xl-beta-v2-2-2",
+  sampler: { id: "0", name: "DDIM" },
   style: "enhance",
 
-  sampler: { value: 0, name: "DDIM" },
   width: 512,
   height: 512,
 
@@ -147,6 +147,8 @@ export const createPlugin = StableStudio.createPlugin<{
           );
         }
 
+        console.log(input.sampler.id ? parseInt(input.sampler.id) : 0);
+
         const imageParams = Generation.ImageParameters.create({
           width: BigInt(width),
           height: BigInt(height),
@@ -158,7 +160,7 @@ export const createPlugin = StableStudio.createPlugin<{
           transform: Generation.TransformType.create({
             type: {
               oneofKind: "diffusion",
-              diffusion: input.sampler.value ?? 0,
+              diffusion: input.sampler.id ? parseInt(input.sampler.id) : 0,
             },
           }),
 
@@ -411,55 +413,6 @@ export const createPlugin = StableStudio.createPlugin<{
         );
       },
 
-      getStableDiffusionSamplers: () => {
-        return [
-          {
-            value: 0,
-            name: "DDIM",
-          },
-          {
-            value: 1,
-            name: "DDPM",
-          },
-          {
-            value: 2,
-            name: "K_EULER",
-          },
-          {
-            value: 3,
-            name: "K_EULER_ANCESTRAL",
-          },
-          {
-            value: 4,
-            name: "K_HEUN",
-          },
-          {
-            value: 5,
-            name: "K_DPM_2",
-          },
-          {
-            value: 6,
-            name: "K_DPM_2_ANCESTRAL",
-          },
-          {
-            value: 7,
-            name: "K_LMS",
-          },
-          {
-            value: 8,
-            name: "K_DPMPP_2S_ANCESTRAL",
-          },
-          {
-            value: 9,
-            name: "K_DPMPP_2M",
-          },
-          {
-            value: 10,
-            name: "K_DPMPP_SDE",
-          },
-        ];
-      },
-
       getStableDiffusionModels: async () => {
         const request = await engines.listEngines({});
         const allEngines = await request.response.engine;
@@ -483,6 +436,20 @@ export const createPlugin = StableStudio.createPlugin<{
     ...functionsWhichNeedAPIKey(
       localStorage.getItem("stability-apiKey") ?? undefined
     ),
+
+    getStableDiffusionSamplers: () => [
+      { id: "0", name: "DDIM" },
+      { id: "1", name: "DDPM" },
+      { id: "2", name: "K_EULER" },
+      { id: "3", name: "K_EULER_ANCESTRAL" },
+      { id: "4", name: "K_HEUN" },
+      { id: "5", name: "K_DPM_2" },
+      { id: "6", name: "K_DPM_2_ANCESTRAL" },
+      { id: "7", name: "K_LMS" },
+      { id: "8", name: "K_DPMPP_2S_ANCESTRAL" },
+      { id: "9", name: "K_DPMPP_2M" },
+      { id: "10", name: "K_DPMPP_SDE" },
+    ],
 
     getStableDiffusionStyles: () => [
       {

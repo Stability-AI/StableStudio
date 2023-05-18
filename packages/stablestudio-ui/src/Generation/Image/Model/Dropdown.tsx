@@ -55,8 +55,8 @@ export function Dropdown({ id, className }: Styleable & { id: ID }) {
       options={options}
       anchor="bottom"
     >
-      {models === undefined && (
-        <div className="flex flex-col items-center justify-center py-32 px-16">
+      {!models && (
+        <div className="flex flex-col items-center justify-center px-16 py-32">
           <div className="text-muted-white pb-3">Loading models...</div>
         </div>
       )}

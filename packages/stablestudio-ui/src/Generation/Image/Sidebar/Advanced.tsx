@@ -8,7 +8,7 @@ export function Advanced({
 }: App.Sidebar.Section.Props & { id: ID }) {
   const { setInput, input } = Generation.Image.Input.use(id);
   const areModelsEnabled = Generation.Image.Models.useAreEnabled();
-  const areSamplersEnabled = Generation.Image.Sampler.useAreEnabled();
+  const areSamplersEnabled = Generation.Image.Samplers.useAreEnabled();
 
   const onPromptStrengthChange = useCallback(
     (cfgScale: number) => {

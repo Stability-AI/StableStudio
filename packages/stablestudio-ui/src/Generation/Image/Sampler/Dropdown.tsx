@@ -3,26 +3,25 @@ import { Theme } from "~/Theme";
 
 export function Dropdown({ id, className }: Styleable & { id: ID }) {
   const { setInput, input } = Generation.Image.Input.use(id);
-  const { samplers } = Generation.Image.Sampler.use();
+  const { data: samplers } = Generation.Image.Samplers.use();
 
   const options = useMemo(
     () => [
-      ...(samplers ?? []).map(({ value, name }) => ({
+      ...(samplers ?? []).map(({ id, name }) => ({
         name: name,
-        value: value,
+        value: id,
       })),
     ],
     [samplers]
   );
 
   const onClick = useCallback(
-    (value: number) => {
+    (id: ID) => {
       setInput((input) => {
-        console.log("sampler", value);
-        input.sampler = { value: value, name: options.at(value)?.name };
+        input.sampler = samplers?.find((sampler) => sampler.id === id);
       });
     },
-    [setInput, options]
+    [setInput, samplers]
   );
 
   if (!input) return null;
@@ -30,14 +29,14 @@ export function Dropdown({ id, className }: Styleable & { id: ID }) {
     <Theme.Popout
       title="Sampler"
       label="Sampler"
-      placeholder={"Select a Sampler"}
-      value={input.sampler?.value}
+      placeholder={"Select a sampler"}
+      value={input.sampler?.id}
       className={className}
       onClick={onClick}
       options={options}
       anchor="bottom"
     >
-      {samplers === undefined && (
+      {!samplers && (
         <div className="flex flex-col items-center justify-center px-16 py-32">
           <div className="text-muted-white pb-3">Loading samplers...</div>
         </div>

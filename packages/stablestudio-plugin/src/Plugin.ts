@@ -181,13 +181,16 @@ export type Plugin<P extends PluginTypeHelper = PluginTypeHelperDefault> = {
     StableDiffusionModel[] | undefined
   >;
 
+  /** If more than one `StableDiffusionSampler`, you can return them via this function and they will be presented as a dropdown in the UI */
+  getStableDiffusionSamplers?: () => MaybePromise<
+    StableDiffusionSampler[] | undefined
+  >;
+
   /** If more than one `StableDiffusionStyle`, you can return them via this function and they will be presented as a dropdown in the UI */
   getStableDiffusionStyles?: () => MaybePromise<
     StableDiffusionStyle[] | undefined
   >;
 
-  getStableDiffusionSamplers?: () => 
-    StableDiffusionSampler[] | undefined;
   /** Determines the default count passed to `createStableDiffusionImages` */
   getStableDiffusionDefaultCount?: () => number | undefined;
 
@@ -243,10 +246,6 @@ export type StableDiffusionPrompt = {
   weight?: number;
 };
 
-export declare type StableDiffusionSampler = {
-    name?: string;
-    value?: number;
-}
 /** This controls how a `StableDiffusionModel` is displayed in the UI */
 export type StableDiffusionModel = {
   id: ID;
@@ -261,6 +260,12 @@ export type StableDiffusionStyle = {
   name?: string;
   description?: string;
   image?: URLString;
+};
+
+/** This controls how a `StableDiffusionSampler` is displayed in the UI */
+export declare type StableDiffusionSampler = {
+  id: ID;
+  name?: string;
 };
 
 export type StableDiffusionInputImage = {
