@@ -1,6 +1,7 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
 import * as StableStudioPluginExample from "@stability/stablestudio-plugin-example";
 import * as StableStudioPluginStability from "@stability/stablestudio-plugin-stability";
+import * as StableStudioPluginWebUI from "@stability/stablestudio-plugin-webui";
 
 import { Environment } from "~/Environment";
 import { Generation } from "~/Generation";
@@ -115,6 +116,8 @@ namespace State {
     const { createPlugin: createRootPlugin } =
       Environment.get("USE_EXAMPLE_PLUGIN") === "true"
         ? StableStudioPluginExample
+        : Environment.get("USE_WEBUI_PLUGIN") === "true"
+        ? StableStudioPluginWebUI
         : StableStudioPluginStability;
 
     return {
