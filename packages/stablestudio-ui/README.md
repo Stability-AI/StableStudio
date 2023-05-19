@@ -56,7 +56,7 @@ StableStudio represents a new direction for [DreamStudio](https://dreamstudio.ai
 
 - **[Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)** –  Extremely fast and easy-to-use state management, it's powerful and tiny!
 
-- **[Tailwind](https://tailwindcss.com/)** – Our prefered method of styling components, the config is at [`tailwind.config.js`](./tailwind.config.cjs)
+- **[Tailwind](https://tailwindcss.com/)** – Our preferred method of styling components, the config is at [`tailwind.config.js`](./tailwind.config.cjs)
 
 - **[Emotion](https://emotion.sh/docs/introduction)** – For when we need to break free of Tailwind and write "native CSS"
 
