@@ -95,3 +95,6 @@ Here are some useful links...
 - [Open Issues](https://github.com/Stability-AI/StableStudio/issues)
 - [Open Pull Requests](https://github.com/Stability-AI/StableStudio/pulls)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
+
+### [Go back to the top of the page](https://github.com/Jai707/StableStudio#stablestudio-by-stability-ai)
+
