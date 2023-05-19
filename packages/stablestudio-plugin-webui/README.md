@@ -15,9 +15,10 @@ Still, currently this plugin is a basic implement for webui, and only support a 
 - [x] txt2img
 - [x] basic features (prompt, negative prompt, steps, batch_size, image size)
 - [x] features provided by StableStudio
-- [ ] model select
-- [ ] sampler select
+- [x] model select
+- [x] sampler select
 - [ ] img2img
 - [ ] load existing images
 - [ ] upscale
+- [ ] some bugs fix
 - [ ] many other features from webui...
