@@ -21,10 +21,7 @@ export namespace Render {
         1
       );
 
-      console.log(data);
-
       Generation.Image.Input.set(id, (input) => {
-        console.log(data);
         input.init = data?.init
           ? {
               base64: data.init,

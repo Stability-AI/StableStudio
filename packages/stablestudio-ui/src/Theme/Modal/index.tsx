@@ -89,7 +89,6 @@ function Open({
         keys: "Escape",
         action: () => {
           onClose();
-          console.log("Close modal", modalName);
         },
       }),
       [modalName, onClose]

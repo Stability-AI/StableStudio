@@ -51,8 +51,6 @@ export namespace Render {
         (useOriginals ? image.original.element?.src : image.element?.src)
     );
 
-    console.log(intersectingImages, images);
-
     if (autoSize && intersectingImages.length > 0) {
       // resize the box to fit the images
       const bounds = getBoundsOfImages(intersectingImages);
@@ -84,7 +82,6 @@ export namespace Render {
         };
 
         if (!image.element?.src) return;
-        console.log("drawing image", image.element.src);
         if (useOriginals ? image.original.element : image.element) {
           workingCtx.drawImage(
             image.element,
@@ -133,7 +130,6 @@ export namespace Render {
 
       // if there's alpha, apply the alpha to the entire canvas at this point
       if (opacity < 1) {
-        console.log("applying opacity", opacity);
         workingCtx.globalAlpha = 1 - opacity;
         workingCtx.fillStyle = "white";
         workingCtx.globalCompositeOperation = "destination-out";
@@ -194,9 +190,6 @@ export namespace Render {
       true
     );
 
-    console.log("workingCanvas", workingCanvas?.width, workingCanvas?.height);
-    console.log("initImgCanvas", initImgCanvas?.width, initImgCanvas?.height);
-
     if (workingCanvas && initImgCanvas) {
       // make a new canvas and draw the cutout into it
       const maskCanvas = document.createElement("canvas");
@@ -253,7 +246,6 @@ export namespace Render {
       }
 
       if (!allWhite) {
-        console.log("INPAINTING");
         data.mode = "inpaint";
 
         // blur the greyscale mask a little bit to soften the edges between white and black
@@ -270,7 +262,6 @@ export namespace Render {
           maskCanvas.height
         );
       } else {
-        console.log("IMG 2 IMG");
         data.mode = "img2img";
 
         if (opacity >= 1) {
@@ -296,8 +287,6 @@ export namespace Render {
       // a.href = data.init;
       // a.download = "init.png";
       // a.click();
-    } else {
-      console.log("TEXT 2 IMG");
     }
 
     return data;
