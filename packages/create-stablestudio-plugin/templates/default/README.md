@@ -19,6 +19,8 @@ npm run build
 ## Deploying
 
 - explain pushing to github to make CI build and create artifacts stablestudio can import
+
+> you have to grant "Read and write permissions" in the "workflow permissions" section in repository actions settings for the action to work.
 ```
 git push
 ```
