@@ -152,7 +152,11 @@ export const createPlugin = StableStudio.createPlugin<{
         }
     }
 
-    const webuiHostUrl = localStorage.getItem("webui-host-url") ?? "http://127.0.0.1:7861";
+    let webuiHostUrl = localStorage.getItem("webui-host-url");
+
+    if (webuiHostUrl === "" || !webuiHostUrl) {
+        webuiHostUrl = "http://127.0.0.1:7861";
+    }
 
     return {
         ...webuiLoad(webuiHostUrl),
