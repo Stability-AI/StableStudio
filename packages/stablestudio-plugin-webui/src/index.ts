@@ -98,12 +98,24 @@ export const createPlugin = StableStudio.createPlugin<{
                     data["cfg_scale"] = options?.input?.cfgScale;
                 }
 
-                if (options?.input?.initialImage?.weight && options?.input?.initialImage?.blob) {
+                if (options?.input?.initialImage?.weight) {
                     data["denoising_strength"] = 1 - options.input.initialImage.weight;
+                }
 
+                if (options?.input?.initialImage?.blob) {
                     const initImgB64 = await blobToBase64(options?.input?.initialImage?.blob);
 
                     data["init_images"] = [initImgB64.split(",")[1]];
+                }
+
+                if (options?.input?.maskImage?.blob) {
+                    const maskImgB64 = await blobToBase64(options?.input?.maskImage?.blob);
+
+                    data["mask"] = maskImgB64.split(",")[1];
+
+                    data["inpainting_mask_invert"] = 1 // Mask mode
+                    data["inpainting_fill"] = 1 // Masked content
+                    data["inpaint_full_res"] = false // Inpaint area
                 }
 
                 console.log(data);

@@ -18,8 +18,7 @@ Still, currently this plugin is a basic implement for webui, and only support a 
 - [x] model select
 - [x] sampler select
 - [x] img2img
-- [ ] mask
-- [ ] inpaint
+- [x] mask/inpaint/outpaint
 - [ ] Lora support 
 - [ ] store settings
 - [ ] load existing images
