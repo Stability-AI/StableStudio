@@ -1,5 +1,6 @@
 import { GlobalState } from "~/GlobalState";
 import { Theme } from "~/Theme";
+import { Plugin } from "~/Plugin";
 
 export type Count = number;
 export namespace Count {
@@ -18,7 +19,8 @@ export namespace Count {
 }
 
 export namespace Count {
-  export const preset = () => 4 as const;
+  const {getStableDiffusionDefaultCount} = Plugin.get();
+  export const preset = () => getStableDiffusionDefaultCount?.() ?? 4;
 
   export const get = (): number => store.getState().count;
   export const set = (count: number) => store.getState().setCount(count);

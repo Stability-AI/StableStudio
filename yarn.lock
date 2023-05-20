@@ -1131,6 +1131,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stability/stablestudio-plugin-comfy@workspace:packages/stablestudio-plugin-comfyui":
+  version: 0.0.0-use.local
+  resolution: "@stability/stablestudio-plugin-comfy@workspace:packages/stablestudio-plugin-comfyui"
+  dependencies:
+    "@stability/stablestudio-plugin": "workspace:^"
+    "@typescript-eslint/eslint-plugin": ^5.33.1
+    "@typescript-eslint/parser": ^5.33.1
+    eslint: 8.22.0
+    eslint-config-prettier: ^8.5.0
+    eslint-plugin-import: ^2.26.0
+    eslint-plugin-markdown: ^3.0.0
+    eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-react: ^7.30.1
+    eslint-plugin-react-hooks: ^4.6.0
+    nodemon: ^2.0.20
+    prettier: ^2.7.1
+    rimraf: ^3.0.2
+    ts-node: ^10.9.1
+    tsx: ^3.12.1
+    ttypescript: ^1.5.13
+    typescript: 4.8.4
+    typescript-transform-paths: ^3.4.4
+  languageName: unknown
+  linkType: soft
+
 "@stability/stablestudio-plugin-example@workspace:^, @stability/stablestudio-plugin-example@workspace:packages/stablestudio-plugin-example":
   version: 0.0.0-use.local
   resolution: "@stability/stablestudio-plugin-example@workspace:packages/stablestudio-plugin-example"
