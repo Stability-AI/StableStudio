@@ -74,20 +74,20 @@ const basicWorkflow = (
 };
 
 const getModels = async (apiUrl: string) => {
-  const response = await fetch(`${apiUrl}/checkpoints`);
+  const response = await fetch(`${apiUrl}/object_info`);
   if (response.ok) {
     const json = await response.json();
-    return json;
+    return json.CheckpointLoaderSimple.input.required.ckpt_name[0];
   } else {
     return [];
   }
 };
 
 const getSamplers = async (apiUrl: string) => {
-  const response = await fetch(`${apiUrl}/samplers`);
+  const response = await fetch(`${apiUrl}/object_info`);
   if (response.ok) {
     const json = await response.json();
-    return json;
+    return json.KSampler.input.required.sampler_name[0];
   } else {
     return [];
   }
