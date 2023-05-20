@@ -8,21 +8,25 @@ const getStableDiffusionDefaultCount = () => 4;
 export const createPlugin = StableStudio.createPlugin<{
     imagesGeneratedSoFar: number;
     settings: {
-        exampleSetting: StableStudio.PluginSettingString;
+        webuiHostUrl: StableStudio.PluginSettingString;
     };
 }>(({set, get}) => {
-    const webuiLoad = (): Pick<
+    const webuiLoad = (webuiHostUrl?: string): Pick<
         StableStudio.Plugin,
         | "createStableDiffusionImages"
         | "getStatus"
         | "getStableDiffusionModels"
         | "getStableDiffusionSamplers"
     > => {
+        if (webuiHostUrl === "") {
+            webuiHostUrl = "http://127.0.0.1:7861";
+        }
+
         return {
             createStableDiffusionImages: async (options) => {
                 console.log(options);
 
-                const url = 'http://127.0.0.1:7861/sdapi/v1/txt2img';
+                const url = webuiHostUrl + '/sdapi/v1/txt2img';
 
                 const model = options?.input?.model;
 
@@ -31,7 +35,7 @@ export const createPlugin = StableStudio.createPlugin<{
                         "sd_model_checkpoint": model
                     }
 
-                    const modelUrl = 'http://127.0.0.1:7861/sdapi/v1/options';
+                    const modelUrl = webuiHostUrl + '/sdapi/v1/options';
 
                     const modelResponse = await fetch(modelUrl, {
                         method: 'POST',
@@ -110,7 +114,7 @@ export const createPlugin = StableStudio.createPlugin<{
             },
 
             getStableDiffusionModels: async () => {
-                const url = 'http://127.0.0.1:7861/sdapi/v1/sd-models';
+                const url = webuiHostUrl + '/sdapi/v1/sd-models';
 
                 const response = await fetch(url, {
                     method: 'GET',
@@ -148,11 +152,13 @@ export const createPlugin = StableStudio.createPlugin<{
         }
     }
 
+    const webuiHostUrl = localStorage.getItem("webui-host-url") ?? "http://127.0.0.1:7861";
+
     return {
-        ...webuiLoad(),
+        ...webuiLoad(webuiHostUrl),
 
         getStableDiffusionSamplers: async () => {
-            const url = 'http://127.0.0.1:7861/sdapi/v1/samplers';
+            const url = webuiHostUrl + '/sdapi/v1/samplers';
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -180,22 +186,32 @@ export const createPlugin = StableStudio.createPlugin<{
         imagesGeneratedSoFar: 0,
 
         settings: {
-            exampleSetting: {
-                type: "string" as const,
-                default: "Hello, World!",
-                placeholder: "Example setting",
+            webuiHostUrl: {
+                type: "string",
+                title: "Webui Host URL",
+                description:
+                    "put your webui url here, the default value is http://127.0.0.1:7861",
+                placeholder: "http://127.0.0.1:7861",
+                value: localStorage.getItem("webui-host-url") ?? "",
             },
         },
 
-        setSetting: (key, value) =>
+        setSetting: (key, value) => {
             set(({settings}) => ({
                 settings: {
+                    ...settings,
                     [key]: {...settings[key], value: value as string},
                 },
-            })),
+            }));
+
+            if (key === "webuiHostUrl" && typeof value === "string") {
+                localStorage.setItem("webui-host-url", value);
+                set((plugin) => ({...plugin, ...webuiLoad(value)}));
+            }
+        },
 
         manifest: {
-            name: "stable diffusion webui Plugin",
+            name: "Stable Diffusion webui Plugin",
             author: "Terry Jia",
             link: "https://github.com/jtydhr88",
             icon: `${window.location.origin}/DummyImage.png`,
