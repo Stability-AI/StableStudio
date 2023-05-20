@@ -838,37 +838,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kajnpm/create-stablestudio-plugin@workspace:packages/create-stablestudio-plugin":
-  version: 0.0.0-use.local
-  resolution: "@kajnpm/create-stablestudio-plugin@workspace:packages/create-stablestudio-plugin"
-  dependencies:
-    "@types/async-retry": 1.4.2
-    "@types/ci-info": 2.0.0
-    "@types/cross-spawn": 6.0.0
-    "@types/glob": 7.1.1
-    "@types/node": ^16.8.0
-    "@types/prompts": 2.0.1
-    "@types/tar": 4.0.3
-    "@types/validate-npm-package-name": 3.0.0
-    async-retry: 1.3.1
-    chalk: 2.4.2
-    ci-info: "watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540"
-    commander: 2.20.0
-    conf: 10.2.0
-    cpy: 7.3.0
-    cross-spawn: 6.0.5
-    glob: 8.0.3
-    got: 10.7.0
-    prompts: 2.1.0
-    tar: 4.4.10
-    ts-node: 10.9.1
-    update-check: 1.5.4
-    validate-npm-package-name: 3.0.0
-  bin:
-    create-stablestudio-plugin: ./dist/index.js
-  languageName: unknown
-  linkType: soft
-
 "@motionone/animation@npm:^10.15.1":
   version: 10.15.1
   resolution: "@motionone/animation@npm:10.15.1"
@@ -1185,6 +1154,37 @@ __metadata:
   checksum: cbae604a29931dd33a0ecb77ef50e7ac6f4b626939aad84e4d4da06ace624902f294bd652268939b94596c725ed1905a73c453a5574b8504010296f5619e44cc
   languageName: node
   linkType: hard
+
+"@stability/create-stablestudio-plugin@workspace:packages/create-stablestudio-plugin":
+  version: 0.0.0-use.local
+  resolution: "@stability/create-stablestudio-plugin@workspace:packages/create-stablestudio-plugin"
+  dependencies:
+    "@types/async-retry": 1.4.2
+    "@types/ci-info": 2.0.0
+    "@types/cross-spawn": 6.0.0
+    "@types/glob": 7.1.1
+    "@types/node": ^16.8.0
+    "@types/prompts": 2.0.1
+    "@types/tar": 4.0.3
+    "@types/validate-npm-package-name": 3.0.0
+    async-retry: 1.3.1
+    chalk: 2.4.2
+    ci-info: "watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540"
+    commander: 2.20.0
+    conf: 10.2.0
+    cpy: 7.3.0
+    cross-spawn: 6.0.5
+    glob: 8.0.3
+    got: 10.7.0
+    prompts: 2.1.0
+    tar: 4.4.10
+    ts-node: 10.9.1
+    update-check: 1.5.4
+    validate-npm-package-name: 3.0.0
+  bin:
+    create-stablestudio-plugin: ./dist/index.js
+  languageName: unknown
+  linkType: soft
 
 "@stability/stablestudio-plugin-stability@workspace:^, @stability/stablestudio-plugin-stability@workspace:packages/stablestudio-plugin-stability":
   version: 0.0.0-use.local

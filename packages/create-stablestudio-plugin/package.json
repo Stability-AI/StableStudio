@@ -13,9 +13,7 @@
   },
   "author": "Stability AI",
   "license": "MIT",
-  "bin": {
-    "create-stablestudio-plugin": "./dist/index.js"
-  },
+  "bin": "./dist/index.js",
   "files": [
     "dist"
   ],
