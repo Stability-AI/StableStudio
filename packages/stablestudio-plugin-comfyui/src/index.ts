@@ -414,6 +414,7 @@ export const createPlugin = StableStudio.createPlugin<{
   },
 
   createStableDiffusionImages: async (options) => {
+    const count = options?.count ?? 1;
     const apiUrl = get().settings.apiUrl.value as string;
     const models = await getModels(apiUrl);
     const model = models[options?.input?.model as string];
@@ -500,17 +501,35 @@ export const createPlugin = StableStudio.createPlugin<{
         maskImageFilename
       );
     }
+    let promptIds = [];
+    let images: StableStudio.StableDiffusionImages = { id: "", images: [] };
+    //messy, would be nicer to return images as they are ready
+    for (let i = 0; i < count; i++) {
+      workflow["3"].inputs.seed = seed + i;
+      const promptId = await postQueue(apiUrl, workflow);
+      if (!promptId) {
+        return undefined;
+      }
 
-    const promptId = await postQueue(apiUrl, workflow);
-    if (promptId.error) {
-      return undefined;
+      promptIds.push(promptId);
     }
-    let images = await promptIdToImage(apiUrl, promptId.promptId, input);
-    while (images === undefined) {
-      await new Promise((r) => setTimeout(r, 1000));
-      images = await promptIdToImage(apiUrl, promptId.promptId, input);
+    for (let i = 0; i < count; i++) {
+      const promptId = promptIds[i].promptId;
+      let image = await promptIdToImage(apiUrl, promptId, {
+        ...input,
+        seed: seed + i,
+      });
+      while (image === undefined) {
+        await new Promise((r) => setTimeout(r, 1000));
+        image = await promptIdToImage(apiUrl, promptId, {
+          ...input,
+          seed: seed + i,
+        });
+      }
+      images.images!.push(image[0]);
     }
-    return { id: "", images: images };
+
+    return images;
   },
 
   getStatus: async () => {
