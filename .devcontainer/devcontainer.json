@@ -17,5 +17,11 @@
 		"ghcr.io/devcontainers/features/github-cli:1": {
 			
 		}
+	},
+	"portsAttributes": {
+		"3000": {
+			"label": "Application",
+			"onAutoForward": "openBrowserOnce"
+		}
 	}
 }

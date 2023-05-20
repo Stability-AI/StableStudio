@@ -37,5 +37,15 @@
 		"COMMANDLINE_ARGS": "--nowebui --cors-allow-origins=http://localhost:3000",
 		"venv_dir": "/home/node/.webui-venv"
 	},
-	"runArgs": ["--gpus", "all"]
+	"runArgs": ["--gpus", "all"],
+	"portsAttributes": {
+		"3000": {
+			"label": "Application",
+			"onAutoForward": "openBrowserOnce"
+		},
+		"7861": {
+			"label": "Backend",
+			"onAutoForward": "ignore"
+		}
+	}	
 }
