@@ -1,5 +1,4 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
-import * as StableStudioPluginExample from "@stability/stablestudio-plugin-example";
 import * as StableStudioPluginStability from "@stability/stablestudio-plugin-stability";
 
 import { Environment } from "~/Environment";
@@ -112,10 +111,7 @@ namespace State {
   };
 
   export const use = GlobalState.create<State>((set) => {
-    const { createPlugin: createRootPlugin } =
-      Environment.get("USE_EXAMPLE_PLUGIN") === "true"
-        ? StableStudioPluginExample
-        : StableStudioPluginStability;
+    const { createPlugin: createRootPlugin } = StableStudioPluginStability;
 
     return {
       rootPlugin: createRootPlugin({

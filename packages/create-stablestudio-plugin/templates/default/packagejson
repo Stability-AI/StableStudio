@@ -1,5 +1,4 @@
 {
-  "name": "@stability/stablestudio-plugin-example",
   "version": "0.0.0",
   "license": "MIT",
   "main": "./lib/index.js",
@@ -15,7 +14,7 @@
     "dev": "nodemon --watch src --ext ts,tsx,json --exec \"yarn build\""
   },
   "dependencies": {
-    "@stability/stablestudio-plugin": "workspace:^"
+    "@stability/stablestudio-plugin": "^0.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.33.1",

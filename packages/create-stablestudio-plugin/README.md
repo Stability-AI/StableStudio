@@ -1,0 +1,1 @@
+# create-stablestudio-plugin

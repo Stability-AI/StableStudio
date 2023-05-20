@@ -1,6 +1,5 @@
 {
-  "name": "@stability/stablestudio-plugin",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "license": "MIT",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -12,8 +11,10 @@
     "build:types": "ttsc --project tsconfig.json",
     "build:javascript": "tsx scripts/Build.ts",
     "build": "yarn build:types && yarn build:javascript",
-    "dev": "nodemon --watch src --ext ts,tsx,json --exec \"yarn build\"",
-    "prepublish": "yarn build"
+    "dev": "nodemon --watch src --ext ts,tsx,json --exec \"yarn build\""
+  },
+  "dependencies": {
+    "@stability/stablestudio-plugin": "^0.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.33.1",
@@ -33,8 +34,5 @@
     "ttypescript": "^1.5.13",
     "typescript": "4.8.4",
     "typescript-transform-paths": "^3.4.4"
-  },
-  "dependencies": {
-    "zustand": "^4.3.7"
   }
 }
