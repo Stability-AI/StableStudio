@@ -1,0 +1,42 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "StableStudio+WebUI GPU dev",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
+	"forwardPorts": [3000],	
+	"postCreateCommand": "cd /home/node && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git webui && cd webui && python -m venv ~/.webui-venv && bash -c 'source ~/.webui-venv/bin/activate' && pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118 && pip install -r requirements_versions.txt",
+	// avoid git "dubious ownership" errors, which break yarn 
+	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",	
+	"postAttachCommand": "yarn && echo 'To start the backend, run: cd ~/webui; ./webui.sh'",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.defaultInterpreterPath": "/home/node/.webui-venv/stability-generator/bin/python"
+			},
+			"extensions": [
+				"vscode.typescript-language-features"
+			]
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/nvidia-cuda:1": {
+			"cudaVersion": "11.8",
+			"installCudnn": true,
+			"installNvtx": true
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.10.6"
+		},
+		"ghcr.io/devcontainers-contrib/features/apt-get-packages:1": {
+			"packages": "libgl1-mesa-glx"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			
+		}
+	},
+	"remoteEnv": {
+		"COMMANDLINE_ARGS": "--nowebui --cors-allow-origins=http://localhost:3000",
+		"venv_dir": "/home/node/.webui-venv"
+	},
+	"runArgs": ["--gpus", "all"]
+}
