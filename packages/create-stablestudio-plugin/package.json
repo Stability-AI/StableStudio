@@ -1,6 +1,6 @@
 {
   "name": "@kajnpm/create-stablestudio-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "keywords": [
     "stablestudio",
     "react"
@@ -13,7 +13,9 @@
   },
   "author": "Stability AI",
   "license": "MIT",
-  "bin": "./dist/index.js",
+  "bin": {
+    "create-stablestudio-plugin": "./dist/index.js"
+  },
   "files": [
     "dist"
   ],
