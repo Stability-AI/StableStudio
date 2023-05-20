@@ -52,8 +52,8 @@ export namespace Create {
       onStarted();
 
       await Throttle.wait();
-
-      const initImg = await Generation.Image.Input.resizeInit(input);
+      //resizing here appears to be causing issues with the output (on ComfyUI plugin at least)
+      const initImg = undefined;//await Generation.Image.Input.resizeInit(input);
       const pluginInput = await Generation.Image.Input.toInput(
         !initImg
           ? input

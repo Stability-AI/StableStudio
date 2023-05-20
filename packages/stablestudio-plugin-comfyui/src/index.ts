@@ -1,5 +1,4 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
-import { GlobalState } from "@stability/stablestudio-ui/src/GlobalState";
 
 const basicWorkflow = (
   prompt: string,
@@ -152,6 +151,102 @@ const basicWorkflowImage = (
   };
 };
 
+const basicWorkflowInpaint = (
+  prompt: string,
+  negative_prompt: string,
+  model: string,
+  seed: number,
+  steps: number,
+  sampler: string,
+  cfgScale: number,
+  imageFilename: string,
+  imageStrength: number,
+  maskFilename: string
+) => {
+  imageStrength = Math.max(0, Math.min(0.99, imageStrength));
+  return {
+    "3": {
+      class_type: "KSampler",
+      inputs: {
+        cfg: cfgScale,
+        denoise: 1 - imageStrength,
+        latent_image: ["17", 0],
+        model: ["4", 0],
+        negative: ["7", 0],
+        positive: ["6", 0],
+        sampler_name: sampler,
+        scheduler: "normal",
+        seed: seed,
+        steps: steps,
+      },
+    },
+    "4": {
+      class_type: "CheckpointLoaderSimple",
+      inputs: {
+        ckpt_name: model,
+      },
+    },
+    "6": {
+      class_type: "CLIPTextEncode",
+      inputs: {
+        clip: ["4", 1],
+        text: prompt,
+      },
+    },
+    "7": {
+      class_type: "CLIPTextEncode",
+      inputs: {
+        clip: ["4", 1],
+        text: negative_prompt,
+      },
+    },
+    "8": {
+      class_type: "VAEDecode",
+      inputs: {
+        samples: ["3", 0],
+        vae: ["4", 2],
+      },
+    },
+    "9": {
+      class_type: "SaveImage",
+      inputs: {
+        filename_prefix: "ComfyUI",
+        images: ["8", 0],
+      },
+    },
+    "10": {
+      class_type: "LoadImage",
+      inputs: {
+        image: imageFilename,
+        "choose file to upload": "image",
+      },
+    },
+    "17": {
+      class_type: "VAEEncodeForInpaint",
+      inputs: {
+        grow_mask_by: 0,
+        mask: ["21", 0],
+        pixels: ["10", 0],
+        vae: ["4", 2],
+      },
+    },
+    "20": {
+      class_type: "LoadImageMask",
+      inputs: {
+        channel: "red",
+        "choose file to upload": "image",
+        image: maskFilename,
+      },
+    },
+    "21": {
+      class_type: "InvertMask",
+      inputs: {
+        mask: ["20", 0],
+      },
+    },
+  };
+};
+
 const getModels = async (apiUrl: string) => {
   const response = await fetch(`${apiUrl}/object_info`);
   if (response.ok) {
@@ -240,7 +335,7 @@ const promptIdToImage = async (
 };
 
 const uploadImage = async (apiUrl: string, image: Blob, filename: string) => {
-  const blob = new Blob([image], { type: "image/jpeg" });
+  const blob = new Blob([image], { type: "image/png" });
   const formData = new FormData();
   formData.append("image", blob, filename);
   const response = await fetch(`${apiUrl}/upload/image`, {
@@ -360,12 +455,13 @@ export const createPlugin = StableStudio.createPlugin<{
       sampler,
       cfgScale
     );
+    const initImageFilename = `${randomFilename()}.png`;
+    const maskImageFilename = `${randomFilename()}.png`;
     if (input.initialImage) {
-      const filename = `${randomFilename()}.jpg`;
       const image = await uploadImage(
         apiUrl,
         input.initialImage.blob!,
-        filename
+        initImageFilename
       );
       if (image.error) {
         return undefined;
@@ -378,8 +474,30 @@ export const createPlugin = StableStudio.createPlugin<{
         steps,
         sampler,
         cfgScale,
-        filename,
+        initImageFilename,
         input.initialImage.weight ?? 0.75
+      );
+    }
+    if (input.maskImage) {
+      const image = await uploadImage(
+        apiUrl,
+        input.maskImage.blob!,
+        maskImageFilename
+      );
+      if (image.error) {
+        return undefined;
+      }
+      workflow = basicWorkflowInpaint(
+        prompt,
+        negative_prompt,
+        model,
+        seed,
+        steps,
+        sampler,
+        cfgScale,
+        initImageFilename,
+        input.initialImage!.weight ?? 0.75,
+        maskImageFilename
       );
     }
 

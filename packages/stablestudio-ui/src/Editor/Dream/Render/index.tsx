@@ -20,6 +20,9 @@ export namespace Render {
         entity,
         1
       );
+      //largest entity size
+      const width = Math.max(...entities.map((e) => e.width));
+      const height = Math.max(...entities.map((e) => e.height));
 
       console.log(data);
 
@@ -39,6 +42,8 @@ export namespace Render {
               weight: 1,
             }
           : null;
+        input.width = width;
+        input.height = height;
       });
 
       create({

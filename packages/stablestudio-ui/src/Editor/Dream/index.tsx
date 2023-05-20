@@ -24,9 +24,9 @@ export function Dream({ id }: { id: ID }) {
     <Editor.Entity
       id={id}
       showBorder={false}
-      showHandles={false}
+      showHandles={true}
       onSizeChange={setSize}
-      resizable={false}
+      resizable={true}
       sizeClamp={{
         min: { width: 512, height: 512 },
         max: input?.model.includes("xl")
