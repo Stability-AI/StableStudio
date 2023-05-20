@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib && rimraf node_modules",
-    "build:types": "ttsc --project tsconfig.json",
+    "build:types": "ttsc",
     "build:javascript": "tsx scripts/Build.ts",
     "build": "yarn build:types && yarn build:javascript",
     "dev": "nodemon --watch src --ext ts,tsx,json --exec \"yarn build\""

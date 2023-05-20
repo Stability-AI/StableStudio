@@ -4,6 +4,12 @@ This is a [StableStudio plugin](https://github.com/Stability-AI/StableStudio) bo
 
 - explain how to get a plugin built
 
+```
+yarn build
+
+npm run build
+```
+
 - explain basic outline of functions
 
 ## Learn more
@@ -13,3 +19,6 @@ This is a [StableStudio plugin](https://github.com/Stability-AI/StableStudio) bo
 ## Deploying
 
 - explain pushing to github to make CI build and create artifacts stablestudio can import
+```
+git push
+```
