@@ -94,6 +94,10 @@ export const createPlugin = StableStudio.createPlugin<{
                 data["height"] = options?.input?.height ?? 512;
                 data["save_images"] = true;
 
+                if (options?.input?.cfgScale) {
+                    data["cfg_scale"] = options?.input?.cfgScale;
+                }
+
                 if (options?.input?.initialImage?.weight && options?.input?.initialImage?.blob) {
                     data["denoising_strength"] = 1 - options.input.initialImage.weight;
 
