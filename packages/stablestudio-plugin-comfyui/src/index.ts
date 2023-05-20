@@ -73,6 +73,85 @@ const basicWorkflow = (
   };
 };
 
+const basicWorkflowImage = (
+  prompt: string,
+  negative_prompt: string,
+  model: string,
+  seed: number,
+  steps: number,
+  sampler: string,
+  cfgScale: number,
+  imageFilename: string,
+  imageStrength: number
+) => {
+  imageStrength = Math.max(0, Math.min(0.99, imageStrength));
+  return {
+    "3": {
+      class_type: "KSampler",
+      inputs: {
+        cfg: cfgScale,
+        denoise: 1 - imageStrength,
+        latent_image: ["11", 0],
+        model: ["4", 0],
+        negative: ["7", 0],
+        positive: ["6", 0],
+        sampler_name: sampler,
+        scheduler: "normal",
+        seed: seed,
+        steps: steps,
+      },
+    },
+    "4": {
+      class_type: "CheckpointLoaderSimple",
+      inputs: {
+        ckpt_name: model,
+      },
+    },
+    "6": {
+      class_type: "CLIPTextEncode",
+      inputs: {
+        clip: ["4", 1],
+        text: prompt,
+      },
+    },
+    "7": {
+      class_type: "CLIPTextEncode",
+      inputs: {
+        clip: ["4", 1],
+        text: negative_prompt,
+      },
+    },
+    "8": {
+      class_type: "VAEDecode",
+      inputs: {
+        samples: ["3", 0],
+        vae: ["4", 2],
+      },
+    },
+    "9": {
+      class_type: "SaveImage",
+      inputs: {
+        filename_prefix: "ComfyUI",
+        images: ["8", 0],
+      },
+    },
+    "10": {
+      class_type: "LoadImage",
+      inputs: {
+        image: imageFilename,
+        "choose file to upload": "image",
+      },
+    },
+    "11": {
+      class_type: "VAEEncode",
+      inputs: {
+        pixels: ["10", 0],
+        vae: ["4", 2],
+      },
+    },
+  };
+};
+
 const getModels = async (apiUrl: string) => {
   const response = await fetch(`${apiUrl}/object_info`);
   if (response.ok) {
@@ -160,6 +239,39 @@ const promptIdToImage = async (
   }
 };
 
+const uploadImage = async (apiUrl: string, image: Blob, filename: string) => {
+  const blob = new Blob([image], { type: "image/jpeg" });
+  const formData = new FormData();
+  formData.append("image", blob, filename);
+  const response = await fetch(`${apiUrl}/upload/image`, {
+    method: "POST",
+    body: formData,
+  });
+  if (response.ok) {
+    const json = await response.json();
+    return {
+      name: json.name,
+      subfolder: json.subfolder,
+      type: json.type,
+    };
+  } else {
+    return {
+      error: "Error",
+    };
+  }
+};
+
+const randomFilename = () => {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+};
+
+const randomSeed = () => {
+  return Math.floor(Math.random() * 1000000000);
+};
+
 const getDefaultInput = () => ({
   width: 512,
   height: 512,
@@ -167,8 +279,8 @@ const getDefaultInput = () => ({
   cfgScale: 7,
   steps: 30,
   sampler: { id: "0", name: "euler" },
-  model: "0",//hack to select first model from list
-  seed: 69,
+  model: "0", //hack to select first model from list
+  strength: 0.75,
 });
 
 export const createPlugin = StableStudio.createPlugin<{
@@ -216,11 +328,10 @@ export const createPlugin = StableStudio.createPlugin<{
       ...options?.input,
     };
     input.model = model;
-    input.seed = input.seed ?? 69;
     if (!input.model) {
       return undefined;
     }
-    
+
     const prompt =
       input.prompts
         ?.filter((p) => p.weight && p.weight > 0)
@@ -234,11 +345,11 @@ export const createPlugin = StableStudio.createPlugin<{
 
     const width = input.width ?? 512;
     const height = input.height ?? 512;
-    const seed = input.seed ?? 69;
+    const seed = input.seed === 0 ? randomSeed() : input.seed ?? randomSeed();
     const steps = input.steps ?? 30;
     const sampler = input.sampler?.name ?? "euler";
     const cfgScale = input.cfgScale ?? 8;
-    const workflow = basicWorkflow(
+    let workflow: any = basicWorkflow(
       prompt,
       negative_prompt,
       model,
@@ -249,23 +360,37 @@ export const createPlugin = StableStudio.createPlugin<{
       sampler,
       cfgScale
     );
+    if (input.initialImage) {
+      const filename = `${randomFilename()}.jpg`;
+      const image = await uploadImage(
+        apiUrl,
+        input.initialImage.blob!,
+        filename
+      );
+      if (image.error) {
+        return undefined;
+      }
+      workflow = basicWorkflowImage(
+        prompt,
+        negative_prompt,
+        model,
+        seed,
+        steps,
+        sampler,
+        cfgScale,
+        filename,
+        input.initialImage.weight ?? 0.75
+      );
+    }
 
     const promptId = await postQueue(apiUrl, workflow);
     if (promptId.error) {
       return undefined;
     }
-    let images = await promptIdToImage(
-      apiUrl,
-      promptId.promptId,
-     input,
-    );
+    let images = await promptIdToImage(apiUrl, promptId.promptId, input);
     while (images === undefined) {
       await new Promise((r) => setTimeout(r, 1000));
-      images = await promptIdToImage(
-        apiUrl,
-        promptId.promptId,
-        input,
-      );
+      images = await promptIdToImage(apiUrl, promptId.promptId, input);
     }
     return { id: "", images: images };
   },
