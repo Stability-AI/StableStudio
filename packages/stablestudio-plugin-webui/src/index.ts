@@ -4,6 +4,17 @@ function base64ToBlob(base64: string, contentType = '', sliceSize = 512): Promis
     return fetch(`data:${contentType};base64,${base64}`).then(res => res.blob());
 }
 
+function blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+
+        reader.readAsDataURL(blob);
+    });
+}
+
 const getStableDiffusionDefaultCount = () => 4;
 export const createPlugin = StableStudio.createPlugin<{
     imagesGeneratedSoFar: number;
@@ -26,7 +37,11 @@ export const createPlugin = StableStudio.createPlugin<{
             createStableDiffusionImages: async (options) => {
                 console.log(options);
 
-                const url = webuiHostUrl + '/sdapi/v1/txt2img';
+                let url = webuiHostUrl + '/sdapi/v1/txt2img';
+
+                if (options?.input?.initialImage) {
+                    url = webuiHostUrl + '/sdapi/v1/img2img';
+                }
 
                 const model = options?.input?.model;
 
@@ -62,18 +77,32 @@ export const createPlugin = StableStudio.createPlugin<{
                     seed = -1;
                 }
 
-                const data = {
-                    "seed": seed,
-                    "sampler_name": options?.input?.sampler?.name ?? "",
-                    "sampler_index": options?.input?.sampler?.name ?? "",
-                    "prompt": prompt,
-                    "negative_prompt": negativePrompt,
-                    "steps": options?.input?.steps ?? 20,
-                    "batch_size": options?.count ?? getStableDiffusionDefaultCount(),
-                    "width": options?.input?.width ?? 512,
-                    "height": options?.input?.height ?? 512,
-                    "save_images": true,
-                };
+                interface dataObject {
+                    [key: string]: any;
+                }
+
+                let data: dataObject = {};
+
+                data["seed"] = seed;
+                data["sampler_name"] = options?.input?.sampler?.name ?? "";
+                data["sampler_index"] = options?.input?.sampler?.name ?? "";
+                data["prompt"] = prompt;
+                data["negative_prompt"] = negativePrompt;
+                data["steps"] = options?.input?.steps ?? 20;
+                data["batch_size"] = options?.count ?? getStableDiffusionDefaultCount();
+                data["width"] = options?.input?.width ?? 512;
+                data["height"] = options?.input?.height ?? 512;
+                data["save_images"] = true;
+
+                if (options?.input?.initialImage?.weight && options?.input?.initialImage?.blob) {
+                    data["denoising_strength"] = 1 - options.input.initialImage.weight;
+
+                    const initImgB64 = await blobToBase64(options?.input?.initialImage?.blob);
+
+                    data["init_images"] = [initImgB64.split(",")[1]];
+                }
+
+                console.log(data);
 
                 const response = await fetch(url, {
                     method: 'POST',
