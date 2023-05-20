@@ -3,10 +3,8 @@
 {
 	"name": "StableStudio dev",
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
-	"forwardPorts": [3000],
 	// avoid git "dubious ownership" errors, which break yarn 
-	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",	
-	"postAttachCommand": "yarn",
+	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && yarn install",		
 	"customizations": {
 		"vscode": {
 			"settings": {},
