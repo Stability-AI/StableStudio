@@ -19,12 +19,12 @@ Still, currently this plugin is a basic implement for webui, and only support a 
 - [x] sampler select
 - [x] img2img
 - [x] mask/inpaint/outpaint
+- [x] store settings
+- [x] webui status could replace images generated status
+- [ ] upscale (working)
 - [ ] Lora support 
-- [ ] store settings
 - [ ] load existing images
-- [ ] upscale
 - [ ] plugin could use path in settings along with a field for extra cli flags to launch webui on startup
-- [ ] webui status could replace images generated status
 - [ ] some bugs fix
 - [ ] MacOS and Linux support (since I don’t have environment with MacOS/Linux, may need someone help with this)
 - [ ] Need to think about how to deal with extensions ecosystem in webui

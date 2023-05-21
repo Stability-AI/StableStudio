@@ -28,6 +28,8 @@ export const createPlugin = StableStudio.createPlugin<{
         | "getStatus"
         | "getStableDiffusionModels"
         | "getStableDiffusionSamplers"
+        | "getStableDiffusionDefaultCount"
+        | "getStableDiffusionDefaultInput"
     > => {
         if (webuiHostUrl === "") {
             webuiHostUrl = "http://127.0.0.1:7861";
@@ -37,6 +39,19 @@ export const createPlugin = StableStudio.createPlugin<{
             createStableDiffusionImages: async (options) => {
                 console.log(options);
 
+                const optionsUrl = webuiHostUrl + '/sdapi/v1/options';
+
+                const optionsResponse = await fetch(optionsUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const webUIOptions = await optionsResponse.json();
+
+                console.log(webUIOptions);
+
                 let url = webuiHostUrl + '/sdapi/v1/txt2img';
 
                 if (options?.input?.initialImage) {
@@ -45,14 +60,16 @@ export const createPlugin = StableStudio.createPlugin<{
 
                 const model = options?.input?.model;
 
-                if (model) {
+                if (model && model !== webUIOptions["sd_model_checkpoint"]) {
+                    console.log("applying model");
+
+                    localStorage.setItem("model", model)
+
                     const modelData = {
                         "sd_model_checkpoint": model
                     }
 
-                    const modelUrl = webuiHostUrl + '/sdapi/v1/options';
-
-                    const modelResponse = await fetch(modelUrl, {
+                    const modelResponse = await fetch(optionsUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -61,6 +78,12 @@ export const createPlugin = StableStudio.createPlugin<{
                     });
 
                     console.log(modelResponse);
+                }
+
+                const sampler = options?.input?.sampler?.name;
+
+                if (sampler) {
+                    localStorage.setItem("sampler", sampler)
                 }
 
                 const input = {
@@ -91,11 +114,19 @@ export const createPlugin = StableStudio.createPlugin<{
                 data["steps"] = options?.input?.steps ?? 20;
                 data["batch_size"] = options?.count ?? getStableDiffusionDefaultCount();
                 data["width"] = options?.input?.width ?? 512;
+
+                localStorage.setItem("width", data["width"]);
+
                 data["height"] = options?.input?.height ?? 512;
+
+                localStorage.setItem("height", data["height"]);
+
                 data["save_images"] = true;
 
                 if (options?.input?.cfgScale) {
                     data["cfg_scale"] = options?.input?.cfgScale;
+
+                    localStorage.setItem("cfgScale", data["cfg_scale"])
                 }
 
                 if (options?.input?.initialImage?.weight) {
@@ -136,7 +167,15 @@ export const createPlugin = StableStudio.createPlugin<{
 
                 console.log(responseData.images);
 
-                for (let i = 0; i < responseData.images.length; i++) {
+                const generatedImagesLength = responseData.images.length;
+
+                let startIndex = 0;
+
+                if (generatedImagesLength > data["batch_size"]) {
+                    startIndex = 1;
+                }
+
+                for (let i = startIndex; i < responseData.images.length; i++) {
                     const blob = await base64ToBlob(responseData.images[i], 'image/jpeg');
 
                     const image = {
@@ -149,7 +188,7 @@ export const createPlugin = StableStudio.createPlugin<{
                 }
 
                 set(({imagesGeneratedSoFar}) => ({
-                    imagesGeneratedSoFar: imagesGeneratedSoFar + 1,
+                    imagesGeneratedSoFar: imagesGeneratedSoFar + data["batch_size"],
                 }));
 
                 return {
@@ -184,14 +223,22 @@ export const createPlugin = StableStudio.createPlugin<{
                 return models;
             },
 
-            getStatus: () => {
-                const {imagesGeneratedSoFar} = get();
-                return {
+            getStatus: async () => {
+                const optionsUrl = webuiHostUrl + '/sdapi/v1/options';
+
+                const optionsResponse = await fetch(optionsUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                return optionsResponse.ok ? {
                     indicator: "success",
-                    text:
-                        imagesGeneratedSoFar > 0
-                            ? `${imagesGeneratedSoFar} images generated`
-                            : "Ready",
+                    text: "Ready",
+                } : {
+                    indicator: "error",
+                    text: "unable to connect webui on " + webuiHostUrl
                 };
             },
         }
@@ -205,6 +252,19 @@ export const createPlugin = StableStudio.createPlugin<{
 
     return {
         ...webuiLoad(webuiHostUrl),
+
+        getStableDiffusionDefaultCount: () => 4,
+
+        getStableDiffusionDefaultInput: () => {
+            return {
+                steps: 20,
+                sampler: {
+                    id: localStorage.getItem("sampler") ?? "",
+                    name: localStorage.getItem("sampler") ?? ""
+                },
+                model: localStorage.getItem("model") ?? ""
+            }
+        },
 
         getStableDiffusionSamplers: async () => {
             const url = webuiHostUrl + '/sdapi/v1/samplers';
@@ -222,7 +282,7 @@ export const createPlugin = StableStudio.createPlugin<{
 
             for (let i = 0; i < responseData.length; i++) {
                 const sampler = {
-                    id: `${Math.random() * 10000000}`,
+                    id: responseData[i].name,
                     name: responseData[i].name
                 };
 
