@@ -10,6 +10,7 @@
     "postinstall": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\" && yarn build",
     "stablestudio-plugin": "yarn workspace @stability/stablestudio-plugin",
     "stablestudio-plugin-example": "yarn workspace @stability/stablestudio-plugin-example",
+    "stablestudio-plugin-imaginairy": "yarn workspace @stability/stablestudio-plugin-imaginairy",
     "stablestudio-plugin-stability": "yarn workspace @stability/stablestudio-plugin-stability",
     "stablestudio-plugin-webgpu": "yarn workspace @stability/stablestudio-plugin-webgpu",
     "stablestudio-plugin-webui": "yarn workspace @stability/stablestudio-plugin-webui",
