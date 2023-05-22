@@ -58,11 +58,22 @@ const webuiUpscalers = [
     }
 ];
 
+const getNumber = (strValue: string | null, defaultValue: number) => {
+    let retValue = defaultValue;
+
+    if (strValue) {
+        retValue = Number(strValue);
+    }
+
+    return retValue;
+}
+
 const getStableDiffusionDefaultCount = () => 4;
 export const createPlugin = StableStudio.createPlugin<{
     imagesGeneratedSoFar: number;
     settings: {
         webuiHostUrl: StableStudio.PluginSettingString;
+        historyImagesCount: StableStudio.PluginSettingNumber;
         upscaler1: StableStudio.PluginSettingString;
     };
 }>(({set, get}) => {
@@ -378,7 +389,7 @@ export const createPlugin = StableStudio.createPlugin<{
             const existingImagesUrl = webuiHostUrl + '/StableStudio/get-generated-images';
 
             const data = {
-                limit: 10
+                limit: get().settings.historyImagesCount.value
             }
 
             const existingImagesResponse = await fetch(existingImagesUrl, {
@@ -400,7 +411,9 @@ export const createPlugin = StableStudio.createPlugin<{
             for (let i = 0; i < responseData.length; i++) {
                 const blob = await base64ToBlob(responseData[i].content, 'image/jpeg');
 
-                const createdAt = new Date();
+                let timestampInSeconds = responseData[i].create_date;
+                let timestampInMilliseconds = timestampInSeconds * 1000;
+                let createdAt = new Date(timestampInMilliseconds);
 
                 const stableDiffusionImage = {
                     id: responseData[i].image_name,
@@ -441,6 +454,17 @@ export const createPlugin = StableStudio.createPlugin<{
                 placeholder: "http://127.0.0.1:7861",
                 value: localStorage.getItem("webui-host-url") ?? "",
             },
+            historyImagesCount: {
+                type: "number",
+                title: "History image count",
+                description:
+                    "How many images do you get from webui locally?",
+                min: 0,
+                max: 50,
+                step: 1,
+                variant: "slider",
+                value: getNumber(localStorage.getItem("historyImagesCount"), 20),
+            },
             upscaler1: {
                 type: "string",
                 title: "Upscaler 1",
@@ -462,6 +486,8 @@ export const createPlugin = StableStudio.createPlugin<{
                 set((plugin) => ({...plugin, ...webuiLoad(value)}));
             } else if (key === "upscaler1" && typeof value === "string") {
                 localStorage.setItem("upscaler1", value);
+            } else if (key === "historyImagesCount" && typeof value === "number") {
+                localStorage.setItem("historyImagesCount", value.toString());
             }
         },
 
