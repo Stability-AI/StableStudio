@@ -19,5 +19,5 @@ export namespace Samplers {
   };
 
   export const useAreEnabled = () =>
-    Plugin.use(({ getStableDiffusionModels }) => !!getStableDiffusionModels);
+    Plugin.use(({ getStableDiffusionSamplers }) => !!getStableDiffusionSamplers);
 }
