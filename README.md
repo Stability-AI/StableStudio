@@ -4,13 +4,13 @@
 
 **👋 Welcome to the community repository for StableStudio, the open-source version of [DreamStudio](https://www.dreamstudio.ai)**
 
-## Documentation
+### Documentation
   
   [🎨 UI](./packages/stablestudio-ui/README.md)
   
   [🔌 Plugins](./packages/stablestudio-plugin/README.md) 
 
-## Links 
+### Links 
 <a href="https://discord.gg/stablediffusion" target="_blank">🎮 Discord</a>
 
 <a href="https://github.com/Stability-AI/StableStudio/issues">🛟 Bugs & Support</a>
@@ -24,9 +24,7 @@
 
 # <a id="quick-start" href="#quick-start">🚀 Quick Start</a>
 
-You'll need to have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/) installed.
-
-Once that's done, you can run the following commands...
+You'll need to have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/) installed. Then run the following commands to install dependencies and launch StableStudio.
 
 ```bash
 git clone https://github.com/Stability-AI/StableStudio.git
@@ -45,7 +43,7 @@ _**That's it! 🎉**_
 
 StableStudio will be running at [localhost:3000](http://localhost:3000) by default.
 
-> If you are using the default Stability API plugin, You'll need to have your [API key](https://platform.stability.ai/docs/getting-started/authentication) handy, otherwise you should be good to go!
+> If you are using the default Stability API plugin, You'll need to have your [API key](https://platform.stability.ai/docs/getting-started/authentication) handy. Otherwise, you should be good to go!
 
 # <a id="about" href="#about">About</a>
 
@@ -65,7 +63,7 @@ _Not much!_ There are a few tweaks we made to make the project more community-fr
 
 - All "over-the-wire" API calls have been replaced by a [plugin system](./packages/stablestudio-plugin/README.md) which allows you to easily swap out the back-end.
 
-  - with a little bit of TypeScript, you can [create your own](./packages/stablestudio-plugin/README.md) plugin and use StableStudio with any backend you want!
+  - With a little bit of TypeScript, you can [create your own](./packages/stablestudio-plugin/README.md) plugin and use StableStudio with any backend you want!
 
 - We removed Stability-specific account features such as billing, API key management, etc.
 
