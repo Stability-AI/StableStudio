@@ -120,7 +120,7 @@ export namespace Button {
         classes(
           {
             brand:
-              "bg-brand-500 shadow-brand-500-md dark:shadow-none dark:bg-brand-600 dark:hover:bg-brand-500 border-brand-500 dark:border-brand-600",
+              "bg-brand-500 shadow-brand-500-md text-white dark:shadow-none dark:bg-brand-600 dark:hover:bg-brand-500 border-brand-500 dark:border-brand-600",
 
             indigo:
               "text-white bg-brand-500 shadow-brand-500-md dark:shadow-none dark:bg-brand-600",

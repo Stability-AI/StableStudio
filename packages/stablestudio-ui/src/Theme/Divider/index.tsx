@@ -7,7 +7,7 @@ export function Divider({
   const line = (
     <div
       className={classes(
-        "dark:bg-muted-white-extra grow bg-zinc-600",
+        "dark:bg-muted-white-extra grow bg-zinc-300",
         variant === "horizontal" && "h-[1px]",
         variant === "vertical" && "w-[1px]",
         lineClassName
