@@ -36,7 +36,7 @@ const Snackbar = React.forwardRef<
 
   return (
     <div
-      className="mb-4 flex items-center rounded-lg border border-zinc-700 bg-white p-3 text-zinc-500 shadow dark:bg-zinc-900 dark:text-zinc-400"
+      className="mb-4 flex items-center rounded-lg border border-black/20 bg-white p-3 text-zinc-500 shadow dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
       role="alert"
       ref={ref}
     >

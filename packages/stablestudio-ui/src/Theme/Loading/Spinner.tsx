@@ -5,7 +5,7 @@ export function Spinner({ className }: Styleable) {
       height="38"
       viewBox="0 0 38 38"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="#fff"
+
       className={className}
     >
       <g fill="none" fillRule="evenodd">

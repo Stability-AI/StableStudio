@@ -77,14 +77,14 @@ export function Dropdown<Options extends Dropdown.Options>({
           transparent
             ? "border-transparent bg-transparent"
             : open
-            ? "border-transparent bg-zinc-700/50"
+            ? "border-transparent bg-white dark:bg-zinc-700/50"
             : "border-zinc-800 group-hover:border-zinc-700"
         )}
       />
       <select
         ref={selectRef}
         className={classes(
-          "inline-block w-full cursor-pointer appearance-none rounded bg-zinc-900 focus:outline-none",
+          "inline-block w-full cursor-pointer appearance-none rounded bg-white focus:outline-none dark:bg-zinc-900",
           transparent && "bg-transparent",
           sizing,
           props.innerClassName
@@ -112,7 +112,7 @@ export function Dropdown<Options extends Dropdown.Options>({
           </option>
         ))}
       </select>
-      <div className="pointer-events-none absolute top-0 right-1 inline-block h-full">
+      <div className="pointer-events-none absolute right-1 top-0 inline-block h-full">
         <div className="flex h-full w-full items-center justify-center">
           {open ? (
             <Theme.Icon.ChevronUp className="h-6 w-6" />

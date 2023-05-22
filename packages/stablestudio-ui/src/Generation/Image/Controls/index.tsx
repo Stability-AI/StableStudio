@@ -27,11 +27,12 @@ export function Controls({ image }: { image: Generation.Image }) {
               id={input.id}
               icon={Theme.Icon.Variation}
               onIdleClick={createVariations}
+              color="white"
               noBrand
             />
           )}
           transparent
-          className="mr-auto -ml-1"
+          className="-ml-1 mr-auto"
         />
       ),
     [input, createVariations]
@@ -43,7 +44,7 @@ export function Controls({ image }: { image: Generation.Image }) {
         icon={Theme.Icon.Edit}
         name="Edit image"
         onClick={sendToEditor}
-        color="zinc"
+        color="white"
         transparent
       />
     ),
@@ -58,7 +59,7 @@ export function Controls({ image }: { image: Generation.Image }) {
         disabled={isInitialImage}
         className={classes(isInitialImage && "opacity-50")}
         onClick={() => setInitialImage(image)}
-        color="zinc"
+        color="white"
         transparent
       />
     ),
@@ -84,6 +85,7 @@ export function Controls({ image }: { image: Generation.Image }) {
                 <Generation.Image.Controls.Button
                   name="Download image"
                   icon={Theme.Icon.Download}
+                  color="white"
                   onClick={() => download()}
                   transparent
                 />

@@ -22,7 +22,7 @@ export function Button(props: Button.Props) {
       }
       onDoubleClick={props.onDoubleClick as never}
       className={classes(
-        "group relative flex h-fit select-none flex-row items-center justify-center gap-1 whitespace-nowrap rounded align-middle font-light shadow-md duration-150",
+        "group relative flex h-fit select-none flex-row items-center justify-center gap-1 whitespace-nowrap rounded align-middle font-light duration-150",
         sizing,
         colors,
         states,
@@ -131,10 +131,13 @@ export namespace Button {
 
             yellow: "bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-800",
 
-            zinc: "shadow-black/5 bg-zinc-200 dark:shadow-none dark:text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-zinc-800 dark:border-zinc-700",
+            zinc: "shadow-black/5 bg-zinc-200 hover:bg-zinc-300 dark:shadow-none dark:text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-black/20 dark:border-zinc-700",
+
+            white:
+              "shadow-black/5 bg-zinc-200 hover:bg-zinc-300 dark:shadow-none text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-black/20 dark:border-zinc-700",
 
             darkerZinc:
-              "bg-zinc-900 border border-zinc-700 hover:border-zinc-300 duration-100 transition text-white",
+              "bg-zinc-900 border border-black/20 dark:border-zinc-700 hover:border-zinc-300 duration-100 transition text-white",
 
             outline:
               "shadow-none dark:text-white text-black border border-transparent hover:border-zinc-700 focus:border-brand-500 active:bg-brand-500 active:text-white active:border-brand-500",

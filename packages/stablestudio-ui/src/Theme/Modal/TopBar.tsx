@@ -10,7 +10,7 @@ export function TopBar({
   return (
     <div
       className={classes(
-        "flex flex-row items-center justify-between rounded-t-lg border-b border-zinc-700 bg-zinc-900 p-2",
+        "flex flex-row items-center justify-between rounded-t-lg border-b border-black/20 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900",
         className
       )}
     >

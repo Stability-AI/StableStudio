@@ -31,7 +31,7 @@ function Choice({
         />
         <img
           src={currentSrc}
-          className="absolute top-0 left-0 h-full w-full select-none object-cover opacity-0 duration-150 group-hover:opacity-100"
+          className="absolute left-0 top-0 h-full w-full select-none object-cover opacity-0 duration-150 group-hover:opacity-100"
           css={css`
             mask: linear-gradient(black 50%, transparent 90%);
             backdrop-filter: blur(20px);

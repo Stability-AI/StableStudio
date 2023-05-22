@@ -44,10 +44,10 @@ export function Palette() {
         >
           <div
             onClick={close}
-            className="absolute bottom-0 left-0 right-0 top-0 z-0 bg-zinc-900/50 opacity-100 backdrop-blur-sm"
+            className="absolute bottom-0 left-0 right-0 top-0 z-0 bg-white/50 opacity-100 backdrop-blur-sm dark:bg-zinc-900/50"
           />
           <div className="relative">
-            <div className="z-30 min-h-[500px] min-w-[400px] rounded bg-zinc-200 text-black shadow-lg dark:bg-zinc-800/90 dark:text-white">
+            <div className="z-30 min-h-[500px] min-w-[400px] rounded bg-zinc-200/90 text-black shadow-lg dark:bg-zinc-800/90 dark:text-white">
               <div className="px-4 py-2">
                 <Input
                   autoFocus
@@ -78,7 +78,7 @@ export function Palette() {
               ) : (
                 search.text !== "" &&
                 !search.loading && (
-                  <div className="text-muted-white-extra flex items-center justify-center p-4 pt-2 text-xl">
+                  <div className="dark:text-muted-white-extra flex items-center justify-center p-4 pt-2 text-xl text-zinc-400">
                     Nothing found
                   </div>
                 )

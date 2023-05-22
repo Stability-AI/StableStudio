@@ -20,7 +20,7 @@ export function Button({
   return useMemo(
     () =>
       !isEnabled ? null : deleteConfirming ? (
-        <div className={classes("-py-1 rounded bg-black/75 px-1", className)}>
+        <div className={classes("-py-1 rounded bg-zinc-400/75 px-1", className)}>
           <Generation.Image.Controls.Button
             alwaysShow={variant === "group"}
             name={deleteTooltip ?? "Delete image"}
@@ -60,6 +60,7 @@ export function Button({
           onClick={() => setDeleteConfirming(true)}
           transparent={!outline}
           outline={outline}
+          color={deleteTooltip ? "zinc" : "white"}
           noBg={outline}
         />
       ),

@@ -92,7 +92,7 @@ export function Key({ keyType }: { keyType: Key }) {
   return (
     <div
       className={classes(
-        "bg-muted-white-extra flex h-6 items-center justify-center rounded align-middle text-white",
+        "dark:bg-muted-white-extra flex h-6 items-center justify-center rounded bg-zinc-200 align-middle text-zinc-800 dark:text-white",
         active && "bg-white text-black",
         display.length === 1 ? "w-6 uppercase" : "px-1.5 lowercase"
       )}

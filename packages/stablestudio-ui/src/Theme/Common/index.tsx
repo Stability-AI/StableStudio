@@ -4,7 +4,14 @@ export namespace Common {
     export const preset = (): Size => "md";
   }
 
-  export type Color = "brand" | "indigo" | "red" | "green" | "yellow" | "zinc";
+  export type Color =
+    | "brand"
+    | "indigo"
+    | "red"
+    | "green"
+    | "yellow"
+    | "zinc"
+    | "white";
   export namespace Color {
     export const preset = (): Color => "zinc";
   }

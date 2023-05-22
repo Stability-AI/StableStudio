@@ -96,7 +96,7 @@ export function Popout({
         <div
           className={classes(
             "flex cursor-pointer flex-row items-center rounded border border-transparent py-1 pl-2 pr-1 duration-100",
-            open ? "bg-zinc-700/50" : "hover:border-zinc-700",
+            open ? "bg-zinc-300 dark:bg-zinc-700/50" : "hover:border-zinc-700",
             className
           )}
           onClick={() => setOpen(!open)}
@@ -137,8 +137,8 @@ function Floating({
   );
 
   return (
-    <div className="flex max-h-[70vh] flex-col overflow-y-auto rounded border border-zinc-700 bg-zinc-900 shadow-lg drop-shadow-lg sm:ml-3 sm:max-h-[30rem] sm:w-[25rem]">
-      <div className="sticky top-0 z-[1] flex flex-row items-center justify-between border-b border-zinc-700 bg-zinc-900 px-3 py-1.5">
+    <div className="flex max-h-[70vh] flex-col overflow-y-auto rounded border border-black/20 bg-white shadow-lg drop-shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:ml-3 sm:max-h-[30rem] sm:w-[25rem]">
+      <div className="sticky top-0 z-[1] flex flex-row items-center justify-between border-b border-black/20 bg-white px-3 py-1.5 dark:border-zinc-700 dark:bg-zinc-900">
         <h1 className="grow">{title}</h1>
         <Theme.Icon.X
           className="opacity-muted h-5 w-5 cursor-pointer hover:opacity-100"
@@ -180,8 +180,8 @@ function Floating({
                 )}
                 <h1
                   className={classes(
-                    "w-full grow select-none text-zinc-400 group-hover:text-zinc-200",
-                    option.value === value && "font-medium text-white"
+                    "w-full grow select-none text-zinc-800 group-hover:text-zinc-900 dark:text-zinc-400 dark:group-hover:text-zinc-200",
+                    option.value === value && "font-medium dark:text-white text-black"
                   )}
                 >
                   {option.name}

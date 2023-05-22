@@ -59,7 +59,7 @@ export function Settings() {
 
   return (
     <>
-      <div className="h-full justify-between overflow-y-auto bg-zinc-900 px-5 py-6">
+      <div className="h-full justify-between overflow-y-auto bg-white px-5 py-6 dark:bg-zinc-900">
         <div className="mx-auto flex max-w-[60rem] flex-col gap-5">
           {!isMissingRequiredSetting && (
             <Link to="/generate" className="w-fit">

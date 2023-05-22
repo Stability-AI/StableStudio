@@ -84,6 +84,8 @@ import {
   Twitter,
   Upscale,
   Variation,
+  Light,
+  Dark
 } from "./SVGs";
 
 export declare namespace Icon {
@@ -169,6 +171,8 @@ export declare namespace Icon {
     Upscale,
     Keyboard,
     ChevronsLeftRight,
+    Light,
+    Dark,
   };
 }
 
@@ -262,6 +266,8 @@ export namespace Icon {
   Icon.Upscale = makeComponent(Upscale);
   Icon.Keyboard = makeComponent(Keyboard);
   Icon.ChevronsLeftRight = makeComponent(ChevronsLeftRight);
+  Icon.Light = makeComponent(Light);
+  Icon.Dark = makeComponent(Dark);
 
   export function Invisible(props: Props) {
     return (

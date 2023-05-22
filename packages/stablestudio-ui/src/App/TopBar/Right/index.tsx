@@ -5,6 +5,19 @@ import { Theme } from "~/Theme";
 export const Right = () => {
   const { setIsOpen } = Shortcut.Palette.use();
   const isMobileDevice = Theme.useIsMobileDevice();
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const root = document.querySelectorAll("#modal-root, #app");
+
+    if (root) {
+      const elementsArray = [...root];
+      elementsArray.forEach((element) => {
+        if (dark) return element.classList.add("dark");
+        element.classList.remove("dark");
+      });
+    }
+  }, [dark]);
   return (
     <div className="flex grow basis-0 items-center justify-end gap-2">
       <>
@@ -22,6 +35,13 @@ export const Right = () => {
             <Shortcut.Keys keys={["Meta", "k"]} className="ml-2" />
           </Theme.Button>
         )}
+
+        <Theme.Button
+          onClick={() => setDark(!dark)}
+          className="aspect-square h-[30px] w-[30px]"
+          icon={dark ? Theme.Icon.Dark : Theme.Icon.Light}
+        />
+
         <Link to="/settings">
           <Theme.Button
             outline

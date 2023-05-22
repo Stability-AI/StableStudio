@@ -98,7 +98,7 @@ function Open({
   return (
     <motion.div
       className={classes(
-        "fixed top-0 left-0 z-[1000] flex h-full w-full bg-black/75 sm:h-screen sm:w-screen sm:items-center sm:justify-center",
+        "fixed left-0 top-0 z-[1000] flex h-full w-full bg-black/75 sm:h-screen sm:w-screen sm:items-center sm:justify-center",
         !open && "pointer-events-none"
       )}
       variants={outSideVariants}

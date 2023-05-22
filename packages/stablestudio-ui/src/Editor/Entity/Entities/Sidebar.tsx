@@ -140,7 +140,7 @@ function Entity({ id, ...props }: { id: ID; index: number; total: number }) {
       onClick={onClick}
       className={classes(
         "group flex items-center gap-3 p-2",
-        selected ? "bg-brand-700" : "hover:bg-zinc-800/50"
+        selected ? "bg-brand-700" : "dark:hover:bg-zinc-800/50 hover:bg-zinc-300"
       )}
     >
       <Preview entity={entity} />
@@ -171,7 +171,7 @@ const Preview = ({ entity }: { entity: Editor.Entity }) => {
       )}
       <div className="relative flex h-full w-full items-center justify-center">
         {!src && (
-          <Theme.Icon.Wand className="h-6 w-6 text-zinc-400 dark:text-zinc-500" />
+          <Theme.Icon.Wand className="h-6 w-6 text-zinc-300 dark:text-zinc-500" />
         )}
         {entity && entity.type === "dream" && <Loading id={entity.id} />}
       </div>

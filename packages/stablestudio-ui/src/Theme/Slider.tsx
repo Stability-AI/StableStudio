@@ -128,7 +128,7 @@ export const Slider = ({
           className={classes(
             "h-[2px] rounded-full",
 
-            state.index !== 0 && "opacity-muted-extra bg-white shadow-sm",
+            state.index !== 0 && "opacity-muted-extra dark:bg-white bg-black shadow-sm",
             state.index === 0 &&
               classes(
                 "shadow-md",

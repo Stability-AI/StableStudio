@@ -3,7 +3,10 @@ import { App } from "~/App";
 export function Bottom({ className, children }: StyleableWithChildren) {
   return (
     <div
-      className={classes("justify-end border-t border-zinc-700 p-2", className)}
+      className={classes(
+        "justify-end border-t border-black/20 p-2 dark:border-zinc-700",
+        className
+      )}
     >
       {children}
     </div>
