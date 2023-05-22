@@ -30,6 +30,7 @@ export const createPlugin = StableStudio.createPlugin<{
         | "getStableDiffusionSamplers"
         | "getStableDiffusionDefaultCount"
         | "getStableDiffusionDefaultInput"
+        | "getStableDiffusionExistingImages"
     > => {
         if (webuiHostUrl === "") {
             webuiHostUrl = "http://127.0.0.1:7861";
@@ -290,6 +291,62 @@ export const createPlugin = StableStudio.createPlugin<{
             }
 
             return samplers;
+        },
+
+        getStableDiffusionExistingImages: async () => {
+            const existingImagesUrl = webuiHostUrl + '/StableStudio/get-generated-images';
+
+            const data = {
+                limit: 10
+            }
+
+            const existingImagesResponse = await fetch(existingImagesUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!existingImagesResponse.ok) {
+                console.warn("unable to get existing data from webui");
+            }
+
+            const responseData = await existingImagesResponse.json();
+
+            const images = [];
+
+            for (let i = 0; i < responseData.length; i++) {
+                const blob = await base64ToBlob(responseData[i].content, 'image/jpeg');
+
+                const createdAt = new Date();
+
+                const stableDiffusionImage = {
+                    id: responseData[i].image_name,
+                    createdAt: createdAt,
+                    blob: blob,
+                    input: {
+                        prompts: [],
+                        style: "",
+                        steps: -1,
+                        seed: -1,
+                        model: "",
+                        width: responseData[i].width,
+                        height: responseData[i].height
+                    }
+                }
+
+                images.push(stableDiffusionImage)
+            }
+
+            const stableDiffusionImages = {
+                id: `${Math.random() * 10000000}`,
+                images: images
+            }
+
+            console.log(responseData);
+
+            return [stableDiffusionImages]
         },
 
         imagesGeneratedSoFar: 0,
