@@ -105,7 +105,7 @@ export namespace Everything {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.05 }}
             >
-              <div className="rounded border border-black/20 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900">
+              <div className="rounded border border-zinc-300 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900">
                 <h1 className="opacity-muted text-lg font-light">
                   No images in view
                 </h1>

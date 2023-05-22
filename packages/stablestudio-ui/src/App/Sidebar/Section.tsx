@@ -41,7 +41,7 @@ export function Section(props: Section.Props) {
   return (
     <div
       className={classes(
-        "flex flex-col border-black/20 last-of-type:border-b-0 dark:border-zinc-700",
+        "flex flex-col border-zinc-300 last-of-type:border-b-0 dark:border-zinc-700",
         divider && "border-b-1 border-b",
         className
       )}

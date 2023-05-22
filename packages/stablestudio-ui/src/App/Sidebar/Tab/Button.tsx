@@ -23,7 +23,7 @@ export function Buttons({ position }: App.Sidebar.Props) {
   return useMemo(() => {
     if (!tabs[0] || noButtons) return null;
     return (
-      <div className="flex flex-row gap-2 border-b border-black/20 p-2 dark:border-zinc-700">
+      <div className="flex flex-row gap-2 border-b border-zinc-300 p-2 dark:border-zinc-700">
         {tabs.map((tab) => {
           if (tab.button === false) return null;
 

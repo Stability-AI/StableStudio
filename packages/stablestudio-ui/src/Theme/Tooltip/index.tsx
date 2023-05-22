@@ -140,7 +140,7 @@ export function Tooltip({
           {showArrow && (
             <motion.div
               className={classes(
-                "absolute z-[999999] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-black/20 bg-zinc-900 dark:border-zinc-700",
+                "absolute z-[999999] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-zinc-300 bg-zinc-900 dark:border-zinc-700",
                 placement === "top" && "border-b border-r",
                 placement === "bottom" && "border-l border-t",
                 placement === "left" && "border-r border-t",

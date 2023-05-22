@@ -75,7 +75,7 @@ export namespace Sidebar {
         }
       >
         <div className="flex flex-col">
-          <div className="flex flex-col overflow-hidden rounded border border-black/20 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-800">
+          <div className="flex flex-col overflow-hidden rounded border border-zinc-300 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-800">
             {input.init && !imageHovering ? (
               <>
                 <div

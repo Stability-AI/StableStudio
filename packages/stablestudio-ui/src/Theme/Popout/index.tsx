@@ -137,8 +137,8 @@ function Floating({
   );
 
   return (
-    <div className="flex max-h-[70vh] flex-col overflow-y-auto rounded border border-black/20 bg-white shadow-lg drop-shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:ml-3 sm:max-h-[30rem] sm:w-[25rem]">
-      <div className="sticky top-0 z-[1] flex flex-row items-center justify-between border-b border-black/20 bg-white px-3 py-1.5 dark:border-zinc-700 dark:bg-zinc-900">
+    <div className="flex max-h-[70vh] flex-col overflow-y-auto rounded border border-zinc-300 bg-white shadow-lg drop-shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:ml-3 sm:max-h-[30rem] sm:w-[25rem]">
+      <div className="sticky top-0 z-[1] flex flex-row items-center justify-between border-b border-zinc-300 bg-white px-3 py-1.5 dark:border-zinc-700 dark:bg-zinc-900">
         <h1 className="grow">{title}</h1>
         <Theme.Icon.X
           className="opacity-muted h-5 w-5 cursor-pointer hover:opacity-100"

@@ -26,7 +26,7 @@ export function SpecialEffects({
   return (
     <div
       className={classes(
-        "pointer-events-none absolute flex h-full w-full items-center justify-center rounded-md border border-black/20 opacity-0 duration-150 dark:border-zinc-700",
+        "pointer-events-none absolute flex h-full w-full items-center justify-center rounded-md border border-zinc-300 opacity-0 duration-150 dark:border-zinc-700",
         (variant !== "editor" || loading) && "bg-zinc-900/50",
         (variant === "editor" || showing) && "opacity-100"
       )}

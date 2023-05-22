@@ -4,7 +4,7 @@ export function Bottom({ className, children }: StyleableWithChildren) {
   return (
     <div
       className={classes(
-        "justify-end border-t border-black/20 p-2 dark:border-zinc-700",
+        "justify-end border-t border-zinc-300 p-2 dark:border-zinc-700",
         className
       )}
     >

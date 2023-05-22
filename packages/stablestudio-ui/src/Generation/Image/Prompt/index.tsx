@@ -141,7 +141,7 @@ export function Prompt({
   ) : (
     <div
       className={classes(
-        "group flex w-full gap-1 rounded border border-black/20 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800",
+        "group flex w-full gap-1 rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800",
         className
       )}
     >
