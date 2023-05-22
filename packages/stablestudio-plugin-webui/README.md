@@ -24,9 +24,9 @@ Still, currently this plugin is a basic implement for webui, and only support a 
 - [x] webui status could replace images generated status
 - [x] load existing images (need an extension on webui: [sd-webui-StableStudio](https://github.com/jtydhr88/sd-webui-StableStudio))
 - [x] Need to think about how to deal with extensions ecosystem in webui (made a start with [sd-webui-StableStudio](https://github.com/jtydhr88/sd-webui-StableStudio))
-- [ ] upscale (working)
+- [x] upscale 
+- [ ] test and bugs fix (working)
 - [ ] Lora support
 - [ ] plugin could use path in settings along with a field for extra cli flags to launch webui on startup
-- [ ] some bugs fix
 - [ ] MacOS and Linux support (since I don’t have environment with MacOS/Linux, may need someone help with this)
 - [ ] many other features from webui...
