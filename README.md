@@ -1,25 +1,22 @@
-![StableStudio](./misc/Banner.png)
-
-# StableStudio
-
-**👋 Welcome to the community repository for StableStudio, the open-source version of [DreamStudio](https://www.dreamstudio.ai)**
-
-### Documentation
-  
-  [🎨 UI](./packages/stablestudio-ui/README.md)
-  
-  [🔌 Plugins](./packages/stablestudio-plugin/README.md) 
-
-### Links 
-<a href="https://discord.gg/stablediffusion" target="_blank">🎮 Discord</a>
-
-<a href="https://github.com/Stability-AI/StableStudio/issues">🛟 Bugs & Support</a>
-
-<a href="https://github.com/Stability-AI/StableStudio/discussions">💬 Discussion</a>
-
 <div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1em; margin: 4em 0;">
-  <img src="./misc/GenerateScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
-  <img src="./misc/EditScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
+
+<img src="./misc/Banner.png" />
+<img src="./misc/GenerateScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
+<img src="./misc/EditScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
+
+<h3>
+<span>👋 Welcome to StableStudio, the open-source version of <a href="https://dreamstudio.ai" target="_blank">DreamStudio</a></span>
+<br />
+<br />
+<span>[ <a href="./packages/stablestudio-ui/README.md">🎨 UI README</a> ]</span>
+<span>[ <a href="./packages/stablestudio-plugin/README.md" href="./packages/stablestudio-ui/README.md">🔌 Plugins README</a> ]</span>
+<span>[ <a href="https://discord.gg/stablediffusion" target="_blank">🎮 Discord</a> ]</span>
+<span>[ <a href="https://github.com/Stability-AI/StableStudio/issues">🛟 Bugs & Support</a> ]</span>
+<span>[ <a href="https://github.com/Stability-AI/StableStudio/discussions">💬 Discussion</a> ]</span>
+</h3>
+
+<hr />
+
 </div>
 
 # <a id="quick-start" href="#quick-start">🚀 Quick Start</a>
@@ -29,12 +26,15 @@ You'll need to have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg
 ```bash
 git clone https://github.com/Stability-AI/StableStudio.git
 ```
+
 ```bash
 cd StableStudio
 ```
+
 ```bash
 yarn
 ```
+
 ```bash
 yarn dev
 ```
@@ -63,7 +63,7 @@ _Not much!_ There are a few tweaks we made to make the project more community-fr
 
 - All "over-the-wire" API calls have been replaced by a [plugin system](./packages/stablestudio-plugin/README.md) which allows you to easily swap out the back-end.
 
-  - With a little bit of TypeScript, you can [create your own](./packages/stablestudio-plugin/README.md) plugin and use StableStudio with any backend you want!
+  - With a little bit of TypeScript, you can [create your own plugin](./packages/stablestudio-plugin/README.md) and use StableStudio with any back-end you want!
 
 - We removed Stability-specific account features such as billing, API key management, etc.
 
@@ -81,7 +81,7 @@ _Yes!_ Stability's hosted deployment of StableStudio will remain [DreamStudio](h
 
 _**Community contributions are encouraged!**_
 
-**The UI package's [README](./packages/stablestudio-ui/README.md) is a great place to start.** Bug fixes, documentation, general clean-up, new features, etc. are all welcome. 
+**The UI package's [README](./packages/stablestudio-ui/README.md) is a great place to start.** Bug fixes, documentation, general clean-up, new features, etc. are all welcome.
 
 Here are some useful links...
 
