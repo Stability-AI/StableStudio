@@ -55,7 +55,7 @@ StableStudio is [Stability AI](https://stability.ai)'s official open-source vari
 
 # <a id="faq" href="#faq">FAQ</a>
 
-## What's the difference between StableStudio and [DreamStudio](https://dreamstudio.ai)?
+### What's the difference between StableStudio and [DreamStudio](https://dreamstudio.ai)?
 
 _Not much!_ There are a few tweaks we made to make the project more community-friendly:
 
@@ -69,7 +69,7 @@ _Not much!_ There are a few tweaks we made to make the project more community-fr
 
   - These features are still available at [DreamStudio's account page](https://dreamstudio.ai/account).
 
-## Will [DreamStudio](https://dreamstudio.ai) still be supported?
+### Will [DreamStudio](https://dreamstudio.ai) still be supported?
 
 _Yes!_ Stability's hosted deployment of StableStudio will remain [DreamStudio](https://dreamstudio.ai). It will continue to get updates and stay up-to-date with StableStudio whenever possible.
 
