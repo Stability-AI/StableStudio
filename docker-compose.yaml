@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  app:
+    platform: linux/x86_64
+    container_name: StableStudio
+    env_file: .env
+    restart: always
+    build: .
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/.yarn
+      - /usr/src/app/.husky
+      - /usr/src/app/node_modules
