@@ -133,8 +133,10 @@ export namespace Button {
 
             zinc: "shadow-black/5 bg-zinc-200 hover:bg-zinc-300 dark:shadow-none dark:text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700",
 
+            slate:
+              "shadow-black/5 ring-1 ring-slate-700/10 rounded-md bg-white hover:bg-zinc-50 dark:shadow-none dark:text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700",
             white:
-              "shadow-black/5 bg-zinc-200 hover:bg-zinc-300 dark:shadow-none text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700",
+              "shadow-black/5 bg-zinc-200 hover:bg-slate-50 dark:shadow-none text-white/80 dark:hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700",
 
             darkerZinc:
               "bg-zinc-900 border border-zinc-300 dark:border-zinc-700 hover:border-zinc-300 duration-100 transition text-white",
@@ -216,7 +218,7 @@ export namespace Button {
           right && !fullWidth ? (
             right
           ) : (
-            <div className="absolute right-2 top-0 bottom-0 flex items-center justify-center">
+            <div className="absolute bottom-0 right-2 top-0 flex items-center justify-center">
               {right}
             </div>
           ),

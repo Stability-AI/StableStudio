@@ -40,8 +40,10 @@ export function Tool({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         className={classes(
-          "m-0.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded",
-          active || tool === activeTool ? "bg-brand-500" : "hover:bg-zinc-700"
+          "m-0.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded ",
+          active || tool === activeTool
+            ? "bg-brand-500 text-white"
+            : "hover:bg-zinc-700 hover:text-white hover:dark:text-black"
         )}
       >
         {children}

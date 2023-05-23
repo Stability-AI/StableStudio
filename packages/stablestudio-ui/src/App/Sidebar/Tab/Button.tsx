@@ -38,6 +38,7 @@ export function Buttons({ position }: App.Sidebar.Props) {
             active: tab.name === sidebar.tab,
             className: classes("justify-start", !!tab.button && "w-full"),
             children: tab.name,
+            color: tab.color,
             onClick,
           };
 

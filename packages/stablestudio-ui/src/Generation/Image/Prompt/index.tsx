@@ -164,7 +164,7 @@ export function Prompt({
                 />
               )}
             >
-              <h1 className="w-full font-light">
+              <h1 className="w-full font-normal text-slate-800 dark:text-white">
                 {(input.prompts[index]?.weight ?? 0) > 0
                   ? input.prompts.filter((p: Prompt) => p.weight > 0).length ===
                     1

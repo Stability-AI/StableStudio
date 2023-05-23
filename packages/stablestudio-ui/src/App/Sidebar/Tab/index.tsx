@@ -22,6 +22,7 @@ export type Tab = {
 
   icon?: Theme.Icon.Prop;
   button?: Theme.Button.Prop;
+  color?: Theme.Common.Color;
 
   above?: React.ReactNode;
   below?: React.ReactNode;

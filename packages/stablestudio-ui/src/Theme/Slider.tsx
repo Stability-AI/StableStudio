@@ -153,8 +153,8 @@ export const Slider = ({
         className={classes(
           "relative h-3.5 w-3.5 -translate-y-[5.25px] rounded-full border-[2px] outline-none transition duration-150",
           moving
-            ? "scale-110 border-white shadow-lg"
-            : "scale-100 border-zinc-800 shadow-md",
+            ? "scale-110 border-zinc-800 shadow-lg dark:border-white"
+            : "scale-100 border-zinc-500 shadow-md dark:border-zinc-500",
           value === 0
             ? "bg-zinc-500 dark:bg-zinc-600"
             : value >= 0
