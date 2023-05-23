@@ -48,6 +48,8 @@ Thanks goes to [Terry Jia](https://github.com/jtydhr88) for the original work on
 
 To persist your image history, you'll need to install the [`sd-webui-StableStudio`](https://github.com/jtydhr88/sd-webui-StableStudio) extension for `stable-diffusion-webui`.
 
+> 🛑 Be wary installing third-party extensions for `stable-diffusion-webui`, it's always a good idea to check before running untrusted code.
+
 # <a id="features" href="#features">⭐️ Features</a>
 
 Missing something? Please [let us know](https://github.com/Stability-AI/StableStudio/issues/new/choose)!
