@@ -37,6 +37,7 @@ export const Right = () => {
         )}
 
         <Theme.Button
+          outline
           onClick={() => setDark(!dark)}
           className="aspect-square h-[30px] w-[30px]"
           icon={dark ? Theme.Icon.Dark : Theme.Icon.Light}

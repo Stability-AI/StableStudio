@@ -23,6 +23,7 @@ export function Sidebar() {
         location.pathname.startsWith("/generate") ||
         location.pathname.startsWith("/edit")
       }
+      color="slate"
       bottom={
         <App.Sidebar.Tab.Bottom>
           <Generation.Image.Create.Button

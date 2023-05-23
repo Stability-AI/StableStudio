@@ -78,7 +78,7 @@ export function Section(props: Section.Props) {
                   ))
             }
           >
-            {title}
+            <h1 className="w-full font-normal text-slate-800 dark:text-white">{title}</h1>
           </Theme.Button>
           {buttonRendered}
         </div>

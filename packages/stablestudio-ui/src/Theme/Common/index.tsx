@@ -11,7 +11,8 @@ export namespace Common {
     | "green"
     | "yellow"
     | "zinc"
-    | "white";
+    | "white"
+    | "slate";
   export namespace Color {
     export const preset = (): Color => "zinc";
   }

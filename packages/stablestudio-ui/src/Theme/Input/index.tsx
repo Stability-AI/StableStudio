@@ -85,7 +85,7 @@ function AutosizeTextArea({
     <textarea
       ref={textareaRef}
       className={classes(
-        "dark:placeholder:text-muted-white w-full resize-none overflow-y-clip rounded text-black shadow-sm focus:border-transparent focus:outline-none dark:border-transparent dark:text-white",
+        "prose dark:prose-invert w-full resize-none overflow-y-clip rounded opacity-75 shadow-sm focus:border-transparent focus:outline-none dark:border-transparent",
 
         size === "sm"
           ? "h-8 px-2 py-1 text-sm"
