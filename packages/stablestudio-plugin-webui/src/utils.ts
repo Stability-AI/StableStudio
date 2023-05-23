@@ -41,7 +41,7 @@ export async function setOptions(baseUrl: string | undefined, options: any) {
 }
 
 export async function testForHistoryPlugin(webuiHostUrl: string) {
-  // timeout after 3 seconds
+  // timeout after 1 second
   const finished = Promise.race([
     fetch(`${webuiHostUrl}/StableStudio/get-generated-images`, {
       method: "POST",
