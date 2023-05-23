@@ -423,7 +423,7 @@ export const createPlugin = StableStudio.createPlugin<{
                         prompts: [],
                         style: "",
                         steps: -1,
-                        seed: -1,
+                        seed: responseData[i].seed,
                         model: "",
                         width: responseData[i].width,
                         height: responseData[i].height
