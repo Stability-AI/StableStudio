@@ -1,5 +1,6 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
 import * as StableStudioPluginExample from "@stability/stablestudio-plugin-example";
+import * as StableStudioPluginImaginairy from "@stability/stablestudio-plugin-imaginairy";
 import * as StableStudioPluginStability from "@stability/stablestudio-plugin-stability";
 
 import { Environment } from "~/Environment";
@@ -115,6 +116,8 @@ namespace State {
     const { createPlugin: createRootPlugin } =
       Environment.get("USE_EXAMPLE_PLUGIN") === "true"
         ? StableStudioPluginExample
+        : Environment.get("USE_IMAGINAIRY_PLUGIN") === "true"
+        ? StableStudioPluginImaginairy
         : StableStudioPluginStability;
 
     return {
