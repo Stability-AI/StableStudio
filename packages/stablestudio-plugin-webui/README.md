@@ -2,55 +2,64 @@
 
 # 🔌 [`stable-diffusion-webui`](https://github.com/AUTOMATIC1111/stable-diffusion-webui) Plugin
 
-**🗺 Contents – [ℹ️ About](#about) · [📦 Installation](#installation) · [🤝 Contract](#technology) · [🔮 Future](#conventions)**
+**🗺 Contents – [ℹ️ About](#about) · [⚙️ Usage](#usage) · [⭐️ Features](#features)**
 
 **[⬆️ Top-Level README](../../README.md)**
 
 ![Electric1111](../../misc/Electric1111.png)
 
-### 🚧 👷 **PLUGINS ARE EXPERIMENTAL AND NOT FINAL** 🛠 🚧
-
-_The contract and implementation are [likely to change](https://github.com/Stability-AI/StableStudio/issues/3)..._
-
 </div>
 
 # <a id="about" href="#about">ℹ️ About</a>
 
-In order to make StableStudio easier to extend, we've ripped out the "back-end" into a plugin system.
+This plugin enables StableStudio to run using [`stable-diffusion-webui`](https://github.com/AUTOMATIC1111/stable-diffusion-webui), which means you can generate images entirely on your own machine!
 
-This means you can implement an entirely different inference stack, StableStudio doesn't care if it's local or a hosted API.
-
-This is a basic implement for stable-diffusion-webui plugin.
+Thanks goes to [jtydhr88](https://github.com/jtydhr88) for the original work on this plugin.
 
 # <a id="usage" href="#usage">⚙️ Usage</a>
 
-1. On stable-diffusion-webui side, edit webui-user.bat and  
-   `set COMMANDLINE_ARGS=--nowebui --cors-allow-origins=http://localhost:3000`  
-   Then start your webui.
-2. Once you see **INFO: Uvicorn running on http://127.0.0.1:7861**, means you started webui on api mode successfully.
-   you can open http://127.0.0.1:7861/docs to double check.
-3. On StableStudio side, run `yarn dev:use-webui-plugin`
-4. once the server started, click settings to check this plugin loaded successfully or not. ![webui-plugin](docs/images/webui-plugin.png)
-   ![overall](docs/images/overall.png)
-5. click **Dream**, your webui server should start to process your request from StableStudio.
-6. if you need to load existing from webui, you also need to install the extension [sd-webui-StableStudio](https://github.com/jtydhr88/sd-webui-StableStudio))
+1. First, you'll need to configure your local installation of `stable-diffusion-webui` to run without the UI and with CORS enabled.
 
-Still, currently this plugin is a basic implement for webui, and only support a few of features:
+   **Windows**
 
-- [x] txt2img
-- [x] basic features (prompt, negative prompt, steps, batch_size, image size)
-- [x] features provided by StableStudio
-- [x] model select
-- [x] sampler select
-- [x] img2img
-- [x] mask/inpaint/outpaint
-- [x] store settings
-- [x] webui status could replace images generated status
-- [x] load existing images (need an extension on webui: [sd-webui-StableStudio](https://github.com/jtydhr88/sd-webui-StableStudio))
-- [x] Need to think about how to deal with extensions ecosystem in webui (made a start with [sd-webui-StableStudio](https://github.com/jtydhr88/sd-webui-StableStudio))
-- [x] upscale
-- [ ] test and bugs fix (working)
+   Edit the command line arguments within `webui-user.bat`:
+
+   ```
+   set COMMANDLINE_ARGS=--nowebui --cors-allow-origins=http://localhost:3000
+   ```
+
+   **Mac**
+
+   Edit the command line arguments within `webui-macos-env.sh`:
+
+   ```
+   export COMMANDLINE_ARGS="--nowebui --cors-allow-origins=http://localhost:3000"
+   ```
+
+2. Start `stable-diffusion-webui` and look for `INFO: Uvicorn running on http://127.0.0.1:7861`.
+
+   You can make sure everything is running correctly by checking to see if [`http://127.0.0.1:7861/docs`](http://127.0.0.1:7861/docs) displays API documentation.
+
+3. Within your installation of StableStudio, run `yarn dev:use-webui-plugin`.
+
+   _**That's it!**_ 🎉 You should now be able to generate images using your local machine.
+
+## <a id="image-history" href="#image-history">💾 Image History</a>
+
+To persist your image history, you'll need to install the [`sd-webui-StableStudio`](https://github.com/jtydhr88/sd-webui-StableStudio) extension for `stable-diffusion-webui`.
+
+# <a id="features" href="#features">⭐️ Features</a>
+
+Missing something? Please [let us know](https://github.com/Stability-AI/StableStudio/issues/new/choose)!
+
+- [x] Text-to-image
+- [x] Image-to-image
+- [x] Basic features (prompt, negative prompt, steps, batch size, image size)
+- [x] Model selection
+- [x] Sampler selection
+- [x] Masking, in-painting, and out-painting
+- [x] Settings storage
+- [x] Accurate plugin status
+- [x] [Loading existing images]("#image-history)
+- [x] Upscaling
 - [ ] Lora support
-- [ ] plugin could use path in settings along with a field for extra cli flags to launch webui on startup
-- [ ] MacOS and Linux support (since I don’t have environment with MacOS/Linux, may need someone help with this)
-- [ ] many other features from webui...
