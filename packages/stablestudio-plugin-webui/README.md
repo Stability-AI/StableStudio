@@ -14,7 +14,7 @@
 
 This plugin enables StableStudio to run using [`stable-diffusion-webui`](https://github.com/AUTOMATIC1111/stable-diffusion-webui), which means you can generate images entirely on your own machine!
 
-Thanks goes to [jtydhr88](https://github.com/jtydhr88) for the original work on this plugin.
+Thanks goes to [Terry Jia](https://github.com/jtydhr88) for the original work on this plugin.
 
 # <a id="usage" href="#usage">⚙️ Usage</a>
 
