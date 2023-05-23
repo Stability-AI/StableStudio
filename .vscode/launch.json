@@ -3,20 +3,54 @@
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Launch UI in Chrome",
-      "type": "chrome",
-      "request": "launch",
+  "configurations": [git clone https://github.com/Stability-AI/StableStudio.git
+    {https://www.youtube.com/@esotericjellybeans
+      "name": "Launch UI in Chrome",docker build -t stablestudio .
+
+docker run -it --rm -p 3000:3000 --name stablestudio stablestudio
+      "type": "chrome",lightrun.lightrunplugin-saas
+      "request": "launch",docker pull ghcr.io/unity-technologies/kube_remediator:0.0.0
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
     },
     {
       "name": "Launch UI in Edge",
       "type": "msedge",
-      "request": "launch",
+      "request": "launch",lone https://github.com/Stability-AI/StableStudio.git
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}"192.168.0.17fileFormatVersion: 2 
+
+ guid: ffc6271f08270b64ca0aae9c49235d81 
+
+ PackageManifestImporter: 
+
+   externalObjects: {} 
+
+   userData:  
+
+   assetBundleName:  
+
+   assetBundleVariant: git clone https://github.com/Stability-AI/StableStudio.git
+
+cd StableStudio
+
+yarn
+
+yarn devvscode://file/c:/myProjectvscode://file/{full path to project}/curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz
+
+tar -xf vscode_cli.tar.gzLightrunAgent.Start(new AgentOptions {
+
+    Secret = "7ad7a345-f265-4d6c-b9e9-cc8e1441545f",
+
+});dotnet add package Lightrun --version 1.12.0-betaBest App :)  https://play.google.com/store/apps/details?id=com.looklike.deepwebReference #:CA1MRddPGNFZ
+
+Requester's email:
+
+interac@wise.com
+
+Expires:May 21, 2023
+
+Message:Request from Wise for your transferhttps://wise.com/invite/ath/thomasjacobalexanders[{"Group":"This is a sample~","Time":"","FileAndPath":[{"Tag":"Welcome use bookmark","Path":"","Start":"0.0","End":"0.0","Time":""}]}]devcontainer/devcontainer.jsonHello my name is Thomas I am very interested but I have two dogs are they allowed I can pay a pet deposit if necessary?ms-vscode.remote-repositories.vscode/settings.jsonhttps://vscode.dev/github/https-git-compliance-7/installer-b7575d1b/tree/codespaces
     },
     {
         "name": "Attach to Chrome",
