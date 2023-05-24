@@ -1,5 +1,6 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
 import * as StableStudioPluginStability from "@stability/stablestudio-plugin-stability";
+import * as StableStudioPluginWebUI from "@stability/stablestudio-plugin-webui";
 
 import { Environment } from "~/Environment";
 import { Generation } from "~/Generation";
