@@ -20,7 +20,25 @@ In order to make StableStudio easier to extend, we've ripped out the "back-end" 
 
 This means you can implement an entirely different inference stack, StableStudio doesn't care if it's local or a hosted API.
 
-## ⭐️ Features
+## ⭐️ First-Party Plugins
+
+There are currently three first-party plugins which are maintained in this repository:
+
+- [`stablestudio-plugin-stability`](../stablestudio-plugin-stability/src/index.ts) – The default plugin which uses [Stability's API](https://platform.stability.ai) for inference.
+
+  ```bash
+  yarn dev
+  ```
+
+- [`stablestudio-plugin-webui`](../stablestudio-plugin-webui/README.md) – This plugin uses [`stable-diffusion-webui`](https://github.com/AUTOMATIC1111/stable-diffusion-webui) for inference.
+
+  ```bash
+  yarn dev:use-webui-plugin
+  ```
+
+We are still figuring out a more scalable strategy for third-party plugins, [let us know what you think](https://github.com/Stability-AI/StableStudio/issues/3)!
+
+## ⚡️ Features
 
 We're hoping this list expands [over time](#future), but here's what's available right now...
 
