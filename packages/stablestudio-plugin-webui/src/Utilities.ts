@@ -40,13 +40,16 @@ export async function setOptions(baseUrl: string | undefined, options: any) {
   return await optionsResponse.json();
 }
 
-export async function getImageInfo(baseUrl: string | undefined, base64image: any) {
+export async function getImageInfo(
+  baseUrl: string | undefined,
+  base64image: any
+) {
   const imageInfoResponse = await fetch(`${baseUrl}/sdapi/v1/png-info`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({image:base64image}),
+    body: JSON.stringify({ image: base64image }),
   });
 
   const imageInfoJson = await imageInfoResponse.json();
@@ -64,12 +67,12 @@ export async function getImageInfo(baseUrl: string | undefined, base64image: any
   let detailIndex = 1;
 
   if (info.length === 3) {
-    data.nagtivePrompt = info[1].split(":")[1].trim()
+    data.nagtivePrompt = info[1].split(":")[1].trim();
 
     detailIndex = 2;
   }
 
-  const details = info[detailIndex].split(",")
+  const details = info[detailIndex].split(",");
 
   details.map((detail: any) => {
     const detailInfo = detail.trim().split(":");

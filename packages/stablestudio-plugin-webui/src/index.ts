@@ -5,19 +5,20 @@ import {
   base64ToBlob,
   constructPayload,
   fetchOptions,
+  getImageInfo,
   setOptions,
   testForHistoryPlugin,
-  getImageInfo
-} from "./utils";
+} from "./Utilities";
 
 const manifest = {
-  name: "Stable Diffusion Webui",
+  name: "stable-diffusion-webui",
   author: "Terry Jia",
   link: "https://github.com/jtydhr88",
   icon: `${window.location.origin}/DummyImage.png`,
   version: "0.0.0",
   license: "MIT",
-  description: "Stable Diffusion Webui Plugin",
+  description:
+    "This plugin uses [`stable-diffusion-webui`](https://github.com/AUTOMATIC1111/stable-diffusion-webui) as its back-end for inference",
 };
 
 const webuiUpscalers = [
@@ -295,9 +296,12 @@ export const createPlugin = StableStudio.createPlugin<{
       const images = [];
 
       for (let i = 0; i < responseData.length; i++) {
-        const imageInfo = await getImageInfo(webuiHostUrl, responseData[i].content);
+        const imageInfo = await getImageInfo(
+          webuiHostUrl,
+          responseData[i].content
+        );
 
-        const blob = await base64ToBlob(responseData[i].content, 'image/jpeg');
+        const blob = await base64ToBlob(responseData[i].content, "image/jpeg");
 
         const timestampInSeconds = responseData[i].create_date;
         const timestampInMilliseconds = timestampInSeconds * 1000;
@@ -308,20 +312,22 @@ export const createPlugin = StableStudio.createPlugin<{
           createdAt: createdAt,
           blob: blob,
           input: {
-            prompts: [{
-              text: imageInfo["prompt"],
-              weight: imageInfo["CFG scale"],
-            }],
+            prompts: [
+              {
+                text: imageInfo["prompt"],
+                weight: imageInfo["CFG scale"],
+              },
+            ],
             style: "",
             steps: Number(imageInfo["Steps"]) ?? -1,
             seed: Number(imageInfo["Seed"]) ?? -1,
-            model: imageInfo["Model"]??"",
+            model: imageInfo["Model"] ?? "",
             width: responseData[i].width,
-            height: responseData[i].height
-          }
-        }
+            height: responseData[i].height,
+          },
+        };
 
-        images.push(stableDiffusionImage)
+        images.push(stableDiffusionImage);
       }
 
       return [
@@ -335,24 +341,26 @@ export const createPlugin = StableStudio.createPlugin<{
     settings: {
       baseUrl: {
         type: "string",
-        title: "WebUI Host URL",
-        description:
-          "The URL of the WebUI host. This is usually http://127.0.0.1:7861",
+        title: "Host URL",
         placeholder: "http://127.0.0.1:7861",
         value: localStorage.getItem("webui-host-url") ?? "",
+        description:
+          "The URL of the `stable-diffusion-webui` host, usually http://127.0.0.1:7861",
       },
+
       upscaler: {
         type: "string",
         title: "Upscaler 1",
         options: webuiUpscalers,
         value: localStorage.getItem("upscaler1") ?? webuiUpscalers[0].value,
         description:
-          "Select the upscaler that is used when downloading images at more than 1x size.",
+          "Select the upscaler used when downloading images at more than 1x size",
       },
+
       historyImagesCount: {
         type: "number",
         title: "History image count",
-        description: "How many images do you get from webui locally?",
+        description: "How many images should be fetched from local history?",
         min: 0,
         max: 50,
         step: 1,
