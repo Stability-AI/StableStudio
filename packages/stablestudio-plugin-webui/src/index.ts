@@ -291,31 +291,39 @@ export const createPlugin = StableStudio.createPlugin<{
 
       const responseData = await existingImagesResponse.json();
 
+      console.log(responseData);
+
+      const images = [];
+
+      for (let i = 0; i < responseData.length; i++) {
+        const blob = await base64ToBlob(responseData[i].content, 'image/jpeg');
+
+        const timestampInSeconds = responseData[i].create_date;
+        const timestampInMilliseconds = timestampInSeconds * 1000;
+        const createdAt = new Date(timestampInMilliseconds);
+
+        const stableDiffusionImage = {
+          id: responseData[i].image_name,
+          createdAt: createdAt,
+          blob: blob,
+          input: {
+            prompts: [],
+            style: "",
+            steps: -1,
+            seed: responseData[i].seed ?? -1,
+            model: "",
+            width: responseData[i].width,
+            height: responseData[i].height
+          }
+        }
+
+        images.push(stableDiffusionImage)
+      }
+
       return [
         {
           id: `${Math.random() * 10000000}`,
-          images: responseData.map(async (image: any) => {
-            const blob = await base64ToBlob(image.content, "image/jpeg");
-
-            const timestampInSeconds = image.create_date;
-            const timestampInMilliseconds = timestampInSeconds * 1000;
-            const createdAt = new Date(timestampInMilliseconds);
-
-            return {
-              id: image.image_name,
-              createdAt,
-              blob,
-              input: {
-                prompts: [],
-                style: "",
-                steps: -1,
-                seed: image.seed ?? -1,
-                model: "",
-                width: image.width,
-                height: image.height,
-              },
-            };
-          }),
+          images: images,
         },
       ];
     },
