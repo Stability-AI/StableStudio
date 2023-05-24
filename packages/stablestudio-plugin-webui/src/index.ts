@@ -7,6 +7,7 @@ import {
   fetchOptions,
   setOptions,
   testForHistoryPlugin,
+  getImageInfo
 } from "./utils";
 
 const manifest = {
@@ -291,11 +292,11 @@ export const createPlugin = StableStudio.createPlugin<{
 
       const responseData = await existingImagesResponse.json();
 
-      console.log(responseData);
-
       const images = [];
 
       for (let i = 0; i < responseData.length; i++) {
+        const imageInfo = await getImageInfo(webuiHostUrl, responseData[i].content);
+
         const blob = await base64ToBlob(responseData[i].content, 'image/jpeg');
 
         const timestampInSeconds = responseData[i].create_date;
@@ -307,11 +308,14 @@ export const createPlugin = StableStudio.createPlugin<{
           createdAt: createdAt,
           blob: blob,
           input: {
-            prompts: [],
+            prompts: [{
+              text: imageInfo["prompt"],
+              weight: imageInfo["CFG scale"],
+            }],
             style: "",
-            steps: -1,
-            seed: responseData[i].seed ?? -1,
-            model: "",
+            steps: Number(imageInfo["Steps"]) ?? -1,
+            seed: Number(imageInfo["Seed"]) ?? -1,
+            model: imageInfo["Model"]??"",
             width: responseData[i].width,
             height: responseData[i].height
           }
