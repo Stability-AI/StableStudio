@@ -293,13 +293,21 @@ export const createPlugin = StableStudio.createPlugin<{
 
       const responseData = await existingImagesResponse.json();
 
-      const images = [];
+      const promptedImages: any = {};
 
       for (let i = 0; i < responseData.length; i++) {
         const imageInfo = await getImageInfo(
           webuiHostUrl,
           responseData[i].content
         );
+
+        let images = promptedImages[imageInfo["prompt"]];
+
+        if (!images) {
+          images = [];
+
+          promptedImages[imageInfo["prompt"]] = images;
+        }
 
         const blob = await base64ToBlob(responseData[i].content, "image/jpeg");
 
@@ -329,13 +337,17 @@ export const createPlugin = StableStudio.createPlugin<{
 
         images.push(stableDiffusionImage);
       }
+      
+      const ret = [];
 
-      return [
-        {
+      for (const key in promptedImages) {
+        ret.push({
           id: `${Math.random() * 10000000}`,
-          images: images,
-        },
-      ];
+          images: promptedImages[key],
+        });
+      }
+
+      return ret;
     },
 
     settings: {
