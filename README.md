@@ -4,18 +4,16 @@
 <img src="./misc/GenerateScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
 <img src="./misc/EditScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
 
-<h3>
-<span>👋 Welcome to StableStudio, the open-source version of <a href="https://dreamstudio.ai" target="_blank">DreamStudio</a></span>
-<br />
-<br />
-<span>[ <a href="./packages/stablestudio-ui/README.md">🎨 UI README</a> ]</span>
-<span>[ <a href="./packages/stablestudio-plugin/README.md" href="./packages/stablestudio-ui/README.md">🔌 Plugins README</a> ]</span>
-<span>[ <a href="https://discord.gg/stablediffusion" target="_blank">🎮 Discord</a> ]</span>
-<span>[ <a href="https://github.com/Stability-AI/StableStudio/issues">🛟 Bugs & Support</a> ]</span>
-<span>[ <a href="https://github.com/Stability-AI/StableStudio/discussions">💬 Discussion</a> ]</span>
-</h3>
+<h3>👋 Welcome to StableStudio, the open-source version of <a href="https://dreamstudio.ai" target="_blank">DreamStudio</a>!</h3>
 
-<hr />
+**🗺 Contents – [🚀 Quick Start](#quick-start) · [ℹ️ About](#about) · [🙋 FAQ](#faq) · [🧑‍💻 Contributing](#contributing)**
+
+**📚 Documentation – [🎨 UI](./packages/stablestudio-ui/README.md) · [🔌 Plugins](./packages/stablestudio-plugin/README.md) · <a href="https://platform.stability.ai" target="_blank">⚡️ platform.stability.ai</a>**
+
+**🔗 Links – <a href="https://discord.com/channels/1002292111942635562/1108055793674227782" target="_blank">🎮 Discord</a> · <a href="https://dreamstudio.ai" target="_blank">🌈 DreamStudio</a> · <a href="https://github.com/Stability-AI/StableStudio/issues">🛟 Bugs & Support</a> · <a href="https://github.com/Stability-AI/StableStudio/discussions">💬 Discussion</a>**
+
+<br />
+<br />
 
 </div>
 
