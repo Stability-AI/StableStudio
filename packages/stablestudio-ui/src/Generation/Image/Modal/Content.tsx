@@ -246,7 +246,7 @@ function Field({
       ) : (
         name
       )}
-      <span className="text-white/90">{value}</span>
+      <span className="dark:text-white/90 text-slate-800">{value}</span>
     </h1>
   );
 }

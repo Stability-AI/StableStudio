@@ -5,7 +5,7 @@ import { Theme } from "~/Theme";
 export const Right = () => {
   const { setIsOpen } = Shortcut.Palette.use();
   const isMobileDevice = Theme.useIsMobileDevice();
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
     const root = document.querySelectorAll("#modal-root, #app");

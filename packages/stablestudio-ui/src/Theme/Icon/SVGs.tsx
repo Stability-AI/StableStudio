@@ -310,7 +310,7 @@ export function Generate(props: Props) {
 }
 
 export function Variation(props: Props) {
-  return defaults(props)(({ width, height, ...props }) => (
+  return defaults(props)(({ width, height, color, ...props }) => (
     <svg
       width={width}
       height={height}
@@ -321,19 +321,19 @@ export function Variation(props: Props) {
     >
       <path
         d="M3.67183 13.5269L3.67184 11.1072C3.67184 10.0026 4.56727 9.10722 5.67184 9.10722L9.86719 9.10722C10.9718 9.10722 11.8672 8.21179 11.8672 7.10722L11.8672 2.25825"
-        stroke="#F9FAFB"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M14.3262 3.94141L11.9116 1.52683L9.49701 3.94141"
-        stroke="#F9FAFB"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M3.67188 13.5269L3.67188 4.30708"
-        stroke="#F9FAFB"
+        stroke={color}
         strokeLinecap="round"
       />
     </svg>
