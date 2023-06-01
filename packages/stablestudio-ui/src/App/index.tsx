@@ -12,8 +12,8 @@ export function App() {
   return useMemo(
     () => (
       <Providers>
-        <div className="absolute top-0 left-0 -z-50 h-screen w-screen dark:bg-zinc-800" />
-        <div className="absolute top-0 left-0 flex h-screen w-screen flex-col text-white sm:overflow-x-auto">
+        <div className="absolute left-0 top-0 -z-50 h-screen w-screen bg-white dark:bg-zinc-800" />
+        <div className="absolute left-0 top-0 flex h-screen w-screen flex-col text-zinc-800 dark:text-white sm:overflow-x-auto">
           <Shortcut.Palette />
           <TopBar />
           <Sidebars />

@@ -85,7 +85,7 @@ function AutosizeTextArea({
     <textarea
       ref={textareaRef}
       className={classes(
-        "dark:placeholder:text-muted-white w-full resize-none overflow-y-clip rounded text-black shadow-sm focus:border-transparent focus:outline-none dark:border-transparent dark:text-white",
+        "prose dark:prose-invert w-full resize-none overflow-y-clip rounded opacity-75 shadow-sm focus:border-transparent focus:outline-none dark:border-transparent",
 
         size === "sm"
           ? "h-8 px-2 py-1 text-sm"
@@ -156,7 +156,7 @@ function SingleInput({
     const render = (icon: typeof iconLeft, position: "left" | "right") => {
       const className = classes(
         "opacity-60 h-5 w-5 text-black dark:text-white",
-        position === "left" && "mr-1 -ml-1",
+        position === "left" && "mr-1 -ml-1 stroke-black dark:stroke-white",
         position === "right" && "ml-1 -mr-1"
       );
 
@@ -188,7 +188,7 @@ function SingleInput({
       <input
         ref={inputRef}
         className={classes(
-          "dark:placeholder:text-muted-white h-full w-full rounded bg-zinc-100/75 text-black shadow-sm focus:border-transparent focus:outline-none dark:border-none dark:bg-white/5 dark:text-white",
+          "dark:placeholder:text-muted-white h-full w-full rounded bg-zinc-100/75 text-black shadow-md focus:border-transparent focus:outline-none dark:border-none dark:bg-white/5 dark:text-white",
           sizing,
           props.disabled && "cursor-not-allowed bg-black/10",
           transparent && "bg-transparent dark:bg-transparent",

@@ -37,7 +37,7 @@ export function Sidebar({ position }: Sidebar.Props) {
     <div
       style={{ width: showing ? (isMobileDevice ? "100%" : sidebar.width) : 0 }}
       className={classes(
-        "relative z-[10] min-h-0 shrink-0 border-zinc-700 dark:bg-zinc-900",
+        "relative z-[10] min-h-0 shrink-0 border-zinc-300 bg-white dark:border-zinc-700 dark:bg-zinc-900",
         showing && (position === "left" ? "border-r" : "border-l")
       )}
     >

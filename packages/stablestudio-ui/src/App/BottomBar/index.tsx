@@ -27,7 +27,7 @@ export function BottomBar() {
         <motion.div
           layoutId="bottom-bar-open-button"
           layout="preserve-aspect"
-          className="flex items-center justify-center pt-3 pb-1"
+          className="flex items-center justify-center pb-1 pt-3"
           onClick={() => setOpen(!open)}
         >
           <Theme.Icon.ChevronUp

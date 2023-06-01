@@ -41,7 +41,7 @@ export function Section(props: Section.Props) {
   return (
     <div
       className={classes(
-        "flex flex-col border-zinc-700 last-of-type:border-b-0",
+        "flex flex-col border-zinc-300 last-of-type:border-b-0 dark:border-zinc-700",
         divider && "border-b-1 border-b",
         className
       )}
@@ -78,7 +78,7 @@ export function Section(props: Section.Props) {
                   ))
             }
           >
-            {title}
+            <h1 className="w-full font-normal text-slate-800 dark:text-white">{title}</h1>
           </Theme.Button>
           {buttonRendered}
         </div>

@@ -22,7 +22,7 @@ export namespace Sidebar {
     return (
       <>
         <App.Sidebar.Section collapsable divider defaultExpanded padding="none">
-          <div className="flex border-b border-zinc-800 py-2 pl-1">
+          <div className="flex border-b border-zinc-300 py-2 pl-1 dark:border-zinc-800">
             <Theme.Button
               transparent
               icon={Theme.Icon.Plus}
@@ -67,7 +67,7 @@ export namespace Sidebar {
           </div>
         </App.Sidebar.Section>
         <App.Sidebar.Section collapsable divider defaultExpanded padding="none">
-          <div className="flex border-b border-zinc-800 py-2 pl-1">
+          <div className="flex border-b border-zinc-300 py-2 pl-1 dark:border-zinc-800">
             <Theme.Button
               transparent
               icon={Theme.Icon.Upload}
@@ -140,7 +140,9 @@ function Entity({ id, ...props }: { id: ID; index: number; total: number }) {
       onClick={onClick}
       className={classes(
         "group flex items-center gap-3 p-2",
-        selected ? "bg-brand-700" : "hover:bg-zinc-800/50"
+        selected
+          ? "bg-brand-700 text-white"
+          : "hover:bg-zinc-300 dark:hover:bg-zinc-800/50"
       )}
     >
       <Preview entity={entity} />
@@ -171,7 +173,7 @@ const Preview = ({ entity }: { entity: Editor.Entity }) => {
       )}
       <div className="relative flex h-full w-full items-center justify-center">
         {!src && (
-          <Theme.Icon.Wand className="h-6 w-6 text-zinc-400 dark:text-zinc-500" />
+          <Theme.Icon.Wand className="h-6 w-6 text-zinc-300 dark:text-zinc-500" />
         )}
         {entity && entity.type === "dream" && <Loading id={entity.id} />}
       </div>

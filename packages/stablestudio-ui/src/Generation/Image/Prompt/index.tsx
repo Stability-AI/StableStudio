@@ -141,7 +141,7 @@ export function Prompt({
   ) : (
     <div
       className={classes(
-        "group flex w-full gap-1 rounded border border-zinc-700 px-3 py-2 dark:bg-zinc-800",
+        "group flex w-full gap-1 rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800",
         className
       )}
     >
@@ -164,7 +164,7 @@ export function Prompt({
                 />
               )}
             >
-              <h1 className="w-full font-light">
+              <h1 className="w-full font-normal text-slate-800 dark:text-white">
                 {(input.prompts[index]?.weight ?? 0) > 0
                   ? input.prompts.filter((p: Prompt) => p.weight > 0).length ===
                     1

@@ -7,7 +7,7 @@ export function Divider({
   const line = (
     <div
       className={classes(
-        "bg-muted-white-extra grow",
+        "dark:bg-muted-white-extra grow bg-zinc-300",
         variant === "horizontal" && "h-[1px]",
         variant === "vertical" && "w-[1px]",
         lineClassName
@@ -27,7 +27,7 @@ export function Divider({
     >
       {line}
       {children && (
-        <div className="text-muted-white mx-2 flex items-center justify-center">
+        <div className="dark:text-muted-white mx-2 flex items-center justify-center text-zinc-800">
           {children}
         </div>
       )}

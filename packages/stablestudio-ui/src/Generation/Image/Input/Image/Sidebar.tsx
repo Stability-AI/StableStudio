@@ -75,7 +75,7 @@ export namespace Sidebar {
         }
       >
         <div className="flex flex-col">
-          <div className="flex flex-col overflow-hidden rounded border border-zinc-700 bg-zinc-800 p-2">
+          <div className="flex flex-col overflow-hidden rounded border border-zinc-300 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-800">
             {input.init && !imageHovering ? (
               <>
                 <div
@@ -119,7 +119,7 @@ export namespace Sidebar {
                     />
                   </div>
                   <Theme.Icon.Upload
-                    className="absolute top-1/2 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 transform text-white mix-blend-overlay group-hover:block"
+                    className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 transform text-white mix-blend-overlay group-hover:block"
                     size={24}
                   />
                 </div>
@@ -145,7 +145,7 @@ export namespace Sidebar {
             ) : (
               <div
                 className={classes(
-                  "group flex cursor-pointer flex-col items-center justify-center gap-4 rounded bg-zinc-800 py-4 px-3 text-center"
+                  "group flex cursor-pointer flex-col items-center justify-center gap-4 rounded bg-white px-3 py-4 text-center dark:bg-zinc-800"
                 )}
                 {...uploadProps}
                 onClick={importInit}

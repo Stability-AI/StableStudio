@@ -6,7 +6,7 @@ import { Right } from "./Right";
 
 export function TopBar() {
   return (
-    <nav className="relative flex h-14 w-screen shrink-0 flex-row items-center border-b border-black/20 bg-zinc-50 px-2 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white sm:min-w-[1000px]">
+    <nav className="relative flex h-14 w-screen shrink-0 flex-row items-center border-b border-zinc-300 bg-zinc-50 px-2 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white sm:min-w-[1000px]">
       <Left />
       <Center />
       <Right />

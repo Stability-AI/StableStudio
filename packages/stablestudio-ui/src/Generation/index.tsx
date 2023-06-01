@@ -26,7 +26,7 @@ export function Generation() {
       <Generation.Image.TopBar />
       <Generation.Image.Modal />
       <Generation.Image.Download.Modal />
-      <div className="relative z-[1] flex h-full grow flex-col overflow-hidden bg-zinc-800">
+      <div className="relative z-[1] flex h-full grow flex-col overflow-hidden bg-white dark:bg-zinc-800">
         <Generation.Images />
       </div>
     </>

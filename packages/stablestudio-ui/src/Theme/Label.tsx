@@ -2,7 +2,7 @@ export function Label({ children, className }: StyleableWithChildren) {
   return (
     <h2
       className={classes(
-        "opacity-muted ml-2.5 -mb-1 select-none text-sm font-light",
+        "-mb-1 ml-2.5 select-none font-normal text-slate-800 dark:text-white",
         className
       )}
     >

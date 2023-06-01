@@ -38,7 +38,7 @@ export function Scroll({
         >
           <motion.div
             onClick={onScrollToTop}
-            className="bg-brand-500 hover:bg-brand-400 group pointer-events-auto flex h-[2.5rem] cursor-pointer select-none items-center justify-between gap-2 rounded-lg py-1.5 px-3 backdrop-blur-lg transition-colors duration-100"
+            className="text-white bg-brand-500 hover:bg-brand-400 group pointer-events-auto flex h-[2.5rem] cursor-pointer select-none items-center justify-between gap-2 rounded-lg py-1.5 px-3 backdrop-blur-lg transition-colors duration-100"
             initial={{ y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -79,7 +79,7 @@ export function Scroll({
         >
           <motion.div
             onClick={onScrollBack}
-            className="group pointer-events-auto flex h-[2.5rem] cursor-pointer select-none items-center justify-between gap-2 rounded-lg bg-zinc-900/75 py-1.5 px-3 backdrop-blur-lg transition-colors duration-100 hover:bg-zinc-900"
+            className="group pointer-events-auto flex h-[2.5rem] cursor-pointer select-none items-center justify-between gap-2 rounded-lg bg-zinc-200 px-3 py-1.5 backdrop-blur-lg transition-colors duration-100 hover:bg-zinc-300 dark:bg-zinc-900/75 dark:hover:bg-zinc-900"
             initial={{ y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

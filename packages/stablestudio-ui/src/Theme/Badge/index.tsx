@@ -13,7 +13,7 @@ export function Badge({
         color === "brand" && "bg-brand-800",
         color === "zinc" &&
           (variant === "outline"
-            ? "border border-zinc-700 bg-none"
+            ? "border border-zinc-300 dark:border-zinc-700 bg-none"
             : "bg-zinc-700")
       ),
     [variant, color]

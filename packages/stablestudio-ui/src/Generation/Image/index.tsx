@@ -169,7 +169,7 @@ export function Image({
       <div
         style={style}
         className={classes(
-          "group relative shrink grow overflow-hidden rounded bg-zinc-900",
+          "group relative shrink grow overflow-hidden rounded bg-white dark:bg-zinc-900",
           className
         )}
       >

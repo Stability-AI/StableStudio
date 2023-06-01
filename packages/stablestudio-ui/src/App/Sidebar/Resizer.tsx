@@ -60,7 +60,7 @@ export function Resizer({ position }: App.Sidebar.Props) {
       )}
       style={{ [position]: "100%" }}
       className={classes(
-        "group absolute top-0 bottom-0 flex w-5 cursor-col-resize",
+        "group absolute bottom-0 top-0 flex w-5 cursor-col-resize",
         position === "right" && "justify-end"
       )}
     >
