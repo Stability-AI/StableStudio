@@ -8,6 +8,9 @@ import {
   getImageInfo,
   setOptions,
   testForHistoryPlugin,
+  fetchHypernetworks,
+  fetchEmbeddings,
+  fetchLoras
 } from "./Utilities";
 
 const manifest = {
@@ -64,6 +67,25 @@ const webuiUpscalers = [
   },
 ];
 
+const webuiStyleTypes = [
+ {
+    label: "None",
+    value: "none",
+  },
+  {
+    label: "LoRA",
+    value: "lora",
+  },
+  {
+    label: "Hypernetworks",
+    value: "hypernetworks",
+  },
+  {
+    label: "Textual Inversions",
+    value: "embeddings",
+  },
+];
+
 const getNumber = (strValue: string | null, defaultValue: number) => {
   let retValue = defaultValue;
 
@@ -80,6 +102,7 @@ export const createPlugin = StableStudio.createPlugin<{
     baseUrl: StableStudio.PluginSettingString;
     upscaler: StableStudio.PluginSettingString;
     historyImagesCount: StableStudio.PluginSettingNumber;
+    styleType: StableStudio.PluginSettingString;
   };
 }>(({ set, get }) => {
   const webuiLoad = (
@@ -93,6 +116,7 @@ export const createPlugin = StableStudio.createPlugin<{
     | "getStableDiffusionDefaultCount"
     | "getStableDiffusionDefaultInput"
     | "getStableDiffusionExistingImages"
+    | "getStableDiffusionStyles"
   > => {
 
     return {
@@ -137,7 +161,8 @@ export const createPlugin = StableStudio.createPlugin<{
         const data = await constructPayload(
           options,
           isUpscale,
-          get().settings.upscaler.value
+          get().settings.upscaler.value,
+          get().settings.styleType.value
         );
 
         // Send payload to webui
@@ -275,6 +300,45 @@ export const createPlugin = StableStudio.createPlugin<{
       }));
     },
 
+    getStableDiffusionStyles: async () => {
+      const styleType = localStorage.getItem("styleType") ?? "None";
+
+      const styles: any = [];
+
+      if (styleType === "lora") {
+        const loras = await fetchLoras(webuiHostUrl);
+
+        loras.forEach((lora: any) => {
+          styles.push({
+            id: lora["name"],
+            name: lora["name"],
+          });
+        })
+      }
+      if (styleType === "hypernetworks") {
+        const hypernetworks = await fetchHypernetworks(webuiHostUrl);
+
+        hypernetworks.forEach((hypernetwork: any) => {
+          styles.push({
+            id: hypernetwork["name"],
+            name: hypernetwork["name"],
+          });
+        })
+      }
+      if (styleType === "embeddings") {
+        const embeddings = await fetchEmbeddings(webuiHostUrl);
+
+        for (const key in embeddings.loaded) {
+          styles.push({
+            id: key,
+            name: key,
+          });
+        }
+      }
+
+      return styles;
+    },
+
     getStableDiffusionExistingImages: async () => {
       const existingImagesResponse = await fetch(
         `${webuiHostUrl}/StableStudio/get-generated-images`,
@@ -295,13 +359,21 @@ export const createPlugin = StableStudio.createPlugin<{
 
       const responseData = await existingImagesResponse.json();
 
-      const images = [];
+      const promptedImages: any = {};
 
       for (let i = 0; i < responseData.length; i++) {
         const imageInfo = await getImageInfo(
           webuiHostUrl,
           responseData[i].content
         );
+
+        let images = promptedImages[imageInfo["prompt"]];
+
+        if (!images) {
+          images = [];
+
+          promptedImages[imageInfo["prompt"]] = images;
+        }
 
         const blob = await base64ToBlob(responseData[i].content, "image/jpeg");
 
@@ -331,13 +403,17 @@ export const createPlugin = StableStudio.createPlugin<{
 
         images.push(stableDiffusionImage);
       }
+      
+      const ret = [];
 
-      return [
-        {
+      for (const key in promptedImages) {
+        ret.push({
           id: `${Math.random() * 10000000}`,
-          images: images,
-        },
-      ];
+          images: promptedImages[key],
+        });
+      }
+
+      return ret;
     },
 
     settings: {
@@ -369,6 +445,13 @@ export const createPlugin = StableStudio.createPlugin<{
         variant: "slider",
         value: getNumber(localStorage.getItem("historyImagesCount"), 20),
       },
+
+      styleType: {
+        type: "string",
+        title: "Style Type",
+        options: webuiStyleTypes,
+        value: localStorage.getItem("styleType") ?? "None"
+      }
     },
 
     setSetting: (key, value) => {
@@ -386,6 +469,8 @@ export const createPlugin = StableStudio.createPlugin<{
         localStorage.setItem("upscaler1", value);
       } else if (key === "historyImagesCount" && typeof value === "number") {
         localStorage.setItem("historyImagesCount", value.toString());
+      } else if (key === "styleType" && typeof value === "string") {
+        localStorage.setItem("styleType", value);
       }
     },
 

@@ -1,5 +1,8 @@
 import { StableDiffusionInput } from "@stability/stablestudio-plugin";
 
+const LORA_PATTERN = "<lora:#LORA#:1>";
+const HYPERNETWORK_PATTERN = "<hypernet:#HYPERNETWORK#:1>";
+
 export function base64ToBlob(base64: string, contentType = ""): Promise<Blob> {
   return fetch(`data:${contentType};base64,${base64}`).then((res) =>
     res.blob()
@@ -26,6 +29,39 @@ export async function fetchOptions(baseUrl: string | undefined) {
   });
 
   return await optionsResponse.json();
+}
+
+export async function fetchEmbeddings(baseUrl: string | undefined) {
+  const embeddingsResponse = await fetch(`${baseUrl}/sdapi/v1/embeddings`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await embeddingsResponse.json();
+}
+
+export async function fetchHypernetworks(baseUrl: string | undefined) {
+  const hypernetworksResponse = await fetch(`${baseUrl}/sdapi/v1/hypernetworks`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await hypernetworksResponse.json();
+}
+
+export async function fetchLoras(baseUrl: string | undefined) {
+  const lorasResponse = await fetch(`${baseUrl}/sdapi/v1/loras`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await lorasResponse.json();
 }
 
 export async function setOptions(baseUrl: string | undefined, options: any) {
@@ -114,9 +150,10 @@ export async function constructPayload(
     count?: number | undefined;
   },
   isUpscale = false,
-  upscaler: string | undefined
+  upscaler: string | undefined,
+  styleType: string | undefined
 ) {
-  const { sampler, prompts, initialImage, maskImage, width, height, steps } =
+  const { sampler, prompts, initialImage, maskImage, width, height, steps, style } =
     options?.input ?? {};
 
   // Construct payload
@@ -150,6 +187,18 @@ export async function constructPayload(
     data.negative_prompt =
       prompts?.find((p) => (p.text && (p.weight ?? 0) < 0) ?? 0 < 0)?.text ??
       "";
+
+    if ((styleType != "none") && style && (style != "none") && (style != "enhance")) {
+      let extraStyle = style;
+
+      if (styleType == "lora") {
+        extraStyle = LORA_PATTERN.replace("#LORA#", style);
+      } else if (styleType == "hypernetworks") {
+        extraStyle = HYPERNETWORK_PATTERN.replace("#HYPERNETWORK#", style);
+      }
+
+      data.prompt = data.prompt + " " + extraStyle;
+    }
 
     data.steps = steps ?? 20;
     data.batch_size = options?.count;
