@@ -41,7 +41,7 @@ export async function setOptions(baseUrl: string | undefined, options: any) {
 }
 
 export async function getImageInfo(
-  baseUrl: string | undefined,
+  baseUrl: string | null,
   base64image: any
 ) {
   const imageInfoResponse = await fetch(`${baseUrl}/sdapi/v1/png-info`, {
