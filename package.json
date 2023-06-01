@@ -1,6 +1,6 @@
 {
   "license": "MIT",
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@3.5.1",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -9,13 +9,10 @@
   "scripts": {
     "postinstall": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\" && yarn build",
     "stablestudio-plugin": "yarn workspace @stability/stablestudio-plugin",
-    "stablestudio-plugin-example": "yarn workspace @stability/stablestudio-plugin-example",
     "stablestudio-plugin-stability": "yarn workspace @stability/stablestudio-plugin-stability",
     "stablestudio-plugin-webgpu": "yarn workspace @stability/stablestudio-plugin-webgpu",
     "stablestudio-plugin-webui": "yarn workspace @stability/stablestudio-plugin-webui",
     "stablestudio-ui": "yarn workspace @stability/stablestudio-ui",
-    "dev:use-example-plugin": "cross-env VITE_USE_EXAMPLE_PLUGIN=true yarn dev",
-    "dev:use-webui-plugin": "cross-env VITE_USE_WEBUI_PLUGIN=true yarn dev",
     "dev": "yarn workspaces foreach --all --interlaced --verbose --parallel --jobs unlimited run dev",
     "build": "yarn workspaces foreach --all --interlaced --verbose --jobs unlimited run build",
     "clean": "yarn workspaces foreach --all --interlaced --verbose --parallel --jobs unlimited run clean && rimraf node_modules"
