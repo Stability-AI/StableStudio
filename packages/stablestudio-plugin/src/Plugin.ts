@@ -196,6 +196,9 @@ export type Plugin<P extends PluginTypeHelper = PluginTypeHelperDefault> = {
 
   /** Determines the default input passed to `createStableDiffusionImages` and is also used when setting up a new generation */
   getStableDiffusionDefaultInput?: () => StableDiffusionInput | undefined;
+  // export type StableDiffusionExtras = {
+  //
+  getStableDiffusionExtras?: () => StableDiffusionExtra[] | undefined;
 
   /** If you support deleting existing images by `ID`, this function will enable a deletion UI */
   deleteStableDiffusionImages?: (options?: {
@@ -214,6 +217,137 @@ export type Plugin<P extends PluginTypeHelper = PluginTypeHelperDefault> = {
     value: string | number | boolean
   ) => void;
 } & P;
+
+export declare type UIExtraBadge = {
+  type: "badge";
+  data: string;
+  variant: "outline" | undefined;
+  size: "sm" | "md" | "lg" | "xl";
+  color: "brand" | "indigo" | "red" | "green" | "yellow" | "zinc";
+  className: string;
+};
+
+// export declare type UIExtraButton = {
+//     type: "button";
+//     size: "sm" | "md" | "lg" | "xl";
+//     fullWidth: boolean;
+//     color: "brand" | "indigo" | "red" | "green" | "yellow" | "zinc" | "darkerZinc";
+//     outline: boolean;
+//     transparent: boolean;
+//     translucent: boolean;
+//     autoFocus: boolean;
+//     active: boolean;
+//     disabled: boolean;
+//     selected: boolean;
+//     itemsCenter: boolean;
+//     className: string;
+// }
+
+export declare type UIExtraCheckbox = {
+  type: "checkbox";
+  label: string;
+  labelLeft: boolean;
+  labelClassName: string;
+  size: "sm" | "md" | "lg" | "xl";
+  variant: "indigo" | "red" | "green" | "yellow" | "gray";
+  disabled: boolean;
+  bold: boolean;
+  left: boolean;
+  right: boolean;
+  value: boolean;
+  onChange: (value: boolean) => void;
+};
+
+export declare type UIExtraDropdownItem = {
+  type: "dropdownItem";
+  value: string;
+  label: string;
+  description: string;
+  disabled: boolean;
+};
+
+export declare type UIExtraDropdown<
+  Options extends UIExtraDropdownItem[] = UIExtraDropdownItem[],
+  Item extends UIExtraDropdownItem = UIExtraDropdownItem,
+  Value extends Item["value"] = Item["value"]
+> = {
+  type: "dropdown";
+  value: Value;
+  options: Options;
+  onChange: (item: Item) => void;
+  title: string;
+  placeholder: string;
+  size: "sm" | "md" | "lg" | "xl";
+  noPadding: boolean;
+  transparent: boolean;
+  disabled: boolean;
+  fullWidth: boolean;
+  fixed: boolean;
+  innerClassName: string;
+};
+
+export declare type StableDiffusionExtraText = {
+  type: "text";
+  data: string;
+  default: string;
+};
+
+export declare type StableDiffusionExtraNumber = {
+  type: "number";
+  data: number;
+  default: number;
+};
+
+export declare type StableDiffusionExtraBoolean = {
+  type: "boolean";
+  data: boolean;
+  default: boolean;
+};
+
+export declare type StableDiffusionExtraList = {
+  type: "list";
+  data: string[] | number[] | boolean[] | any[];
+  default: string | number | boolean | any;
+};
+
+export declare type StableDiffusionExtraSlider = {
+  type: "slider";
+  data: number;
+  min: number;
+  max: number;
+  step: number;
+  default: number;
+};
+
+export declare type StableDiffusionExtraSelect = {
+  type: "select";
+  data: string | number | boolean | any;
+  options: StableDiffusionExtraList;
+  default: string | number | boolean | any;
+};
+
+export declare type StableDiffusionExtraData =
+  | StableDiffusionExtraText
+  | StableDiffusionExtraNumber
+  | StableDiffusionExtraBoolean
+  | StableDiffusionExtraList
+  | StableDiffusionExtraSlider
+  | StableDiffusionExtraSelect;
+
+export declare type StableDiffusionExtraType =
+  | "text"
+  | "number"
+  | "boolean"
+  | "list"
+  | "slider"
+  | "select";
+
+export declare type StableDiffusionExtra = {
+  name: string;
+  description: string;
+  type: StableDiffusionExtraType;
+  data: StableDiffusionExtraData;
+};
 
 export type StableDiffusionInput = {
   prompts?: StableDiffusionPrompt[];

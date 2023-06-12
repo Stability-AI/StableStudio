@@ -4,6 +4,7 @@ import { Generation } from "~/Generation";
 import { Theme } from "~/Theme";
 
 import { Advanced } from "./Advanced";
+import { Extras } from "./Extras";
 
 export function Sidebar() {
   const { input } = Generation.Image.Session.useCurrentInput();
@@ -73,7 +74,7 @@ export namespace Sidebar {
             <Generation.Image.Count.Slider />
           </div>
         </App.Sidebar.Section>
-        {settingsOpen && <Advanced id={id} />}
+        {settingsOpen && <><Advanced id={id} /><Extras id={id} /></>}
       </>
     );
   }

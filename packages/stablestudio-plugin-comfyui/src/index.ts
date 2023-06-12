@@ -247,6 +247,47 @@ const basicWorkflowInpaint = (
   };
 };
 
+const getExtras = () => {
+  const extras: StableStudio.StableDiffusionExtra[] = [];
+  const lora: StableStudio.StableDiffusionExtra = {
+    name: "Lora",
+    description: "Load LoRA to model",
+    type: "select",
+    data: {
+      type: "list",
+      data: ["lora1", "lora2", "lora3"],
+      default: "lora2",
+    },
+  };
+  const aitemplate: StableStudio.StableDiffusionExtra = {
+    name: "AITemplate",
+    description: "Accelerate inference with AITemplate",
+    type: "boolean",
+    data: {
+      type: "boolean",
+      default: false,
+      data: false,
+    },
+  };
+  const randomSlider: StableStudio.StableDiffusionExtra = {
+    name: "RandomSlider",
+    description: "Randomize the slider",
+    type: "slider",
+    data: {
+      type: "slider",
+      default: 0,
+      data: 50,
+      min: 0,
+      max: 100,
+      step: 1,
+    },
+  };
+  extras.push(lora);
+  extras.push(aitemplate);
+  extras.push(randomSlider);
+  return extras;
+};
+
 const getModels = async (apiUrl: string) => {
   const response = await fetch(`${apiUrl}/object_info`);
   if (response.ok) {
@@ -552,6 +593,8 @@ export const createPlugin = StableStudio.createPlugin<{
   getStableDiffusionDefaultCount: () => 1,
 
   getStableDiffusionDefaultInput: () => getDefaultInput(),
+
+  getStableDiffusionExtras: () => getExtras(),
 
   settings: {
     apiUrl: {

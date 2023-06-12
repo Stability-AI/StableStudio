@@ -1,6 +1,8 @@
 import { App } from "~/App";
 import { Generation } from "~/Generation";
 import { Theme } from "~/Theme";
+import { Plugin } from "~/Plugin";
+import * as StableStudio from "@stability/stablestudio-plugin";
 
 export function Advanced({
   id,
@@ -9,6 +11,7 @@ export function Advanced({
   const { setInput, input } = Generation.Image.Input.use(id);
   const areModelsEnabled = Generation.Image.Models.useAreEnabled();
   const areSamplersEnabled = Generation.Image.Samplers.useAreEnabled();
+  const extras = Plugin.get().getStableDiffusionExtras?.() ?? undefined;
 
   const onPromptStrengthChange = useCallback(
     (cfgScale: number) => {
@@ -168,6 +171,7 @@ export function Advanced({
             <Generation.Image.Sampler.Dropdown id={id} />
           </div>
         )}
+        
       </div>
     </App.Sidebar.Section>
   );
