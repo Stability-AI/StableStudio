@@ -24,10 +24,7 @@ export namespace Render {
       const width = Math.max(...entities.map((e) => e.width));
       const height = Math.max(...entities.map((e) => e.height));
 
-      console.log(data);
-
       Generation.Image.Input.set(id, (input) => {
-        console.log(data);
         input.init = data?.init
           ? {
               base64: data.init,
