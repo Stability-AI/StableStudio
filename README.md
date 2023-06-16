@@ -6,7 +6,7 @@
 
 <h3>👋 Welcome to StableStudio, the open-source version of <a href="https://dreamstudio.ai" target="_blank">DreamStudio</a>!</h3>
 
-**🗺 Contents – [🚀 Quick Start](#quick-start) · [ℹ️ About](#about) · [🙋 FAQ](#faq) · [🧑‍💻 Contributing](#contributing)**
+**🗺 Contents – [🚀 Quick Start](#quick-start) · [🐳 Docker Start](#docker-start) · [ℹ️ About](#about) · [🙋 FAQ](#faq) · [🧑‍💻 Contributing](#contributing)**
 
 **📚 Documentation – [🎨 UI](./packages/stablestudio-ui/README.md) · [🔌 Plugins](./packages/stablestudio-plugin/README.md) · <a href="https://platform.stability.ai" target="_blank">⚡️ platform.stability.ai</a>**
 
@@ -42,6 +42,19 @@ _**That's it! 🎉**_
 StableStudio will be running at [localhost:3000](http://localhost:3000) by default.
 
 > If you are using the default Stability API plugin, You'll need to have your [API key](https://platform.stability.ai/docs/getting-started/authentication) handy. Otherwise, you should be good to go!
+
+# <a id="docker-start" href="#docker-start"> 🐳 Docker Start</a>
+
+The easiest way to launch StableStudio locally is by using docker.
+A convenient setup script is provided to help you get started.
+
+```bash
+./setup.sh --docker
+```
+
+_**That's it! 🎉**_
+
+StableStudio will be running at [localhost:3000](http://localhost:3000) by default.
 
 # <a id="about" href="#about">About</a>
 
