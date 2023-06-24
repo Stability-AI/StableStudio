@@ -24,7 +24,7 @@ StableStudio represents a new direction for [DreamStudio](https://dreamstudio.ai
 
   _Summer 2022_
 
-  [DreamStudio](https://dreamstudio.ai) began as passion-project by [@nin](https://twitter.com/nin_artificial) with the goal of creating an all-in-one creative studio for generative animations using Disco Diffusion. He and several collaborators wrote the original UI using Vue.js and a local Python back-end. With the imminent arrival of Stable Diffusion, focus shifted toward creating an easy-to-use interface for image generation so the release of the model would be as accessible as possible.
+  [DreamStudio](https://dreamstudio.ai) began as passion-project by [@nin](https://twitter.com/nin_artificial) with the goal of creating an all-in-one creative studio for generative animations using Disco Diffusion. He and several other collaborators wrote the original UI using Vue.js and a local Python back-end. With the imminent arrival of Stable Diffusion, focus shifted toward creating an easy-to-use interface for image generation so the release of the model would be as accessible as possible.
 
 - **Post-Stable Diffusion Launch**
 
