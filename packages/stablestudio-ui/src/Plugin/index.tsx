@@ -1,5 +1,5 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
-import * as StableStudioPluginExample from "@stability/stablestudio-plugin-example";
+// import * as StableStudioPluginExample from "@stability/stablestudio-plugin-example";
 import * as StableStudioPluginStability from "@stability/stablestudio-plugin-stability";
 import * as StableStudioPluginWebUI from "@stability/stablestudio-plugin-webui";
 
@@ -52,7 +52,7 @@ export namespace Plugin {
         const plugin = pluginModule.createPlugin({
           getGitHash: () => Environment.get("GIT_HASH"),
           getStableDiffusionRandomPrompt: () =>
-            Generation.Image.Prompt.Random.get(),
+            Generation.Image.Prompt.Random.get()
         });
 
         const id = ID.create();
@@ -62,8 +62,8 @@ export namespace Plugin {
           [id]: {
             enabled: true,
             index: Object.keys(plugins).length,
-            plugin,
-          },
+            plugin
+          }
         }));
 
         State.use.getState().setActivePluginID(id);
@@ -87,7 +87,7 @@ export namespace Plugin {
       isLoading,
 
       loadFromURL,
-      getFromURL: doNothing,
+      getFromURL: doNothing
     };
   };
 }
@@ -114,9 +114,7 @@ namespace State {
 
   export const use = GlobalState.create<State>((set) => {
     const { createPlugin: createRootPlugin } =
-      Environment.get("USE_EXAMPLE_PLUGIN") === "true"
-        ? StableStudioPluginExample
-        : Environment.get("USE_WEBUI_PLUGIN") === "true"
+      Environment.get("USE_WEBUI_PLUGIN") === "true"
         ? StableStudioPluginWebUI
         : StableStudioPluginStability;
 
@@ -124,7 +122,7 @@ namespace State {
       rootPlugin: createRootPlugin({
         getGitHash: () => Environment.get("GIT_HASH"),
         getStableDiffusionRandomPrompt: () =>
-          Generation.Image.Prompt.Random.get(),
+          Generation.Image.Prompt.Random.get()
       }) as unknown as GlobalState.Store<StableStudio.Plugin>,
 
       setActivePluginID: (activePluginID) => set({ activePluginID }),
@@ -133,7 +131,7 @@ namespace State {
       setPlugins: (setPlugins) =>
         typeof setPlugins === "function"
           ? set(({ plugins }) => ({ plugins: setPlugins(plugins) }))
-          : set({ plugins: setPlugins }),
+          : set({ plugins: setPlugins })
     };
   });
 }

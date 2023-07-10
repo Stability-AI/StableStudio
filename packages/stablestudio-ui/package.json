@@ -12,7 +12,8 @@
     "build:preview": "yarn build:types && vite build --mode preview",
     "build:production": "yarn build:types && vite build --mode production",
     "dev:types": "tsc --noEmit --watch",
-    "dev": "vite"
+    "dev": "cargo tauri dev",
+    "dev:vite": "vite"
   },
   "dependencies": {
     "@emotion/css": "^11.10.5",
