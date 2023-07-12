@@ -12,8 +12,8 @@
   "tauri": {
     "allowlist": {
       "fs": {
-        "scope": ["$RESOURCE/*", "$RESOURCE/comfyui/*"],
-        "all": true
+        "all": true,
+        "scope": ["$APPDATA/**"]
       },
       "path": {
         "all": true
@@ -43,15 +43,9 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [
-        "comfyui/*"
-      ],
+      "resources": [],
       "shortDescription": "",
-      "targets": [
-        "app",
-        "nsis",
-        "deb"
-      ],
+      "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
