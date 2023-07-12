@@ -1278,6 +1278,7 @@ __metadata:
     "@tanstack/react-query": ^4.22.0
     "@tanstack/react-query-devtools": ^4.22.0
     "@tanstack/react-virtual": beta
+    "@tauri-apps/api": ^1.4.0
     "@types/file-saver": ^2.0.5
     "@types/lodash.throttle": ^4.1.7
     "@types/react": ^18.0.27
@@ -1424,6 +1425,13 @@ __metadata:
   version: 3.0.0-beta.54
   resolution: "@tanstack/virtual-core@npm:3.0.0-beta.54"
   checksum: a58cb30e1bbf8a0420caea8693df11c909c1190908163fef75aeddfa11bba621ca993ab218f4e7537c05c1651f9398e61016f3e3d374093c87029b52c868f0e7
+  languageName: node
+  linkType: hard
+
+"@tauri-apps/api@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@tauri-apps/api@npm:1.4.0"
+  checksum: 0c24b72d6bdb1180aafc6a19bdaad1501810f880f1a52f0fbe1b1b2b04fe0b6148deba7a3769a03b877e4ddf3008348b6e1c6cb725f17effb78c9a0a0e099dc5
   languageName: node
   linkType: hard
 

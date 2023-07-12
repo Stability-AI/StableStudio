@@ -11,11 +11,17 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "fs": {
+        "scope": ["$RESOURCE/*", "$RESOURCE/comfyui/*"],
+        "all": true
+      },
+      "path": {
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "GraphicsAndDesign",
       "copyright": "",
       "deb": {
         "depends": []
@@ -28,7 +34,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.stabilityai.stablestudio",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -37,13 +43,22 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "comfyui/*"
+      ],
       "shortDescription": "",
-      "targets": "all",
+      "targets": [
+        "app",
+        "nsis",
+        "deb"
+      ],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "language": "en-US"
+        }
       }
     },
     "security": {
@@ -55,10 +70,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 950,
         "resizable": true,
         "title": "StableStudio",
-        "width": 800
+        "width": 1800
       }
     ]
   }
