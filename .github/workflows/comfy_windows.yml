@@ -34,5 +34,4 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "ComfyUI_windows_portable.zip"
-          tag: comfy
           commit: ${{ github.sha }}
