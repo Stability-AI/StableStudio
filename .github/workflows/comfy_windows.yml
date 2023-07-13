@@ -29,6 +29,7 @@ jobs:
           mv ComfyUI_windows_portable ComfyUI
 
           zip -r ComfyUI_windows_portable.zip ComfyUI
+          du -sh ComfyUI_windows_portable.zip
 
       - name: Upload binaries to release
         uses: ncipollo/release-action@v1
