@@ -1,0 +1,39 @@
+name: "Windows Release Repackaging with ZIP"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - tauri
+
+jobs:
+  repackage_comfyui:
+    permissions:
+      contents: "write"
+      packages: "write"
+      pull-requests: "read"
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y p7zip-full
+          sudo apt-get install -y zip
+
+          wget https://github.com/comfyanonymous/ComfyUI/releases/download/latest/ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z
+
+          7z x ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z -o ComfyUI_windows_portable
+
+          rm ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z
+
+          cd ComfyUI_windows_portable
+
+          zip -r ComfyUI_windows_portable.zip ComfyUI
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ComfyUI_windows_portable.zip
+          tag: "latest"
+          overwrite: true
