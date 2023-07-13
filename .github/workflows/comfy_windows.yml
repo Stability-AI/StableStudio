@@ -36,3 +36,4 @@ jobs:
         with:
           artifacts: "ComfyUI_windows_portable.zip"
           commit: ${{ github.sha }}
+          tag: ${{ github.ref }}
