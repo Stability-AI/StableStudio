@@ -31,9 +31,8 @@ jobs:
           zip -r ComfyUI_windows_portable.zip ComfyUI
 
       - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
+        uses: ncipollo/release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ComfyUI_windows_portable.zip
-          tag: "comfy"
-          overwrite: true
+          artifacts: "ComfyUI_windows_portable.zip"
+          tag: comfy
+          commit: ${{ github.sha }}
