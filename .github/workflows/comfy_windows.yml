@@ -35,5 +35,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ComfyUI_windows_portable.zip
-          tag: "latest"
+          tag: "comfy"
           overwrite: true
