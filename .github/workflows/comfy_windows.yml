@@ -22,11 +22,13 @@ jobs:
 
           wget https://github.com/comfyanonymous/ComfyUI/releases/download/latest/ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z
 
-          7z x ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z -o ComfyUI_windows_portable
+          7z x ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z
 
           rm ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z
 
-          cd ComfyUI_windows_portable
+          cd ComfyUI_windows_portable_nvidia_cu118_or_cpu
+
+          mv ComfyUI_windows_portable ComfyUI
 
           zip -r ComfyUI_windows_portable.zip ComfyUI
 
