@@ -39,7 +39,7 @@ jobs:
           rm -rf ComfyUI/.ci
           rm -rf ComfyUI/.gitignore
 
-          zip -r -9 ComfyUI_windows_portable.zip ComfyUI
+          zip -r -9 -q ComfyUI_windows_portable.zip ComfyUI -x "*.DS_Store" -x "__MACOSX" -x "*.git*" -x "*.ci*" -x "*.github*" -x "*.gitignore*" -x "*.pyc" -x "*.pyo" -x "__pycache__"
           du -sh ComfyUI_windows_portable.zip
 
       - name: Upload binaries to release
