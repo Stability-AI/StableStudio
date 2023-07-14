@@ -39,7 +39,7 @@ jobs:
           rm -rf ComfyUI/.ci
           rm -rf ComfyUI/.gitignore
 
-          zip -r ComfyUI_windows_portable.zip ComfyUI
+          zip -r -9 ComfyUI_windows_portable.zip ComfyUI
           du -sh ComfyUI_windows_portable.zip
 
       - name: Upload binaries to release
