@@ -28,12 +28,24 @@ jobs:
 
           mv ComfyUI_windows_portable ComfyUI
 
+          # remove ALL cache files recursively (.pyc, .pyo, __pycache__, etc.)
+          find ComfyUI -type f -name '*.pyc' -delete
+          find ComfyUI -type f -name '*.pyo' -delete
+          find ComfyUI -type d -name '__pycache__' -delete
+
+          # remove ALL .git files recursively
+          rm -rf ComfyUI/.git
+          rm -rf ComfyUI/.github
+          rm -rf ComfyUI/.ci
+          rm -rf ComfyUI/.gitignore
+
           zip -r ComfyUI_windows_portable.zip ComfyUI
           du -sh ComfyUI_windows_portable.zip
 
       - name: Upload binaries to release
-        uses: ncipollo/release-action@v1
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: "ComfyUI_windows_portable.zip"
-          commit: ${{ github.sha }}
-          tag: ${{ github.ref }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ComfyUI_windows_portable.zip
+          tag: "comfy"
+          overwrite: true
