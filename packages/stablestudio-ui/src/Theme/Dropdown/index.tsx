@@ -112,7 +112,7 @@ export function Dropdown<Options extends Dropdown.Options>({
           </option>
         ))}
       </select>
-      <div className="pointer-events-none absolute top-0 right-1 inline-block h-full">
+      <div className="pointer-events-none absolute right-1 top-0 inline-block h-full">
         <div className="flex h-full w-full items-center justify-center">
           {open ? (
             <Theme.Icon.ChevronUp className="h-6 w-6" />

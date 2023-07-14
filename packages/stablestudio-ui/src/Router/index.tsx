@@ -43,6 +43,12 @@ export namespace Router {
               element: <Editor />,
             },
             {
+              path: "/nodes",
+              element: (
+                <iframe src="http://localhost:5000" className="h-full w-full" />
+              ),
+            },
+            {
               path: "/settings",
               element: <Settings />,
             },

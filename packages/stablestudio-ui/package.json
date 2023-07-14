@@ -56,6 +56,7 @@
     "remark-custom-heading-id": "^1.0.0",
     "remark-gfm": "^3.0.1",
     "tailwind-merge": "^1.8.1",
+    "tauri-plugin-upload": "https://github.com/tauri-apps/tauri-plugin-upload#v1",
     "throttled-queue": "^2.1.4",
     "tiny-invariant": "^1.3.1",
     "ts-custom-error": "^3.3.1",

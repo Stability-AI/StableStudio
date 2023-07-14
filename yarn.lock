@@ -1332,6 +1332,7 @@ __metadata:
     rollup-plugin-visualizer: ^5.9.0
     tailwind-merge: ^1.8.1
     tailwindcss: ^3.2.4
+    tauri-plugin-upload: "https://github.com/tauri-apps/tauri-plugin-upload#v1"
     throttled-queue: ^2.1.4
     tiny-invariant: ^1.3.1
     ts-custom-error: ^3.3.1
@@ -1428,7 +1429,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tauri-apps/api@npm:^1.4.0":
+"@tauri-apps/api@npm:1.4.0, @tauri-apps/api@npm:^1.4.0":
   version: 1.4.0
   resolution: "@tauri-apps/api@npm:1.4.0"
   checksum: 0c24b72d6bdb1180aafc6a19bdaad1501810f880f1a52f0fbe1b1b2b04fe0b6148deba7a3769a03b877e4ddf3008348b6e1c6cb725f17effb78c9a0a0e099dc5
@@ -7549,6 +7550,15 @@ __metadata:
     mkdirp: ^1.0.3
     yallist: ^4.0.0
   checksum: a1be0815a9bdc97dfca7c6c2d71d1b836f8ba9314684e2c412832f0f59cc226d4c13da303d6bc30925e82f634cc793f40da79ae72f3e96fb87c23d0f4efd5207
+  languageName: node
+  linkType: hard
+
+"tauri-plugin-upload@https://github.com/tauri-apps/tauri-plugin-upload#v1":
+  version: 0.0.0
+  resolution: "tauri-plugin-upload@https://github.com/tauri-apps/tauri-plugin-upload.git#commit=6db7f623b4ba1cd6d25cf7dddb3ec8c442c349c8"
+  dependencies:
+    "@tauri-apps/api": 1.4.0
+  checksum: de54e8cd3ca120e1172057c53b2da421a1f1d6589b334c8e16d12b09c69ae4dea12c003e2be71b36fd2165eee3674c6ce0d9f0c7919753bd96eaa64202dd7109
   languageName: node
   linkType: hard
 

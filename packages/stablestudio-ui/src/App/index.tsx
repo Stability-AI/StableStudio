@@ -1,4 +1,13 @@
-import { BaseDirectory, exists } from "@tauri-apps/api/fs";
+import {
+  BaseDirectory,
+  exists,
+  FileEntry,
+  readDir,
+  removeFile,
+} from "@tauri-apps/api/fs";
+import { appDataDir } from "@tauri-apps/api/path";
+import { invoke } from "@tauri-apps/api/tauri";
+import { download } from "tauri-plugin-upload";
 import { Router } from "~/Router";
 import { Shortcut } from "~/Shortcut";
 import { Theme } from "~/Theme";
@@ -17,13 +26,17 @@ export function App() {
       <Providers>
         <div className="absolute left-0 top-0 -z-50 h-screen w-screen dark:bg-zinc-800" />
         <div className="absolute left-0 top-0 flex h-screen w-screen flex-col text-white sm:overflow-x-auto">
-          {isSetup !== App.SetupState.WeightsInstalled ? (
+          {isSetup !== App.SetupState.ComfyRunning ? (
             <>
-              <div className="flex flex-grow flex-col items-center justify-center gap-4">
+              <div className="flex flex-grow flex-col items-center justify-center gap-16">
                 <h1 className="text-6xl font-bold">Welcome to StableStudio</h1>
-                <p className="font-mono opacity-75">
-                  {message} {Math.round(progress * 100)}%
-                </p>
+                <div className="flex w-full flex-col items-center gap-4">
+                  <p className="font-mono opacity-75">{message}</p>
+                  <Theme.Progress
+                    className="max-w-[25rem]"
+                    value={progress * 100}
+                  />
+                </div>
               </div>
             </>
           ) : (
@@ -60,44 +73,126 @@ export namespace App {
     NotStarted,
     ComfyInstalled,
     WeightsInstalled,
+    ComfyRunning,
   }
 
   export const useSetupState = () => {
     const [isSetup, setIsSetup] = useState<SetupState>(SetupState.NotStarted);
     const [message, setMessage] = useState<string>("");
-    const [progress] = useState<number>(0);
+    const [progress, setProgress] = useState<number>(0);
+    const nonce = useRef<number>(0);
 
-    const check = async () => {
-      const modelExists = await exists(
-        "comfyui/ComfyUI/models/checkpoints/sd_xl_base_0.9.safetensors",
-        {
+    const check = useCallback(async () => {
+      if (isSetup !== SetupState.NotStarted || nonce.current !== 0) return;
+      nonce.current++;
+
+      let entries: FileEntry[] = [];
+
+      if (
+        await exists("comfyui/ComfyUI/models/checkpoints", {
           dir: BaseDirectory.AppData,
-        }
-      );
+        })
+      ) {
+        entries = await readDir("comfyui/ComfyUI/models/checkpoints", {
+          dir: BaseDirectory.AppData,
+        });
+      }
 
-      if (!modelExists) {
-        const comfyExists = await exists(
-          "comfyui/ComfyUI/models/checkpoints/put_checkpoints_here",
-          {
-            dir: BaseDirectory.AppData,
-          }
-        );
+      // filter for actual files (not directories or symlinks or "put_checkpoints_here" files)
+      entries = entries.filter((entry) => entry.name?.includes("."));
+
+      console.log(entries);
+      const appDataPath = await appDataDir();
+
+      if (entries.length === 0) {
+        const comfyExists = await exists("comdyui/ComfyUI/main.py", {
+          dir: BaseDirectory.AppData,
+        });
 
         if (!comfyExists) {
           setIsSetup(SetupState.NotStarted);
           setMessage("Installing ComfyUI...");
-        } else {
-          setIsSetup(SetupState.ComfyInstalled);
-          setMessage("Downloading Stable Diffusion...");
+
+          // delete the old comfyui zip if it exists
+          if (
+            !(await exists("comfyui.zip", {
+              dir: BaseDirectory.AppData,
+            }))
+          ) {
+            let comulativeProgress = 0;
+
+            console.log("downloading comfyui");
+
+            await download(
+              "https://github.com/comfyanonymous/ComfyUI/releases/download/latest/ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z",
+              `${appDataPath}\\comfyui.zip`,
+              (p, total) => {
+                comulativeProgress += p;
+                setProgress(comulativeProgress / total);
+              }
+            );
+          }
+
+          setMessage("Extracting ComfyUI...");
+          try {
+            const result = await invoke("extract_zip", {
+              path: `${appDataPath}/comfyui.zip`,
+              targetDir: `${appDataPath}`,
+            });
+
+            if (result !== "completed") {
+              throw new Error("Failed to extract comfyui.zip");
+            }
+          } catch (error) {
+            console.error(error);
+            setIsSetup(SetupState.NotStarted);
+            setMessage(`Error installing ComfyUI: ${error}`);
+            return;
+          }
+
+          await removeFile("comfyui.zip", {
+            dir: BaseDirectory.AppData,
+          });
         }
-      } else {
-        setIsSetup(SetupState.WeightsInstalled);
+
+        setIsSetup(SetupState.ComfyInstalled);
+        setMessage("Downloading Stable Diffusion...");
+
+        let comulativeProgress = 0;
+
+        console.log("downloading weights");
+
+        await download(
+          "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.safetensors",
+          `${appDataPath}/comfyui/ComfyUI/models/checkpoints/v2-1_768-ema-pruned.safetensors`,
+          (p, total) => {
+            comulativeProgress += p;
+            setProgress(comulativeProgress / total);
+          }
+        );
+
+        setMessage("done");
       }
-    };
+
+      setIsSetup(SetupState.WeightsInstalled);
+      setMessage("Starting ComfyUI...");
+
+      // start comfy
+      const result = await invoke("launch_comfy", {
+        path: `${appDataPath}/comfyui`,
+      });
+
+      if (result !== "completed") {
+        setMessage(`Error launching ComfyUI: ${result}`);
+        throw new Error("Failed to launch ComfyUI");
+      }
+
+      setIsSetup(SetupState.ComfyRunning);
+    }, [isSetup]);
 
     useEffect(() => {
       check();
-    }, []);
+    }, [check]);
 
     return { isSetup, message, progress };
   };

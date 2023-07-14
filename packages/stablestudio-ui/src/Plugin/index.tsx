@@ -52,7 +52,7 @@ export namespace Plugin {
         const plugin = pluginModule.createPlugin({
           getGitHash: () => Environment.get("GIT_HASH"),
           getStableDiffusionRandomPrompt: () =>
-            Generation.Image.Prompt.Random.get()
+            Generation.Image.Prompt.Random.get(),
         });
 
         const id = ID.create();
@@ -62,8 +62,8 @@ export namespace Plugin {
           [id]: {
             enabled: true,
             index: Object.keys(plugins).length,
-            plugin
-          }
+            plugin,
+          },
         }));
 
         State.use.getState().setActivePluginID(id);
@@ -87,7 +87,7 @@ export namespace Plugin {
       isLoading,
 
       loadFromURL,
-      getFromURL: doNothing
+      getFromURL: doNothing,
     };
   };
 }
@@ -122,7 +122,7 @@ namespace State {
       rootPlugin: createRootPlugin({
         getGitHash: () => Environment.get("GIT_HASH"),
         getStableDiffusionRandomPrompt: () =>
-          Generation.Image.Prompt.Random.get()
+          Generation.Image.Prompt.Random.get(),
       }) as unknown as GlobalState.Store<StableStudio.Plugin>,
 
       setActivePluginID: (activePluginID) => set({ activePluginID }),
@@ -131,7 +131,7 @@ namespace State {
       setPlugins: (setPlugins) =>
         typeof setPlugins === "function"
           ? set(({ plugins }) => ({ plugins: setPlugins(plugins) }))
-          : set({ plugins: setPlugins })
+          : set({ plugins: setPlugins }),
     };
   });
 }

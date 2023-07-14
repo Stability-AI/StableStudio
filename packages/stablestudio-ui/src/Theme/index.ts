@@ -19,6 +19,7 @@ import { New } from "./New";
 import { NumberInput } from "./NumberInput";
 import { Page } from "./Page";
 import { Popout } from "./Popout";
+import { Progress } from "./Progress";
 import { Skeleton } from "./Skeleton";
 import { Slider } from "./Slider";
 import * as Snackbar from "./Snackbar";
@@ -54,6 +55,7 @@ export declare namespace Theme {
     Stars,
     Snackbar,
     Label,
+    Progress,
   };
 }
 
@@ -84,6 +86,7 @@ export namespace Theme {
   Theme.Tooltip = Tooltip;
   Theme.Snackbar = Snackbar;
   Theme.Label = Label;
+  Theme.Progress = Progress;
 
   export const useDark = () => Mode.use().dark;
   export const useIsMobileDevice = () => {

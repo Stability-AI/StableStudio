@@ -12,29 +12,56 @@ export function Sidebar() {
 
   if (!input?.id) return null;
   return (
-    <App.Sidebar.Tab.Set
-      defaultActive
-      name="Generate"
-      route="/generate"
-      position="left"
-      index={0}
-      icon={Theme.Icon.Generate}
-      enabled={
-        location.pathname.startsWith("/generate") ||
-        location.pathname.startsWith("/edit")
-      }
-      bottom={
-        <App.Sidebar.Tab.Bottom>
-          <Generation.Image.Create.Button
-            id={input.id}
-            onIdleClick={() => createDream()}
-            fullWidth
-          />
-        </App.Sidebar.Tab.Bottom>
-      }
-    >
-      <Sidebar.Tab id={input.id} />
-    </App.Sidebar.Tab.Set>
+    <>
+      <App.Sidebar.Tab.Set
+        defaultActive
+        name="Generate"
+        route="/generate"
+        position="left"
+        index={0}
+        icon={Theme.Icon.Generate}
+        enabled={
+          location.pathname.startsWith("/generate") ||
+          location.pathname.startsWith("/edit") ||
+          location.pathname.startsWith("/nodes")
+        }
+        bottom={
+          <App.Sidebar.Tab.Bottom>
+            <Generation.Image.Create.Button
+              id={input.id}
+              onIdleClick={() => createDream()}
+              fullWidth
+            />
+          </App.Sidebar.Tab.Bottom>
+        }
+      >
+        <Sidebar.Tab id={input.id} />
+      </App.Sidebar.Tab.Set>
+      <App.Sidebar.Tab.Set
+        defaultActive
+        name="Nodes"
+        route="/nodes"
+        position="left"
+        index={2}
+        icon={Theme.Icon.Rectangle}
+        enabled={
+          location.pathname.startsWith("/generate") ||
+          location.pathname.startsWith("/edit") ||
+          location.pathname.startsWith("/nodes")
+        }
+        bottom={
+          <App.Sidebar.Tab.Bottom>
+            <Generation.Image.Create.Button
+              id={input.id}
+              onIdleClick={() => createDream()}
+              fullWidth
+            />
+          </App.Sidebar.Tab.Bottom>
+        }
+      >
+        <Sidebar.Tab id={input.id} />
+      </App.Sidebar.Tab.Set>
+    </>
   );
 }
 
