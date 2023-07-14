@@ -33,9 +33,6 @@ fn extract_zip(path: String, target_dir: String) -> Result<String, String> {
 // tauri command to launch python process
 #[tauri::command]
 fn launch_comfy(path: String) -> Result<String, String> {
-    // check for cuda device
-    let cuda_device = std::env::var("CUDA_VISIBLE_DEVICES").unwrap_or("".to_string());
-
     // set working directory
     std::env::set_current_dir(path.clone()).unwrap();
 
@@ -57,14 +54,6 @@ fn launch_comfy(path: String) -> Result<String, String> {
     cmd.arg("ComfyUI/main.py");
     cmd.arg("--port");
     cmd.arg("5000");
-
-    if cuda_device == "" {
-        cmd.arg("--cpu");
-    }
-
-    if cfg!(windows) {
-        cmd.arg("--windows-standalone-build");
-    }
 
     println!("launching comfy: {:?}", cmd);
 
