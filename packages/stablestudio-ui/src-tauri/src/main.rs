@@ -5,6 +5,7 @@ use std::fs::File;
 use tauri_plugin_upload;
 
 fn main() {
+    // make sure that anything /comfyui gets redirected to localhost:5000
     tauri::Builder::default()
         .plugin(tauri_plugin_upload::init())
         .invoke_handler(tauri::generate_handler![extract_zip, launch_comfy])

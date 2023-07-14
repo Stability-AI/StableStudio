@@ -45,7 +45,11 @@ export namespace Router {
             {
               path: "/nodes",
               element: (
-                <iframe src="http://localhost:5000" className="h-full w-full" />
+                <iframe
+                  src="http://localhost:3000/comfyui"
+                  className="h-full w-full"
+                  id="comfyui-window"
+                />
               ),
             },
             {

@@ -2,7 +2,6 @@ import { StableDiffusionInput } from "@stability/stablestudio-plugin";
 
 import { Generation } from "~/Generation";
 import { GlobalState } from "~/GlobalState";
-import { Plugin } from "~/Plugin";
 
 import { Image } from "./Image";
 import { Inputs } from "./Inputs";

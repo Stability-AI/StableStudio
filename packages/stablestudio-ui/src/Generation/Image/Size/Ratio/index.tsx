@@ -16,7 +16,9 @@ export function Ratio({
 }) {
   const { input } = Generation.Image.Input.use(id);
   const { closest, ratios } = Ratios.use(id, fullControl);
-  const [timer, setTimer] = React.useState<NodeJS.Timeout | null>(null);
+  const [timer, setTimer] = React.useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
   const [forceTooltipOpen, setForceTooltipOpen] = React.useState(false);
 
   const onChange = useCallback(

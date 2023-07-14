@@ -34,8 +34,12 @@ export function Tooltip({
   openMechanism?: "click" | "hover";
 }) {
   const [show, setShow] = useState(false);
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-  const [leaveTimer, setLeaveTimer] = useState<NodeJS.Timeout | null>(null);
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const [leaveTimer, setLeaveTimer] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
   const [position, setPosition] = useState<{
     top: number;
     left: number;
@@ -142,8 +146,8 @@ export function Tooltip({
               className={classes(
                 "absolute z-[999999] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-zinc-700 bg-zinc-900",
                 placement === "top" && "border-b border-r",
-                placement === "bottom" && "border-t border-l",
-                placement === "left" && "border-t border-r",
+                placement === "bottom" && "border-l border-t",
+                placement === "left" && "border-r border-t",
                 placement === "right" && "border-b border-l"
               )}
               style={{

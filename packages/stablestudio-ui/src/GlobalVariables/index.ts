@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Buffer } from "buffer";
+import { Buffer as Buffer_ } from "buffer";
 
 import { cx } from "@emotion/css";
 import { css as cssImport } from "@emotion/react";
@@ -46,6 +46,8 @@ declare global {
   var copy: typeof immer;
   var throttle: typeof throttle_;
   var toJSON: (value: unknown) => string;
+
+  var Buffer: typeof Buffer_;
 }
 
 namespace IDNamespace {
@@ -60,7 +62,7 @@ namespace IDNamespace {
 
 globalThis.ID = IDNamespace;
 
-globalThis.Buffer = Buffer;
+globalThis.Buffer = Buffer_;
 
 globalThis.React = ReactImport;
 globalThis.useState = ReactImport.useState;

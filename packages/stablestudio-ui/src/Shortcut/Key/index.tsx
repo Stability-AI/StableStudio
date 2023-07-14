@@ -135,7 +135,7 @@ export namespace Key {
 
   export const useIsActive = (key: Key) => {
     const [active, setActive] = useState(false);
-    const activeTimeout = useRef<NodeJS.Timeout>();
+    const activeTimeout = useRef<ReturnType<typeof setTimeout>>();
 
     useOnDown(
       key,
