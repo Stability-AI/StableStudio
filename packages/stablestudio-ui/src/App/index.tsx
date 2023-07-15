@@ -124,7 +124,7 @@ export namespace App {
             console.log("downloading comfyui");
 
             await download(
-              "https://github.com/comfyanonymous/ComfyUI/releases/download/latest/ComfyUI_windows_portable_nvidia_cu118_or_cpu.7z",
+              "https://pub-5e5adf378ed14628a527d735b7743e4e.r2.dev/stability-downloads/ComfyUI/ComfyUI_windows_portable.zip",
               `${appDataPath}\\comfyui.zip`,
               (p, total) => {
                 comulativeProgress += p;
