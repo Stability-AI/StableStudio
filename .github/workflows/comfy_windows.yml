@@ -42,8 +42,8 @@ jobs:
           zip -r -9 -q ComfyUI_windows_portable.zip ComfyUI -x "*.DS_Store" -x "__MACOSX" -x "*.git*" -x "*.ci*" -x "*.github*" -x "*.gitignore*" -x "*.pyc" -x "*.pyo" -x "__pycache__"
           du -sh ComfyUI_windows_portable.zip
 
-          mkdir ComfyUI
-          mv ComfyUI_windows_portable.zip ComfyUI/ComfyUI_windows_portable.zip
+          mkdir ComfyUI_bundle
+          mv ComfyUI_windows_portable.zip ComfyUI_bundle/ComfyUI_windows_portable.zip
 
       - name: Upload binaries to S3
         uses: shallwefootball/s3-upload-action@master
@@ -51,6 +51,6 @@ jobs:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: ComfyUI
+          source_dir: ComfyUI_bundle
           destination_dir: ComfyUI
           endpoint: https://4f71c105ddc191f1fdc56ad4be97f44f.r2.cloudflarestorage.com/stability-downloads
