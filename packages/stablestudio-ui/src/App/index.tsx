@@ -33,10 +33,12 @@ export function App() {
                 <h1 className="text-6xl font-bold">Welcome to StableStudio</h1>
                 <div className="flex w-full flex-col items-center gap-4">
                   <p className="font-mono opacity-75">{message}</p>
-                  <Theme.Progress
-                    className="max-w-[25rem]"
-                    value={progress * 100}
-                  />
+                  {typeof progress === "number" && (
+                    <Theme.Progress
+                      className="max-w-[25rem]"
+                      value={progress * 100}
+                    />
+                  )}
                 </div>
               </div>
             </>
@@ -102,7 +104,7 @@ export namespace App {
   export const useSetupState = () => {
     const [isSetup, setIsSetup] = useState<SetupState>(SetupState.NotStarted);
     const [message, setMessage] = useState<string>("");
-    const [progress, setProgress] = useState<number>(0);
+    const [progress, setProgress] = useState<number | null>(null);
     const nonce = useRef<number>(0);
 
     const check = useCallback(async () => {
@@ -149,6 +151,7 @@ export namespace App {
           }
 
           setMessage("Extracting ComfyUI...");
+          setProgress(null);
           try {
             const result = await invoke("extract_zip", {
               path: `${appDataPath}/comfyui.zip`,
@@ -191,6 +194,7 @@ export namespace App {
 
       setIsSetup(SetupState.WeightsInstalled);
       setMessage("Starting ComfyUI...");
+      setProgress(null);
 
       // start comfy
       const result = await invoke("launch_comfy", {

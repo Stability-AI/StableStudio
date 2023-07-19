@@ -3,7 +3,12 @@
 
 use std::collections::HashMap;
 use std::fs::File;
-use tauri::api::process::Command;
+use tauri::api::process::CommandEvent;
+use tauri::api::process::{
+    Command,
+    CommandEvent::{Error, Stderr, Stdout, Terminated},
+};
+use tauri::async_runtime::Receiver;
 use tauri::utils::config::{AppUrl, WindowConfig};
 use tauri::{RunEvent, WindowBuilder, WindowUrl};
 use tauri_plugin_upload;
@@ -78,46 +83,76 @@ fn extract_zip(path: String, target_dir: String) -> Result<String, String> {
     Ok("completed".to_string())
 }
 
+async fn watch_comfy(
+    mut rx: Receiver<CommandEvent>,
+) -> (Receiver<CommandEvent>, Result<String, String>) {
+    while let Some(i) = rx.recv().await {
+        // check if output starts with "To see the GUI go to:"
+        match i {
+            Stdout(line) if line.len() > 1 => {
+                if line.starts_with("To see the GUI go to:") {
+                    println!("Comfy launched successfully!");
+                    return (rx, Ok("completed".to_string()));
+                }
+                println!("[ComfyUI] stdout: {}", line);
+            }
+            Stderr(line) => {
+                println!("[ComfyUI] stderr: {}", line);
+            }
+            Error(line) => {
+                println!("[ComfyUI] error: {}", line);
+            }
+            Terminated(_) => {
+                println!("Comfy terminated!");
+                return (rx, Err("failed".to_string()));
+            }
+            _ => {}
+        }
+    }
+
+    return (rx, Err("failed".to_string()));
+}
+
 // tauri command to launch python process
 #[tauri::command]
-fn launch_comfy(path: String) -> Result<String, String> {
+async fn launch_comfy(path: String) -> Result<String, String> {
     // set working directory
     std::env::set_current_dir(path.clone()).unwrap();
 
     // test to make sure its not already running (just test port 5000)
     println!("Checking for existing comfy process...");
-
-    // just try to connect to the port
-    let resp = reqwest::blocking::get("http://localhost:5000");
+    let client = reqwest::Client::builder()
+        .connect_timeout(std::time::Duration::from_secs(1))
+        .build()
+        .unwrap();
+    let resp = client.get("http://localhost:5000").send().await;
     if resp.is_ok() {
         println!("Comfy already running, skipping launch.");
         return Ok("completed".to_string());
     }
 
-    tauri::async_runtime::spawn(async move {
-        let (mut rx, _child) = Command::new({
-            if cfg!(unix) {
-                "python_embeded/python"
-            } else if cfg!(windows) {
-                "python_embeded/python.exe"
-            } else if cfg!(macos) {
-                "python_embeded/python.app"
-            } else {
-                panic!("Unsupported platform")
-            }
-        })
-        .args(["-s", "ComfyUI/main.py", "--port", "5000"])
-        .envs(HashMap::from([("PYTHONUNBUFFERED".into(), "1".into())]))
-        .spawn()
-        .expect("Failed to spawn ComfyUI process");
-
-        // print output from python process
-        while let Some(i) = rx.recv().await {
-            println!("ComfyUI: {:?}", i);
-        }
-    });
-
     println!("--> launching comfy...");
 
-    Ok("completed".to_string())
+    #[allow(unused_mut)]
+    let (mut rx, _child) = Command::new({
+        if cfg!(unix) {
+            "python_embeded/python"
+        } else if cfg!(windows) {
+            "python_embeded/python.exe"
+        } else if cfg!(macos) {
+            "python_embeded/python.app"
+        } else {
+            panic!("Unsupported platform")
+        }
+    })
+    .args(["-s", "ComfyUI/main.py", "--port", "5000"])
+    .envs(HashMap::from([("PYTHONUNBUFFERED".into(), "1".into())]))
+    .spawn()
+    .expect("Failed to spawn ComfyUI process");
+
+    // print output from python process
+    let (rx, result) = watch_comfy(rx).await;
+    tauri::async_runtime::spawn(watch_comfy(rx));
+
+    result
 }
