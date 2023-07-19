@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+
 export type Comfy = {
   setup: () => void;
   registerNodes: () => void;
@@ -53,6 +55,22 @@ export type Graph = {
   extra: any;
   version: number;
 };
+
+export function Comfy() {
+  const location = useLocation();
+
+  return (
+    <iframe
+      id="comfyui-window"
+      src="/comfyui"
+      className={classes(
+        "absolute h-full w-full",
+        !location.pathname.startsWith("/nodes") &&
+          "pointer-events-none h-0 w-0 opacity-0"
+      )}
+    />
+  );
+}
 
 export namespace Comfy {
   export const get = (): Comfy | null =>

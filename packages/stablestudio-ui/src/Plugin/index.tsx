@@ -1,5 +1,5 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
-import * as StableStudioPluginComfy from "@stability/stablestudio-plugin-comfy";
+import * as StableStudioPluginComfy from "~/Comfy/plugin";
 
 import { Environment } from "~/Environment";
 import { Generation } from "~/Generation";

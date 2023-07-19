@@ -17,7 +17,9 @@ fn main() {
     let url = format!("http://localhost:{}", port).parse().unwrap();
     let window_url = WindowUrl::External(url);
     // rewrite the config so the IPC is enabled on this URL
-    context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
+    if !cfg!(dev) {
+        context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
+    }
 
     tauri::Builder::default()
         .plugin(server::Builder::new(port).build())
@@ -25,7 +27,13 @@ fn main() {
             WindowBuilder::from_config(
                 app,
                 WindowConfig {
-                    url: window_url,
+                    url: {
+                        if cfg!(dev) {
+                            Default::default()
+                        } else {
+                            window_url
+                        }
+                    },
                     height: 950.0,
                     width: 1800.0,
                     resizable: true,
@@ -75,6 +83,16 @@ fn extract_zip(path: String, target_dir: String) -> Result<String, String> {
 fn launch_comfy(path: String) -> Result<String, String> {
     // set working directory
     std::env::set_current_dir(path.clone()).unwrap();
+
+    // test to make sure its not already running (just test port 5000)
+    println!("Checking for existing comfy process...");
+
+    // just try to connect to the port
+    let resp = reqwest::blocking::get("http://localhost:5000");
+    if resp.is_ok() {
+        println!("Comfy already running, skipping launch.");
+        return Ok("completed".to_string());
+    }
 
     tauri::async_runtime::spawn(async move {
         let (mut rx, _child) = Command::new({

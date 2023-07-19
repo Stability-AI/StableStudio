@@ -44,13 +44,7 @@ export namespace Router {
             },
             {
               path: "/nodes",
-              element: (
-                <iframe
-                  src="/comfyui"
-                  className="h-full w-full"
-                  id="comfyui-window"
-                />
-              ),
+              element: <div className="hidden h-0 w-0" />,
             },
             {
               path: "/settings",

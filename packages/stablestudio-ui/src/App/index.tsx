@@ -8,6 +8,7 @@ import {
 import { appDataDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { download } from "tauri-plugin-upload";
+import { Comfy } from "~/Comfy";
 import { Router } from "~/Router";
 import { Shortcut } from "~/Shortcut";
 import { Theme } from "~/Theme";
@@ -46,8 +47,9 @@ export function App() {
               <Sidebars />
               <div className="flex min-h-0 grow overflow-auto sm:min-w-[1000px]">
                 <Sidebar position="left" />
-                <div className="shrink grow overflow-y-auto">
+                <div className="relative shrink grow overflow-y-auto">
                   <Router />
+                  <Comfy />
                 </div>
                 <Sidebar position="right" />
               </div>
@@ -76,6 +78,27 @@ export namespace App {
     ComfyRunning,
   }
 
+  export async function listAppDataDir(path: string) {
+    try {
+      if (
+        await exists(path, {
+          dir: BaseDirectory.AppData,
+        })
+      ) {
+        return (
+          (await readDir(path, {
+            dir: BaseDirectory.AppData,
+          })) ?? []
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+
+    return [];
+  }
+
   export const useSetupState = () => {
     const [isSetup, setIsSetup] = useState<SetupState>(SetupState.NotStarted);
     const [message, setMessage] = useState<string>("");
@@ -86,17 +109,9 @@ export namespace App {
       if (isSetup !== SetupState.NotStarted || nonce.current !== 0) return;
       nonce.current++;
 
-      let entries: FileEntry[] = [];
-
-      if (
-        await exists("comfyui/ComfyUI/models/checkpoints", {
-          dir: BaseDirectory.AppData,
-        })
-      ) {
-        entries = await readDir("comfyui/ComfyUI/models/checkpoints", {
-          dir: BaseDirectory.AppData,
-        });
-      }
+      let entries: FileEntry[] = await listAppDataDir(
+        "comfyui/ComfyUI/models/checkpoints"
+      );
 
       // filter for actual files (not directories or symlinks or "put_checkpoints_here" files)
       entries = entries.filter((entry) => entry.name?.includes("."));
