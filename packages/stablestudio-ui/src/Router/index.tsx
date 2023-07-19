@@ -46,7 +46,7 @@ export namespace Router {
               path: "/nodes",
               element: (
                 <iframe
-                  src="http://localhost:3000/comfyui"
+                  src="/comfyui"
                   className="h-full w-full"
                   id="comfyui-window"
                 />

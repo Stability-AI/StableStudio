@@ -61,14 +61,6 @@
     "updater": {
       "active": false
     },
-    "windows": [
-      {
-        "fullscreen": false,
-        "height": 950,
-        "resizable": true,
-        "title": "StableStudio",
-        "width": 1800
-      }
-    ]
+    "windows": []
   }
 }

@@ -2,6 +2,6 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "rust-analyzer.linkedProjects": [
-    "packages\\stablestudio-ui\\src-tauri\\Cargo.toml"
+    ".\\packages\\stablestudio-ui\\src-tauri\\Cargo.toml"
   ]
 }

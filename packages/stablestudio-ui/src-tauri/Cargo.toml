@@ -17,10 +17,14 @@ tauri-build = { version = "1.4.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.0", features = [ "fs-all", "path-all"] }
+tauri = { version = "1.4.1", features = [ "fs-all", "path-all", "process-command-api", "devtools"] }
 tauri-plugin-upload = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 zip = "0.6.6"
 zip-extensions = "0.6.1"
+reqwest = { version = "0.11.6", features = ["blocking"] }
+tiny_http = "0.12.0"
+portpicker = "0.1.1"
+http = "0.2.9"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

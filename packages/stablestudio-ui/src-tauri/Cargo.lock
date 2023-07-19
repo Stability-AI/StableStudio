@@ -86,14 +86,24 @@ checksum = "9c7d0618f0e0b7e8ff11427422b64564d5fb0be1940354bfe2e0529b18a9d9b8"
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "http",
+ "portpicker",
+ "reqwest",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
  "tauri-plugin-upload",
+ "tiny_http",
  "zip 0.6.6",
  "zip-extensions",
 ]
+
+[[package]]
+name = "ascii"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d92bec98840b8f03a5ff5413de5293bfcd8bf96467cf5452609f939ec6f5de16"
 
 [[package]]
 name = "atk"
@@ -352,6 +362,12 @@ dependencies = [
  "serde",
  "winapi",
 ]
+
+[[package]]
+name = "chunked_transfer"
+version = "1.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cca491388666e04d7248af3f60f0c40cfb0991c72205595d7c396e3510207d1a"
 
 [[package]]
 name = "cipher"
@@ -1953,6 +1969,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "os_pipe"
+version = "1.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0ae859aa07428ca9a929b936690f8b12dc5f11dd8c6992a18ca93919f28bc177"
+dependencies = [
+ "libc",
+ "windows-sys",
+]
+
+[[package]]
 name = "overload"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2176,6 +2202,15 @@ dependencies = [
  "fdeflate",
  "flate2",
  "miniz_oxide",
+]
+
+[[package]]
+name = "portpicker"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "be97d76faf1bfab666e1375477b23fde79eccf0276e9b63b92a39d676a889ba9"
+dependencies = [
+ "rand 0.8.5",
 ]
 
 [[package]]
@@ -2751,6 +2786,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "shared_child"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0d94659ad3c2137fef23ae75b03d5241d633f8acded53d672decfa0e6e0caef"
+dependencies = [
+ "libc",
+ "winapi",
+]
+
+[[package]]
 name = "simd-adler32"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3012,6 +3057,7 @@ dependencies = [
  "ignore",
  "objc",
  "once_cell",
+ "os_pipe",
  "percent-encoding",
  "rand 0.8.5",
  "raw-window-handle",
@@ -3020,6 +3066,7 @@ dependencies = [
  "serde_json",
  "serde_repr",
  "serialize-to-javascript",
+ "shared_child",
  "state",
  "tar",
  "tauri-macros",
@@ -3286,6 +3333,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "96ba15a897f3c86766b757e5ac7221554c6750054d74d5b28844fce5fb36a6c4"
 dependencies = [
  "time-core",
+]
+
+[[package]]
+name = "tiny_http"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "389915df6413a2e74fb181895f933386023c71110878cd0825588928e64cdc82"
+dependencies = [
+ "ascii",
+ "chunked_transfer",
+ "httpdate",
+ "log",
 ]
 
 [[package]]
