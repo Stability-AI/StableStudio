@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::collections::HashMap;
+use std::fmt::format;
 use std::fs::File;
 use std::sync::OnceLock;
 use tauri::api::process::CommandEvent;
@@ -97,7 +98,7 @@ fn emit_event(event: &str, data: Option<String>) {
                 .unwrap_or_else(|_| println!("[!!] event failed"));
         }
         None => {
-            println!("[!!] window locked");
+            println!("[!!] window not set");
         }
     }
 }
@@ -109,20 +110,21 @@ async fn watch_comfy(
         // check if output starts with "To see the GUI go to:"
         match i {
             Stdout(line) if line.len() > 1 => {
+                println!("[ComfyUI] stdout: {}", line);
+                emit_event("comfy-output", Some(format!("stdout:{line}")));
+
                 if line.starts_with("To see the GUI go to:") {
                     println!("Comfy launched successfully!");
                     return (rx, Ok("completed".to_string()));
                 }
-                println!("[ComfyUI] stdout: {}", line);
-                emit_event("comfy-stdout", Some(line));
             }
             Stderr(line) => {
                 println!("[ComfyUI] stderr: {}", line);
-                emit_event("comfy-stderr", Some(line));
+                emit_event("comfy-output", Some(format!("stderr:{line}")));
             }
             Error(line) => {
                 println!("[ComfyUI] error: {}", line);
-                emit_event("comfy-error", Some(line));
+                emit_event("comfy-output", Some(format!("error:{line}")));
             }
             Terminated(_) => {
                 println!("Comfy terminated!");

@@ -1,4 +1,3 @@
-import { listen } from "@tauri-apps/api/event";
 import { useLocation } from "react-router-dom";
 import { create } from "zustand";
 
@@ -60,37 +59,6 @@ export type Graph = {
 
 export function Comfy() {
   const location = useLocation();
-  const { print } = Comfy.use();
-
-  useEffect(() => {
-    let mounted = true;
-    const unlisteners = [] as (() => void)[];
-    (async () => {
-      if (mounted) {
-        unlisteners.push(
-          await listen("comfy-stdout", (event) => {
-            console.log("stdout", `${event.payload}`);
-            print("stdout", `${event.payload}`);
-          })
-        );
-        unlisteners.push(
-          await listen("comfy-stderr", (event) => {
-            console.log("stderr", `${event.payload}`);
-            print("stderr", `${event.payload}`);
-          })
-        );
-
-        mounted = false;
-      }
-    })();
-
-    return () => {
-      mounted = false;
-
-      for (const unlistener of unlisteners) unlistener();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <iframe
@@ -105,15 +73,21 @@ export function Comfy() {
   );
 }
 
-const MAX_STDOUT_LENGTH = 35;
+const MAX_STDOUT_LENGTH = 500;
 
 type State = {
   output: {
-    type: "stdout" | "stderr";
+    type: string;
     data: string;
   }[];
   max_lines: number;
-  print: (type: "stdout" | "stderr", data: string) => void;
+  print: (type: string, data: string) => void;
+
+  running: boolean;
+  setRunning: (running: boolean) => void;
+
+  unlisteners: (() => void)[];
+  setUnlisteners: (unlisteners: (() => void)[]) => void;
 };
 
 export namespace Comfy {
@@ -134,5 +108,11 @@ export namespace Comfy {
         if (output.length > MAX_STDOUT_LENGTH) output.shift();
         return { output };
       }),
+
+    running: false,
+    setRunning: (running) => set({ running }),
+
+    unlisteners: [],
+    setUnlisteners: (unlisteners) => set({ unlisteners }),
   }));
 }

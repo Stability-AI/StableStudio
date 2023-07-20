@@ -1,3 +1,4 @@
+import { listen } from "@tauri-apps/api/event";
 import {
   BaseDirectory,
   exists,
@@ -8,6 +9,7 @@ import {
 import { appDataDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { download } from "tauri-plugin-upload";
+import { shallow } from "zustand/shallow";
 import { Comfy } from "~/Comfy";
 import { Router } from "~/Router";
 import { Shortcut } from "~/Shortcut";
@@ -105,6 +107,10 @@ export namespace App {
     const [isSetup, setIsSetup] = useState<SetupState>(SetupState.NotStarted);
     const [message, setMessage] = useState<string>("");
     const [progress, setProgress] = useState<number | null>(null);
+    const [setRunning, setUnlisteners, print] = Comfy.use(
+      (state) => [state.setRunning, state.setUnlisteners, state.print],
+      shallow
+    );
     const nonce = useRef<number>(0);
 
     const check = useCallback(async () => {
@@ -196,6 +202,14 @@ export namespace App {
       setMessage("Starting ComfyUI...");
       setProgress(null);
 
+      // add listener
+      const unlisten = await listen("comfy-output", (event) => {
+        const [t, ...d] = `${event.payload}`.split(":");
+        console.log("[COMFYUI]", t, d);
+        print(t, d.join(":"));
+      });
+      setUnlisteners([unlisten]);
+
       // start comfy
       const result = await invoke("launch_comfy", {
         path: `${appDataPath}/comfyui`,
@@ -206,8 +220,9 @@ export namespace App {
         throw new Error("Failed to launch ComfyUI");
       }
 
+      setRunning(true);
       setIsSetup(SetupState.ComfyRunning);
-    }, [isSetup]);
+    }, [isSetup, print, setRunning, setUnlisteners]);
 
     useEffect(() => {
       check();

@@ -6,14 +6,12 @@ import {
 import { shallow } from "zustand/shallow";
 import { Comfy } from "~/Comfy";
 
-import { Plugin } from "~/Plugin";
 import { Theme } from "~/Theme";
 
 import { Panel } from "./Panel";
 import { Setting } from "./Setting";
 
 export function Manifest({
-  id,
   manifest,
   pluginStatus,
   settings,
@@ -87,9 +85,18 @@ export function Manifest({
         </div>
         {output.length > 0 && (
           <>
-            <div className="whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm">
-              {output.map((line, index) => (
-                <p key={`${index}-${line}`}>{line.data}</p>
+            <div className="flex max-h-[25rem] flex-col-reverse overflow-y-auto whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm">
+              {[...output].reverse().map((line, index) => (
+                <p
+                  key={`${index}-${line}`}
+                  className={classes(
+                    "text-white",
+                    line.type === "stdout" && "text-green-200",
+                    line.type === "stderr" && "text-red-200"
+                  )}
+                >
+                  {line.data}
+                </p>
               ))}
             </div>
           </>
@@ -110,22 +117,5 @@ export function Manifest({
         </div>
       )}
     </Panel>
-  );
-}
-
-function MiniManifestField({
-  label,
-  value,
-  className,
-}: {
-  label: string;
-  value: string | undefined;
-  className?: string;
-}) {
-  return (
-    <p className={classes("opacity-muted text-sm", className)}>
-      <span className="select-none opacity-50">{label} </span>
-      {value}
-    </p>
   );
 }
