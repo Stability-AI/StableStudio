@@ -3,7 +3,6 @@ import {
   PluginSettings,
   PluginStatus,
 } from "@stability/stablestudio-plugin";
-import { shallow } from "zustand/shallow";
 import { Comfy } from "~/Comfy";
 
 import { Theme } from "~/Theme";
