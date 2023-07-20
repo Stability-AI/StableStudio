@@ -2,8 +2,6 @@
 
 <img src="./misc/Banner.png" />
 
-# StableStudio
-
 **🗺 Contents – [🚀 Quick Start](#quick-start) · [ℹ️ About](#about) · [🙋 FAQ](#faq) · [🧑‍💻 Contributing](#contributing)**
 
 **📚 Documentation – [🎨 UI](./packages/stablestudio-ui/README.md) · <a href="https://platform.stability.ai" target="_blank">⚡️ platform.stability.ai</a>**
