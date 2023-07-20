@@ -58,6 +58,13 @@ export namespace Create {
         pluginInput.width = Math.ceil((pluginInput.width ?? 512) / 64) * 64;
       }
 
+      console.log(Comfy.get());
+
+      Comfy.get()?.graph._nodes?.forEach((node) => {
+        if (node.title === "StableStudio Image Count") {
+          node.widgets_values = count as any;
+        }
+      });
       await Comfy.get()?.queuePrompt(1, 1);
     } catch (caught: unknown) {
       const exception = Generation.Image.Exception.create(caught);

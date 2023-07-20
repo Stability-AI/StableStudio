@@ -1,6 +1,7 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
 import { useLocation } from "react-router-dom";
 import { create } from "zustand";
+import { shallow } from "zustand/shallow";
 import { Generation } from "~/Generation";
 
 export type ComfyApp = {
@@ -16,13 +17,18 @@ export type ComfyApp = {
   queuePrompt: (number: number, batchCount: number) => Promise<void>;
   clean: () => void;
   api: ComfyAPI;
+  graph: {
+    _nodes: {
+      title: string;
+      type: string;
+      widgets_values: any[];
+    }[];
+  };
 };
 
 export type ComfyAPI = {
   addEventListener: (event: string, callback: (detail: any) => void) => void;
 };
-
-export type Comfy = { app: ComfyApp; api: ComfyAPI };
 
 export type ComfyOutput = {
   images: {
@@ -232,6 +238,27 @@ export namespace Comfy {
 
     console.log("registered ComfyUI listeners");
     use.getState().setRunning(true);
+  };
+
+  export const Output = () => {
+    const output = Comfy.use(({ output }) => output, shallow);
+
+    return (
+      <div className="flex max-h-[25rem] flex-col-reverse overflow-y-auto whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm">
+        {[...output].reverse().map((line, index) => (
+          <p
+            key={`${index}-${line}`}
+            className={classes(
+              "text-white",
+              line.type === "stdout" && "text-green-200",
+              line.type === "stderr" && "text-red-200"
+            )}
+          >
+            {line.data}
+          </p>
+        ))}
+      </div>
+    );
   };
 }
 

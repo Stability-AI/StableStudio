@@ -23,7 +23,6 @@ export function Manifest({
   settings: PluginSettings;
   setSetting: (key: string, value: any) => void;
 }) {
-  const output = Comfy.use(({ output }) => output, shallow);
   return (
     <Panel className="flex flex-col gap-2">
       <div className="flex flex-col gap-4">
@@ -83,24 +82,7 @@ export function Manifest({
             </div>
           </div>
         </div>
-        {output.length > 0 && (
-          <>
-            <div className="flex max-h-[25rem] flex-col-reverse overflow-y-auto whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm">
-              {[...output].reverse().map((line, index) => (
-                <p
-                  key={`${index}-${line}`}
-                  className={classes(
-                    "text-white",
-                    line.type === "stdout" && "text-green-200",
-                    line.type === "stderr" && "text-red-200"
-                  )}
-                >
-                  {line.data}
-                </p>
-              ))}
-            </div>
-          </>
-        )}
+        <Comfy.Output />
       </div>
 
       {Object.keys(settings).length > 0 && (

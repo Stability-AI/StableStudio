@@ -1,57 +1,34 @@
 <div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1em; margin: 4em 0;">
 
 <img src="./misc/Banner.png" />
-<img src="./misc/GenerateScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
-<img src="./misc/EditScreenshot.png" style="width: 400px; max-width: 600px; flex-grow: 1;" />
 
-<h3>👋 Welcome to StableStudio, the open-source version of <a href="https://dreamstudio.ai" target="_blank">DreamStudio</a>!</h3>
+# StableStudio
 
 **🗺 Contents – [🚀 Quick Start](#quick-start) · [ℹ️ About](#about) · [🙋 FAQ](#faq) · [🧑‍💻 Contributing](#contributing)**
 
-**📚 Documentation – [🎨 UI](./packages/stablestudio-ui/README.md) · [🔌 Plugins](./packages/stablestudio-plugin/README.md) · <a href="https://platform.stability.ai" target="_blank">⚡️ platform.stability.ai</a>**
+**📚 Documentation – [🎨 UI](./packages/stablestudio-ui/README.md) · <a href="https://platform.stability.ai" target="_blank">⚡️ platform.stability.ai</a>**
 
 **🔗 Links – <a href="https://discord.com/channels/1002292111942635562/1108055793674227782" target="_blank">🎮 Discord</a> · <a href="https://dreamstudio.ai" target="_blank">🌈 DreamStudio</a> · <a href="https://github.com/Stability-AI/StableStudio/issues">🛟 Bugs & Support</a> · <a href="https://github.com/Stability-AI/StableStudio/discussions">💬 Discussion</a>**
 
 <br />
-<br />
 
 </div>
 
-# <a id="quick-start" href="#quick-start">🚀 Quick Start</a>
+# 🚀 Installation
 
-You'll need to have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/) installed. Then run the following commands to install dependencies and launch StableStudio.
-
-```bash
-git clone https://github.com/Stability-AI/StableStudio.git
-```
-
-```bash
-cd StableStudio
-```
-
-```bash
-yarn
-```
-
-```bash
-yarn dev
-```
+You'll need to head over to the [Releases](https://github.com/Stability-AI/StableStudio/releases) page to download StableStudio for your operating system. StableStudio will download and install its own managed copy of [ComfyUI](https://github.com/comfyanonymous/ComfyUI) and the Stable Diffusion weights.
 
 _**That's it! 🎉**_
 
-StableStudio will be running at [localhost:3000](http://localhost:3000) by default.
-
-> If you are using the default Stability API plugin, You'll need to have your [API key](https://platform.stability.ai/docs/getting-started/authentication) handy. Otherwise, you should be good to go!
-
-# <a id="about" href="#about">About</a>
+# About
 
 <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin: 0 0 2em 0;">
-  <img src="./misc/PainterWithRobot.png" style="flex-grow: 1; flex-shrink: 1;" />
+  <img src="./misc/aboutReadmeImage.png" style="flex-grow: 1; flex-shrink: 1;" />
 </div>
 
-StableStudio is [Stability AI](https://stability.ai)'s official open-source variant of [DreamStudio](https://www.dreamstudio.ai), our user interface for generative AI. It is a web-based application that allows users to create and edit generated images. We're not entirely sure where this project is going just yet, but we're excited to see what the community does with it!
+StableStudio is [Stability AI](https://stability.ai)'s official open-source variant of [DreamStudio](https://www.dreamstudio.ai), our user interface for generative AI. It is a desktop application for local inference of Stable Diffusion that allows users to create and edit generated images. We're excited to see what the community does with it!
 
-# <a id="faq" href="#faq">FAQ</a>
+# FAQ
 
 ### What's the difference between StableStudio and [DreamStudio](https://dreamstudio.ai)?
 
@@ -59,9 +36,9 @@ _Not much!_ There are a few tweaks we made to make the project more community-fr
 
 - We removed [DreamStudio](https://dreamstudio.ai)-specific branding.
 
-- All "over-the-wire" API calls have been replaced by a [plugin system](./packages/stablestudio-plugin/README.md) which allows you to easily swap out the back-end.
+- StableStudio is now packaged as a tauri application
 
-  - With a little bit of TypeScript, you can [create your own plugin](./packages/stablestudio-plugin/README.md) and use StableStudio with any back-end you want!
+- All "over-the-wire" API calls have been replaced by a [ComfyUI](https://github.com/comfyanonymous/ComfyUI) backend.
 
 - We removed Stability-specific account features such as billing, API key management, etc.
 
@@ -69,12 +46,41 @@ _Not much!_ There are a few tweaks we made to make the project more community-fr
 
 ### Will [DreamStudio](https://dreamstudio.ai) still be supported?
 
-_Yes!_ Stability's hosted deployment of StableStudio will remain [DreamStudio](https://dreamstudio.ai). It will continue to get updates and stay up-to-date with StableStudio whenever possible.
+_Yes!_ Stability's hosted deployment of StableStudio will remain [DreamStudio](https://dreamstudio.ai).
 
-# <a id="contributing" href="#contributing">🧑‍💻 Contributing</a>
+# Building From Source
+
+> Make sure you have the rust toolchain, nodejs, and yarn installed
+
+1. Clone the repo
+
+```
+git clone https://github.com/Stability-AI/StableStudio
+```
+
+2. Install yarn dependencies
+
+```
+yarn install
+```
+
+3. Build
+
+```
+cargo tauri build
+```
+> Or for development
+
+```
+cargo tauri dev
+```
+
+Installers/executables should be located in `packages/stablestudio-ui/src-tauri/target/release/bundle`
+
+# Contributing
 
 <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin: 0 0 2em 0;">
-  <img src="./misc/ProgrammingRobots.png" style="flex-grow: 1; flex-shrink: 1;" />
+  <img src="./misc/contributingReadmeImage.png" style="flex-grow: 1; flex-shrink: 1;" />
 </div>
 
 _**Community contributions are encouraged!**_

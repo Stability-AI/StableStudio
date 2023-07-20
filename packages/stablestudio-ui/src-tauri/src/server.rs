@@ -76,7 +76,7 @@ impl Builder {
                                     Some("text/html".to_string()),
                                     None,
                                 ),
-                                ["api" | "prompt" | "object_info" | "view" | "queue" | "extensions", ..] => (
+                                ["api" | "prompt" | "object_info" | "view" | "history" | "queue" | "extensions", ..] => (
                                     None,
                                     None,
                                     Some(

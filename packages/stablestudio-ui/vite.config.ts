@@ -46,6 +46,7 @@ export default defineConfig(({ mode }) => {
         "/object_info": redirectComfy,
         "/view": redirectComfy,
         "/queue": redirectComfy,
+        "/history": redirectComfy,
       },
     },
 
