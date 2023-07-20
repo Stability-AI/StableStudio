@@ -222,6 +222,7 @@ export namespace App {
 
       setRunning(true);
       setIsSetup(SetupState.ComfyRunning);
+      Comfy.registerListeners();
     }, [isSetup, print, setRunning, setUnlisteners]);
 
     useEffect(() => {

@@ -6,6 +6,9 @@ on:
     branches:
       - tauri
 
+concurrency:
+  group: comfyui_windows
+
 jobs:
   repackage_comfyui:
     permissions:

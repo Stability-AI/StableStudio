@@ -2,7 +2,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::collections::HashMap;
-use std::fmt::format;
 use std::fs::File;
 use std::sync::OnceLock;
 use tauri::api::process::CommandEvent;

@@ -9,7 +9,8 @@ export type State = {
 
   requested: (
     inputID: ID,
-    modifiers?: Generation.Image.Input.Modifiers
+    modifiers?: Generation.Image.Input.Modifiers,
+    nextID?: ID
   ) => Generation.Image.Output;
 
   received: (
@@ -37,8 +38,8 @@ export namespace State {
 
     nextID: ID.create(),
 
-    requested: (inputID, modifiers) => {
-      const id = get().nextID;
+    requested: (inputID, modifiers, nextID) => {
+      const id = nextID ?? get().nextID;
       const output = {
         id,
         inputID,

@@ -106,6 +106,11 @@ impl Builder {
                                     "`ws${window.location.protocol === \"https:\" ? \"s\" : \"\"}://${location.host}/ws${existingSession}`",
                                     "`ws://localhost:5000/ws${existingSession}`"
                                 );
+
+                                // add some stuff to app.js
+                                if path_name.ends_with("app.js") && !file_contents.ends_with("app.api = api;") {
+                                    file_contents = file_contents + "\napp.api = api;";
+                                }
                             
                                 let response = HttpResponse::from_data(file_contents.as_bytes()).with_status_code(200).with_header(
                                     Header::from_bytes("Content-Type", mimetype.unwrap().as_str()).unwrap(),

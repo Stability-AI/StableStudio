@@ -1,9 +1,7 @@
-import * as StableStudio from "@stability/stablestudio-plugin";
-import throttledQueue from "throttled-queue";
+import { Comfy } from "~/Comfy";
 
 import { Generation } from "~/Generation";
 import { GlobalState } from "~/GlobalState";
-import { Plugin } from "~/Plugin";
 
 import { Button } from "./Button";
 
@@ -23,35 +21,23 @@ export namespace Create {
     ) => void;
   };
 
-  namespace Throttle {
-    const requestsPerInterval = 1;
-    const interval = 500;
-    const spaceEvenly = true;
-
-    const queue = throttledQueue(requestsPerInterval, interval, spaceEvenly);
-    export const wait = () => queue(() => Promise.resolve());
-  }
-
   export const execute = async ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     count = Generation.Image.Count.preset(),
     input,
 
     onStarted = doNothing,
     onException = doNothing,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     onSuccess = doNothing,
     onFinished = doNothing,
   }: Handlers & {
     count: number;
     input: Generation.Image.Input;
-  }): Promise<Generation.Image.Exception | Generation.Images> => {
-    const { createStableDiffusionImages } = Plugin.get();
+  }): Promise<undefined | Generation.Image.Exception> => {
     try {
-      if (!createStableDiffusionImages) throw new Error("Plugin not found");
-
       Latest.set(new Date());
       onStarted();
-
-      await Throttle.wait();
 
       const initImg = await Generation.Image.Input.resizeInit(input);
       const pluginInput = await Generation.Image.Input.toInput(
@@ -72,43 +58,7 @@ export namespace Create {
         pluginInput.width = Math.ceil((pluginInput.width ?? 512) / 64) * 64;
       }
 
-      const responses: Generation.Images = [];
-      const response = await createStableDiffusionImages({
-        input: pluginInput,
-        count,
-      });
-
-      if (response instanceof Error) throw response;
-      if (!response || !response?.images || response?.images?.length <= 0)
-        throw new Error();
-
-      const newInputs: Record<ID, Generation.Image.Input> = {};
-
-      for (const image of response.images) {
-        const inputID = ID.create();
-        const newInput = {
-          ...Generation.Image.Input.initial(inputID),
-          ...input,
-          seed: image.input?.seed ?? input.seed,
-          id: inputID,
-        };
-
-        const cropped = await cropImage(image, newInput);
-        if (!cropped) continue;
-
-        responses.push(cropped);
-        newInputs[inputID] = newInput;
-      }
-
-      Generation.Image.Inputs.set({
-        ...Generation.Image.Inputs.get(),
-        ...newInputs,
-      });
-
-      onSuccess(responses);
-      onFinished(responses);
-
-      return responses;
+      await Comfy.get()?.queuePrompt(1, 1);
     } catch (caught: unknown) {
       const exception = Generation.Image.Exception.create(caught);
 
@@ -142,30 +92,24 @@ export namespace Create {
           ...modifiers,
         };
 
-        const output = Generation.Image.Output.requested(inputID, modifiers);
-
         return execute({
           count: modifiers.count ?? Generation.Image.Count.get(),
           input,
 
-          onStarted: () => {
-            Generation.Image.Output.set(output);
+          onStarted: (output) => {
             onStarted(output);
           },
 
           onException: (exception) => {
             showErrorSnackbar(exception);
             onException(exception);
-            Generation.Image.Output.clear(output.id);
           },
 
           onSuccess: (images) => {
-            images.forEach(Generation.Image.add);
             onSuccess(images);
           },
 
           onFinished: (result) => {
-            Generation.Image.Output.received(output.id, result);
             onFinished(result);
           },
         });
@@ -174,10 +118,7 @@ export namespace Create {
     );
   };
 
-  export const useIsEnabled = () =>
-    Plugin.use(
-      ({ createStableDiffusionImages }) => !!createStableDiffusionImages
-    );
+  export const useIsEnabled = () => Comfy.use(({ running }) => running);
 
   export type Latest = Date;
   export namespace Latest {
@@ -201,53 +142,4 @@ export namespace Create {
       export const use = store;
     }
   }
-}
-
-// TODO: Move somewhere else
-function cropImage(
-  image: StableStudio.StableDiffusionImage,
-  input: Generation.Image.Input
-) {
-  return new Promise<Generation.Image | void>((resolve) => {
-    const id = image.id;
-    const blob = image.blob;
-    if (!blob || !id) return resolve();
-
-    // crop image to box size
-    const croppedCanvas = document.createElement("canvas");
-    croppedCanvas.width = input.width;
-    croppedCanvas.height = input.height;
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const croppedCtx = croppedCanvas.getContext("2d")!;
-
-    const img = new window.Image();
-    img.src = URL.createObjectURL(blob);
-    img.onload = () => {
-      croppedCtx.drawImage(
-        img,
-        0,
-        0,
-        input.width,
-        input.height,
-        0,
-        0,
-        input.width,
-        input.height
-      );
-
-      croppedCanvas.toBlob((blob) => {
-        if (blob) {
-          const objectURL = URL.createObjectURL(blob);
-          resolve({
-            id,
-            inputID: input.id,
-            created: new Date(),
-            src: objectURL,
-            finishReason: 0,
-          });
-        }
-      });
-    };
-  });
 }
