@@ -6,6 +6,10 @@ on:
     branches:
       - tauri
 
+concurrency:
+  group: tauri-build
+  cancel-in-progress: true
+
 jobs:
   build:
     strategy:

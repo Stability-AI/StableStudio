@@ -107,8 +107,8 @@ export namespace App {
     const [isSetup, setIsSetup] = useState<SetupState>(SetupState.NotStarted);
     const [message, setMessage] = useState<string>("");
     const [progress, setProgress] = useState<number | null>(null);
-    const [setRunning, setUnlisteners, print] = Comfy.use(
-      (state) => [state.setRunning, state.setUnlisteners, state.print],
+    const [setUnlisteners, print] = Comfy.use(
+      (state) => [state.setUnlisteners, state.print],
       shallow
     );
     const nonce = useRef<number>(0);
@@ -220,10 +220,9 @@ export namespace App {
         throw new Error("Failed to launch ComfyUI");
       }
 
-      setRunning(true);
       setIsSetup(SetupState.ComfyRunning);
       Comfy.registerListeners();
-    }, [isSetup, print, setRunning, setUnlisteners]);
+    }, [isSetup, print, setUnlisteners]);
 
     useEffect(() => {
       check();

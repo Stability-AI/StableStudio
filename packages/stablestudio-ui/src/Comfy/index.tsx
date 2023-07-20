@@ -231,6 +231,7 @@ export namespace Comfy {
     });
 
     console.log("registered ComfyUI listeners");
+    use.getState().setRunning(true);
   };
 }
 
