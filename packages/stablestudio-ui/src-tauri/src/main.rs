@@ -3,6 +3,7 @@
 
 use std::collections::HashMap;
 use std::fs::File;
+use std::sync::OnceLock;
 use tauri::api::process::CommandEvent;
 use tauri::api::process::{
     Command,
@@ -10,10 +11,12 @@ use tauri::api::process::{
 };
 use tauri::async_runtime::Receiver;
 use tauri::utils::config::{AppUrl, WindowConfig};
-use tauri::{RunEvent, WindowBuilder, WindowUrl};
+use tauri::{RunEvent, Window, WindowBuilder, WindowUrl};
 use tauri_plugin_upload;
 
 mod server;
+
+static WINDOW: OnceLock<Window> = OnceLock::new();
 
 fn main() {
     let port = portpicker::pick_unused_port().expect("failed to find unused port");
@@ -29,7 +32,7 @@ fn main() {
     tauri::Builder::default()
         .plugin(server::Builder::new(port).build())
         .setup(move |app| {
-            WindowBuilder::from_config(
+            let window = WindowBuilder::from_config(
                 app,
                 WindowConfig {
                     url: {
@@ -49,6 +52,9 @@ fn main() {
                 },
             )
             .build()?;
+
+            _ = WINDOW.set(window);
+
             Ok(())
         })
         .plugin(tauri_plugin_upload::init())
@@ -83,6 +89,19 @@ fn extract_zip(path: String, target_dir: String) -> Result<String, String> {
     Ok("completed".to_string())
 }
 
+fn emit_event(event: &str, data: Option<String>) {
+    match WINDOW.get() {
+        Some(window) => {
+            window
+                .emit(event, data)
+                .unwrap_or_else(|_| println!("[!!] event failed"));
+        }
+        None => {
+            println!("[!!] window locked");
+        }
+    }
+}
+
 async fn watch_comfy(
     mut rx: Receiver<CommandEvent>,
 ) -> (Receiver<CommandEvent>, Result<String, String>) {
@@ -95,12 +114,15 @@ async fn watch_comfy(
                     return (rx, Ok("completed".to_string()));
                 }
                 println!("[ComfyUI] stdout: {}", line);
+                emit_event("comfy-stdout", Some(line));
             }
             Stderr(line) => {
                 println!("[ComfyUI] stderr: {}", line);
+                emit_event("comfy-stderr", Some(line));
             }
             Error(line) => {
                 println!("[ComfyUI] error: {}", line);
+                emit_event("comfy-error", Some(line));
             }
             Terminated(_) => {
                 println!("Comfy terminated!");

@@ -2,13 +2,14 @@ import * as StableStudio from "@stability/stablestudio-plugin";
 
 import { Comfy } from ".";
 
-export const createPlugin = StableStudio.createPlugin(() => ({
+export const createPlugin = StableStudio.createPlugin<any>(({ set, get }) => ({
   manifest: {
     name: "ComfyUI Backend",
-    author: "StabilityAI",
-    version: "0.0.1",
-    license: "MIT",
-    description: "An interface for generating images with ComfyUI",
+  },
+
+  statusStuff: {
+    indicator: "loading",
+    text: "Starting",
   },
 
   createStableDiffusionImages: async () => {
@@ -53,9 +54,15 @@ export const createPlugin = StableStudio.createPlugin(() => ({
   },
 
   getStatus: () => {
-    return {
-      indicator: "success",
-      text: "Ready",
-    };
+    fetch("/comfyui", { cache: "no-cache" }).then((resp) => {
+      set({
+        statusStuff: {
+          indicator: resp.ok ? "success" : "error",
+          text: resp.ok ? "Running" : "Not Running",
+        },
+      });
+    });
+
+    return get().statusStuff;
   },
 }));

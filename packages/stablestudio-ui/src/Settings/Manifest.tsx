@@ -3,7 +3,8 @@ import {
   PluginSettings,
   PluginStatus,
 } from "@stability/stablestudio-plugin";
-import { Markdown } from "~/Markdown";
+import { shallow } from "zustand/shallow";
+import { Comfy } from "~/Comfy";
 
 import { Plugin } from "~/Plugin";
 import { Theme } from "~/Theme";
@@ -24,11 +25,11 @@ export function Manifest({
   settings: PluginSettings;
   setSetting: (key: string, value: any) => void;
 }) {
-  const unloadPlugin = Plugin.useUnload();
+  const output = Comfy.use(({ output }) => output, shallow);
   return (
     <Panel className="flex flex-col gap-2">
-      <div className="flex flex-col">
-        <div className="mb-4">
+      <div className="flex flex-col gap-4">
+        <div>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               {manifest?.icon && (
@@ -82,35 +83,17 @@ export function Manifest({
                 </div>
               )}
             </div>
-            {id && unloadPlugin && (
-              <Theme.Button
-                className="h-18"
-                icon={Theme.Icon.Trash}
-                onClick={() => id && unloadPlugin(id)}
-              >
-                Uninstall
-              </Theme.Button>
-            )}
-          </div>
-          <div className="mt-2 flex gap-5">
-            {manifest?.version && (
-              <MiniManifestField label="Version" value={manifest.version} />
-            )}
-            <MiniManifestField
-              label="License"
-              value={manifest?.license ?? "No license"}
-            />
-            <MiniManifestField
-              label="Author"
-              value={manifest?.author ?? "No author"}
-            />
           </div>
         </div>
-        <ManifestField
-          label="About"
-          value={manifest?.description ?? "No description"}
-          markdown
-        />
+        {output.length > 0 && (
+          <>
+            <div className="whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm">
+              {output.map((line, index) => (
+                <p key={`${index}-${line}`}>{line.data}</p>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {Object.keys(settings).length > 0 && (
@@ -127,25 +110,6 @@ export function Manifest({
         </div>
       )}
     </Panel>
-  );
-}
-
-function ManifestField({
-  label,
-  value,
-  markdown,
-  className,
-}: {
-  label: string;
-  value: string | undefined;
-  markdown?: boolean;
-  className?: string;
-}) {
-  return (
-    <div className={classes("flex flex-col gap-2", className)}>
-      <Theme.Label className="ml-0">{label}</Theme.Label>
-      {markdown ? <Markdown text={value ?? ""} /> : <p>{value}</p>}
-    </div>
   );
 }
 

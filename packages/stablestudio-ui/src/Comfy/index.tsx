@@ -1,4 +1,6 @@
+import { listen } from "@tauri-apps/api/event";
 import { useLocation } from "react-router-dom";
+import { create } from "zustand";
 
 export type Comfy = {
   setup: () => void;
@@ -58,6 +60,37 @@ export type Graph = {
 
 export function Comfy() {
   const location = useLocation();
+  const { print } = Comfy.use();
+
+  useEffect(() => {
+    let mounted = true;
+    const unlisteners = [] as (() => void)[];
+    (async () => {
+      if (mounted) {
+        unlisteners.push(
+          await listen("comfy-stdout", (event) => {
+            console.log("stdout", `${event.payload}`);
+            print("stdout", `${event.payload}`);
+          })
+        );
+        unlisteners.push(
+          await listen("comfy-stderr", (event) => {
+            console.log("stderr", `${event.payload}`);
+            print("stderr", `${event.payload}`);
+          })
+        );
+
+        mounted = false;
+      }
+    })();
+
+    return () => {
+      mounted = false;
+
+      for (const unlistener of unlisteners) unlistener();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <iframe
@@ -72,10 +105,34 @@ export function Comfy() {
   );
 }
 
+const MAX_STDOUT_LENGTH = 35;
+
+type State = {
+  output: {
+    type: "stdout" | "stderr";
+    data: string;
+  }[];
+  max_lines: number;
+  print: (type: "stdout" | "stderr", data: string) => void;
+};
+
 export namespace Comfy {
   export const get = (): Comfy | null =>
     ((
       (document.getElementById("comfyui-window") as HTMLIFrameElement)
         ?.contentWindow as Window & { app: Comfy }
     )?.app as Comfy) ?? null;
+
+  export const use = create<State>((set) => ({
+    output: [],
+    max_lines: MAX_STDOUT_LENGTH,
+    print: (type, data) =>
+      set((state) => {
+        if (state.output.map((o) => o.data).includes(data)) return state;
+
+        const output = [...state.output, { type, data }];
+        if (output.length > MAX_STDOUT_LENGTH) output.shift();
+        return { output };
+      }),
+  }));
 }
