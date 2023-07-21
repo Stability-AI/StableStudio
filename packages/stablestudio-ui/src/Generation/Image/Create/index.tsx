@@ -60,12 +60,48 @@ export namespace Create {
 
       console.log(Comfy.get());
 
-      Comfy.get()?.graph._nodes?.forEach((node) => {
-        if (node.title === "StableStudio Image Count") {
-          node.widgets_values = count as any;
-        }
-      });
-      await Comfy.get()?.queuePrompt(1, 1);
+      Comfy.get()
+        ?.graph._nodes?.filter(
+          (node) =>
+            node.type === "PrimitiveNode" &&
+            node.title.toLowerCase().startsWith("stablestudio")
+        )
+        .forEach((node) => {
+          const widget = node.widgets.find((widget) => widget.name === "value");
+          if (widget) {
+            const normalized = node.title
+              .toLowerCase()
+              .replace("stablestudio", "")
+              .trim()
+              .replace(" ", "_");
+            if (normalized === "batch_size") {
+              widget.value = count;
+            } else if (normalized === "model" && input.model) {
+              widget.value = input.model;
+            } else if (
+              normalized === "sampler" &&
+              (input.sampler?.id?.length || 0) > 2
+            ) {
+              widget.value = input.sampler?.id;
+            } else if (normalized === "steps" && input.steps) {
+              widget.value = input.steps;
+            } else if (normalized === "seed" && input.seed !== 0) {
+              widget.value = input.seed;
+            } else if (normalized === "cfg" && input.cfgScale) {
+              widget.value = input.cfgScale;
+            } else if (normalized === "width") {
+              widget.value = input.width;
+            } else if (normalized === "height") {
+              widget.value = input.height;
+            } else if (normalized === "positive_prompt") {
+              widget.value = input.prompts.find((p) => p.weight > 0)?.text;
+            } else if (normalized === "negative_prompt") {
+              widget.value = input.prompts.find((p) => p.weight < 0)?.text;
+            }
+          }
+        });
+      Comfy.get()?.refreshComboInNodes();
+      await Comfy.get()?.queuePrompt(-1, 1);
     } catch (caught: unknown) {
       const exception = Generation.Image.Exception.create(caught);
 

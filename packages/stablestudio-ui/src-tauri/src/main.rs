@@ -58,7 +58,7 @@ fn main() {
             Ok(())
         })
         .plugin(tauri_plugin_upload::init())
-        .invoke_handler(tauri::generate_handler![extract_zip, launch_comfy])
+        .invoke_handler(tauri::generate_handler![extract_comfy, launch_comfy])
         .build(context)
         .expect("error while building tauri application")
         .run(move |_app_handle, event| match event {
@@ -73,17 +73,35 @@ fn main() {
 
 // tauri command to extract a zip from an arbitrary file path
 #[tauri::command]
-fn extract_zip(path: String, target_dir: String) -> Result<String, String> {
+fn extract_comfy(
+    handle: tauri::AppHandle,
+    path: String,
+    target_dir: String,
+) -> Result<String, String> {
     println!("extracting zip from {} to {}", path, target_dir);
     let file = File::open(path).unwrap();
     let mut archive = zip::ZipArchive::new(file).unwrap();
 
     // unarchive in a thread
-    let handle = std::thread::spawn(move || {
-        archive.extract(target_dir).unwrap();
+    let extract_parent = target_dir.clone();
+    let extract_thread = std::thread::spawn(move || {
+        archive.extract(extract_parent).unwrap();
     });
 
-    handle.join().unwrap();
+    // dont block the main thread
+    extract_thread.join().unwrap();
+
+    // move resources/defaultGraph.js to APPDATA/ComfyUI/ComfyUI/web/scripts/defaultGraph.js
+    let resource_path = handle
+        .path_resolver()
+        .resolve_resource("resources/defaultGraph.js")
+        .expect("failed to resolve resource");
+
+    let mut dest = std::path::PathBuf::from(target_dir);
+    dest.push("ComfyUI/ComfyUI/web/scripts/defaultGraph.js");
+
+    std::fs::create_dir_all(dest.parent().unwrap()).unwrap();
+    std::fs::copy(resource_path, dest).unwrap();
 
     println!("extracted zip");
     Ok("completed".to_string())

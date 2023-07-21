@@ -21,7 +21,11 @@ export type ComfyApp = {
     _nodes: {
       title: string;
       type: string;
-      widgets_values: any[];
+      widgets: {
+        name: string;
+        type: string;
+        value: any;
+      }[];
     }[];
   };
 };
@@ -161,7 +165,7 @@ export namespace Comfy {
         (output as ComfyOutput).images.map(async (image) => {
           console.log("image", image);
           const resp = await fetch(
-            `http://localhost:3000/view?filename=${image.filename}&subfolder=${
+            `/view?filename=${image.filename}&subfolder=${
               image.subfolder || ""
             }&type=${image.type}`,
             {

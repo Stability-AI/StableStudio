@@ -53,8 +53,11 @@ export namespace StableDiffusionV1 {
           { text: "", weight: -0.75 },
         ],
 
-        model: pluginDefaultInput?.model ?? "stable-diffusion-xl-beta-v2-2-2",
-        sampler: pluginDefaultInput?.sampler ?? { id: "0", name: "DDIM" },
+        model: pluginDefaultInput?.model ?? "v2-1_768-ema-pruned.safetensors",
+        sampler: pluginDefaultInput?.sampler ?? {
+          id: "dpmpp_sde",
+          name: "DPMPP SDE",
+        },
         height: pluginDefaultInput?.width ?? 512,
         width: pluginDefaultInput?.height ?? 512,
         steps: pluginDefaultInput?.steps ?? 50,

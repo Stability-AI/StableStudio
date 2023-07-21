@@ -159,7 +159,7 @@ export namespace App {
           setMessage("Extracting ComfyUI...");
           setProgress(null);
           try {
-            const result = await invoke("extract_zip", {
+            const result = await invoke("extract_comfy", {
               path: `${appDataPath}/comfyui.zip`,
               targetDir: `${appDataPath}`,
             });

@@ -103,7 +103,7 @@ impl Builder {
                                 // replace "/ws" with "/api/ws" in the file
                                 let mut file_contents = fs::read_to_string(&path_name).unwrap();
                                 file_contents = file_contents.replace(
-                                    "`ws${window.location.protocol === \"https:\" ? \"s\" : \"\"}://${location.host}/ws${existingSession}`",
+                                    "`ws${window.location.protocol === \"https:\" ? \"s\" : \"\"}://${this.api_host}${this.api_base}/ws${existingSession}`",
                                     "`ws://localhost:5000/ws${existingSession}`"
                                 );
 
