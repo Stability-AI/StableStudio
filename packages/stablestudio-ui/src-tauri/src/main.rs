@@ -15,6 +15,7 @@ use tauri::{RunEvent, Window, WindowBuilder, WindowUrl};
 use tauri_plugin_upload;
 
 mod server;
+mod show_path;
 
 static WINDOW: OnceLock<Window> = OnceLock::new();
 
@@ -58,7 +59,11 @@ fn main() {
             Ok(())
         })
         .plugin(tauri_plugin_upload::init())
-        .invoke_handler(tauri::generate_handler![extract_comfy, launch_comfy])
+        .invoke_handler(tauri::generate_handler![
+            extract_comfy,
+            launch_comfy,
+            show_path::show_in_folder
+        ])
         .build(context)
         .expect("error while building tauri application")
         .run(move |_app_handle, event| match event {

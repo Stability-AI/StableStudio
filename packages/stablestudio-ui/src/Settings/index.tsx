@@ -1,17 +1,20 @@
 import { PluginStatus } from "@stability/stablestudio-plugin";
+import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import { version as getOsVerison, platform } from "@tauri-apps/api/os";
+import { appDataDir } from "@tauri-apps/api/path";
+import { invoke } from "@tauri-apps/api/tauri";
 import { Link } from "react-router-dom";
 
 import { GlobalState } from "~/GlobalState";
 import { Plugin } from "~/Plugin";
 import { Theme } from "~/Theme";
 
-import { Install } from "./Install";
 import { Manifest } from "./Manifest";
-import { Setting } from "./Setting";
 
 export function Settings() {
   const [pluginStatus, setPluginStatus] = useState<PluginStatus | undefined>();
-  const pluginSetup = Plugin.useSetup();
+  const [comfyLocation, setComfyLocation] = useState<string | undefined>();
+  const [versions, setVersions] = useState<string[]>([]);
 
   const { manifest, settings, setSetting, getStatus } = Plugin.use(
     ({ manifest, settings, setSetting, getStatus }) => ({
@@ -21,8 +24,6 @@ export function Settings() {
       getStatus,
     })
   );
-
-  const { developerMode, setDeveloperMode } = Settings.use();
 
   useEffect(() => {
     function fetchStatus() {
@@ -57,6 +58,29 @@ export function Settings() {
     [settings]
   );
 
+  useEffect(() => {
+    async function fetchComfyLocation() {
+      const path = await appDataDir();
+      setComfyLocation(`${path}ComfyUI`);
+    }
+
+    async function fetchVersion() {
+      const version = await getVersion();
+      const tauriVersion = await getTauriVersion();
+      const os = await platform();
+      const osVersion = await getOsVerison();
+
+      setVersions([
+        `StableStudio (${version})`,
+        `Tauri (${tauriVersion})`,
+        `${os} (${osVersion})`,
+      ]);
+    }
+
+    fetchComfyLocation();
+    fetchVersion();
+  }, []);
+
   return (
     <>
       <div className="h-full justify-between overflow-y-auto bg-zinc-900 px-5 py-6">
@@ -78,24 +102,41 @@ export function Settings() {
             settings={settings ?? {}}
             setSetting={setSetting as never}
           />
-          <Setting
-            settingKey="developerMode"
-            setSetting={() => setDeveloperMode(!developerMode)}
-            settingValue={{
-              type: "boolean",
-              title: "Developer mode",
-              description:
-                "Enable experimental features such as installing untrusted plugins",
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between">
+              <label>ComfyUI location</label>
+            </div>
+            <div className="flex gap-2">
+              <Theme.Input
+                className="opacity-50"
+                placeholder={"/path/to/ComfyUI"}
+                value={comfyLocation}
+                onChange={doNothing}
+                disabled
+              />
+              <Theme.Button
+                className="py-2"
+                onClick={async () => {
+                  await invoke("show_in_folder", { path: comfyLocation });
+                }}
+              >
+                <Theme.Icon.ExternalLink className="h-6 w-6" />
+              </Theme.Button>
+            </div>
+          </div>
 
-              required: false,
-              value: developerMode,
-            }}
-          />
-          {developerMode && (
-            <Install
-              installPlugin={(url) => url && pluginSetup.loadFromURL(url)}
-            />
-          )}
+          <div className="mt-8 flex gap-3 text-xs font-light opacity-40">
+            {versions.map((version, i) => (
+              <>
+                {i !== 0 && (
+                  <div key={`${version}-dot`} className="select-none">
+                    &middot;
+                  </div>
+                )}
+                <div key={version}>{version}</div>
+              </>
+            ))}
+          </div>
         </div>
       </div>
     </>

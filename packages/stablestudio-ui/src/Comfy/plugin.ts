@@ -1,60 +1,10 @@
 import * as StableStudio from "@stability/stablestudio-plugin";
 
-export const createPlugin = StableStudio.createPlugin<any>(({ set, get }) => {
+export const createPlugin = StableStudio.createPlugin(() => {
   return {
     manifest: {
-      name: "ComfyUI Backend",
+      name: "ComfyUI",
     },
-
-    statusStuff: {
-      indicator: "loading",
-      text: "Starting",
-    },
-
-    // createStableDiffusionImages: async () => {
-    //   const comfy = Comfy.get();
-
-    //   if (!comfy) {
-    //     console.log(document.getElementById("comfyui-window"));
-    //     throw new Error("ComfyUI is not loaded");
-    //   }
-
-    //   await comfy.queuePrompt(1, 1);
-
-    //   const p = new Promise((resolve, reject) => {
-
-    //   });
-
-    //   const image = await fetch(`${window.location.origin}/DummyImage.png`);
-    //   const blob = await image.blob();
-    //   const createdAt = new Date();
-
-    //   return {
-    //     id: `${Math.random() * 10000000}`,
-    //     images: [
-    //       {
-    //         id: `${Math.random() * 10000000}`,
-    //         createdAt,
-    //         blob,
-    //       },
-    //       {
-    //         id: `${Math.random() * 10000000}`,
-    //         createdAt,
-    //         blob,
-    //       },
-    //       {
-    //         id: `${Math.random() * 10000000}`,
-    //         createdAt,
-    //         blob,
-    //       },
-    //       {
-    //         id: `${Math.random() * 10000000}`,
-    //         createdAt,
-    //         blob,
-    //       },
-    //     ],
-    //   };
-    // },
 
     getStableDiffusionModels: async () => {
       const resp = await fetch("/object_info/CheckpointLoader", {
@@ -96,17 +46,12 @@ export const createPlugin = StableStudio.createPlugin<any>(({ set, get }) => {
       );
     },
 
-    getStatus: () => {
-      fetch("/comfyui", { cache: "no-cache" }).then((resp) => {
-        set({
-          statusStuff: {
-            indicator: resp.ok ? "success" : "error",
-            text: resp.ok ? "Running" : "Not Running",
-          },
-        });
-      });
-
-      return get().statusStuff;
+    getStatus: async () => {
+      const resp = await fetch("/comfyui", { cache: "no-cache" });
+      return {
+        indicator: resp.ok ? "success" : "error",
+        text: resp.ok ? "Running" : "Not Running",
+      };
     },
   };
 });

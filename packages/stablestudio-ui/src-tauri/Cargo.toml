@@ -17,7 +17,7 @@ tauri-build = { version = "1.4.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.1", features = [ "fs-all", "path-all", "process-command-api", "devtools"] }
+tauri = { version = "1.4.1", features = [ "os-all", "fs-all", "path-all", "process-command-api", "devtools"] }
 tauri-plugin-upload = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 zip = "0.6.6"
 zip-extensions = "0.6.1"
