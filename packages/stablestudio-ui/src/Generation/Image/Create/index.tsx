@@ -37,7 +37,6 @@ export namespace Create {
   }): Promise<undefined | Generation.Image.Exception> => {
     try {
       Latest.set(new Date());
-      onStarted();
 
       const initImg = await Generation.Image.Input.resizeInit(input);
       const pluginInput = await Generation.Image.Input.toInput(
@@ -89,7 +88,26 @@ export namespace Create {
         });
       Comfy.get()?.refreshComboInNodes();
       console.log(Comfy.get());
-      await Comfy.get()?.queuePrompt(-1, 1);
+      const resp: any = await Comfy.get()?.queuePrompt(-1, 1);
+      console.log("queued", resp);
+      const { prompt_id } = resp;
+
+      if (prompt_id) {
+        Generation.Image.Inputs.set((inputs) => ({
+          ...inputs,
+          [prompt_id]: {
+            ...input,
+            id: prompt_id,
+          },
+        }));
+        const output = Generation.Image.Output.requested(
+          prompt_id,
+          {},
+          prompt_id
+        );
+        Generation.Image.Output.set(output);
+        onStarted(output);
+      }
     } catch (caught: unknown) {
       const exception = Generation.Image.Exception.create(caught);
 

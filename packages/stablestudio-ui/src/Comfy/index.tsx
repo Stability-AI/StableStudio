@@ -213,29 +213,6 @@ export namespace Comfy {
       Generation.Image.Output.received(prompt_id, responses);
     });
 
-    api.addEventListener("execution_start", ({ detail }) => {
-      const { prompt_id } = detail;
-
-      console.log("execution_start", detail);
-
-      if (prompt_id) {
-        let input = Generation.Image.Input.get(prompt_id);
-        if (!input) {
-          input = Generation.Image.Input.initial(prompt_id);
-          Generation.Image.Inputs.set((inputs) => ({
-            ...inputs,
-            [prompt_id]: input,
-          }));
-        }
-        const output = Generation.Image.Output.requested(
-          prompt_id,
-          {},
-          prompt_id
-        );
-        Generation.Image.Output.set(output);
-      }
-    });
-
     api.addEventListener("execution_error", ({ detail }) => {
       console.log("execution_error", detail);
       Generation.Image.Output.clear(detail.prompt_id);
