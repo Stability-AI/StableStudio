@@ -1,6 +1,7 @@
 import { App } from "~/App";
 import { Generation } from "~/Generation";
 import { Theme } from "~/Theme";
+import { NumberInput } from "~/Theme/NumberInput";
 
 export function Advanced({
   id,
@@ -9,6 +10,24 @@ export function Advanced({
   const { setInput, input } = Generation.Image.Input.use(id);
   const areModelsEnabled = Generation.Image.Models.useAreEnabled();
   const areSamplersEnabled = Generation.Image.Samplers.useAreEnabled();
+
+  const onWidthChange = useCallback(
+    (width: number) => {
+      setInput((input) => {
+        input.width = width;
+      });
+    },
+    [setInput]
+  );
+
+  const onHeightChange = useCallback(
+    (height: number) => {
+      setInput((input) => {
+        input.height = height;
+      });
+    },
+    [setInput]
+  );
 
   const onPromptStrengthChange = useCallback(
     (cfgScale: number) => {
@@ -69,7 +88,41 @@ export function Advanced({
       {...props}
     >
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-4">
+          <Theme.Tooltip
+            delay={750}
+            placement="right"
+            content={<h1>Manually set the width</h1>}
+          >
+            <NumberInput
+              label="Width"
+              placeholder="512"
+              fullWidth
+              number
+              min={1}
+              step={1}
+              max={2048}
+              value={input.width}
+              onNumberChange={onWidthChange}
+            />
+          </Theme.Tooltip>
+          <Theme.Tooltip
+            delay={750}
+            placement="right"
+            content={<h1>Manually set the height</h1>}
+          >
+            <NumberInput
+              label="Height"
+              placeholder="512"
+              fullWidth
+              number
+              min={1}
+              step={1}
+              max={2048}
+              value={input.height}
+              onNumberChange={onHeightChange}
+            />
+          </Theme.Tooltip>
           <Theme.Tooltip
             delay={750}
             placement="right"

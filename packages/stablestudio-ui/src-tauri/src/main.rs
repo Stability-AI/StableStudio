@@ -96,17 +96,24 @@ fn extract_comfy(
     // dont block the main thread
     extract_thread.join().unwrap();
 
-    // move resources/defaultGraph.js to APPDATA/ComfyUI/ComfyUI/web/scripts/defaultGraph.js
-    let resource_path = handle
+    let default_graph = handle
         .path_resolver()
         .resolve_resource("resources/defaultGraph.js")
         .expect("failed to resolve resource");
+    let stable_inputs = handle
+        .path_resolver()
+        .resolve_resource("resources/stableStudioInputs.js")
+        .expect("failed to resolve resource");
 
-    let mut dest = std::path::PathBuf::from(target_dir);
+    let mut dest = std::path::PathBuf::from(&target_dir);
     dest.push("ComfyUI/ComfyUI/web/scripts/defaultGraph.js");
-
     std::fs::create_dir_all(dest.parent().unwrap()).unwrap();
-    std::fs::copy(resource_path, dest).unwrap();
+    std::fs::copy(default_graph, dest).unwrap();
+
+    let mut dest = std::path::PathBuf::from(&target_dir);
+    dest.push("ComfyUI/ComfyUI/web/extensions/stableStudioInputs.js");
+    std::fs::create_dir_all(dest.parent().unwrap()).unwrap();
+    std::fs::copy(stable_inputs, dest).unwrap();
 
     println!("extracted zip");
     Ok("completed".to_string())

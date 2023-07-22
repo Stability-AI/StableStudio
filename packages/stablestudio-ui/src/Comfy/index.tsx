@@ -21,6 +21,7 @@ export type ComfyApp = {
     _nodes: {
       title: string;
       type: string;
+      stableValues?: any;
       widgets: {
         name: string;
         type: string;

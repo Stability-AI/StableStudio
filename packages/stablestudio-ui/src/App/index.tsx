@@ -134,7 +134,7 @@ export namespace App {
 
         if (!comfyExists) {
           setIsSetup(SetupState.NotStarted);
-          setMessage("Installing ComfyUI...");
+          setMessage("Downloading ComfyUI...");
 
           // delete the old comfyui zip if it exists
           if (

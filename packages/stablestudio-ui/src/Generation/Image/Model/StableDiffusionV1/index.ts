@@ -93,14 +93,7 @@ export namespace StableDiffusionV1 {
   export const baseResolution = (model: string) => {
     if (model.includes("512")) return 512;
     if (model.includes("768")) return 768;
-
-    switch (model) {
-      case "stable-diffusion-v1-5":
-        return 512;
-      case "stable-diffusion-v1-4":
-        return 512;
-    }
-
+    if (model.includes("1024") || model.includes("sd_xl")) return 1024;
     return 512;
   };
 

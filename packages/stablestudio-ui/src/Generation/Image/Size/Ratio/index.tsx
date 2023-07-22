@@ -16,9 +16,7 @@ export function Ratio({
 }) {
   const { input } = Generation.Image.Input.use(id);
   const { closest, ratios } = Ratios.use(id, fullControl);
-  const [timer, setTimer] = React.useState<ReturnType<
-    typeof setTimeout
-  > | null>(null);
+  const [timer, setTimer] = React.useState<NodeJS.Timeout | null>(null);
   const [forceTooltipOpen, setForceTooltipOpen] = React.useState(false);
 
   const onChange = useCallback(
@@ -156,7 +154,8 @@ export namespace Ratios {
   export const use = (id?: ID, fullControl = false) => {
     const { input } = Generation.Image.Input.use(id);
     const bounds = Generation.Image.Size.Bounds.use(id);
-    const ratios = useMemo(() => {
+
+    const normalRatios = useMemo(() => {
       if (!input?.width || !input?.height || !bounds) return [];
 
       const sizing = (ratio: Ratio) => {
@@ -187,6 +186,25 @@ export namespace Ratios {
         (a, b) => b.width / b.height - a.width / a.height
       );
     }, [fullControl, bounds, input?.width, input?.height]);
+
+    const sdxlRatios = useMemo(
+      () => [
+        { width: 21, height: 9, input: { width: 1536, height: 640 } },
+        { width: 16, height: 9, input: { width: 1344, height: 768 } },
+        { width: 3, height: 2, input: { width: 1216, height: 832 } },
+        { width: 4, height: 3, input: { width: 1152, height: 896 } },
+        { width: 5, height: 4, input: { width: 1152, height: 896 } },
+        { width: 1, height: 1, input: { width: 1024, height: 1024 } },
+        { width: 4, height: 5, input: { width: 896, height: 1152 } },
+        { width: 3, height: 4, input: { width: 896, height: 1152 } },
+        { width: 2, height: 3, input: { width: 832, height: 1216 } },
+        { width: 9, height: 16, input: { width: 768, height: 1344 } },
+        { width: 9, height: 21, input: { width: 640, height: 1536 } },
+      ],
+      []
+    );
+
+    const ratios = !input?.model?.includes("xl") ? normalRatios : sdxlRatios;
 
     type Closest = Ratio & {
       index: number;
