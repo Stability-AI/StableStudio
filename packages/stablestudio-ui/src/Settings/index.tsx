@@ -1,7 +1,7 @@
 import { PluginStatus } from "@stability/stablestudio-plugin";
 import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
 import { version as getOsVerison, platform } from "@tauri-apps/api/os";
-import { appDataDir } from "@tauri-apps/api/path";
+import { appDataDir, sep } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Link } from "react-router-dom";
 
@@ -60,8 +60,12 @@ export function Settings() {
 
   useEffect(() => {
     async function fetchComfyLocation() {
-      const path = await appDataDir();
-      setComfyLocation(`${path}ComfyUI`);
+      const path = await invoke("get_setting", {
+        key: "comfyui_location",
+      })
+        .then((res) => res)
+        .catch(() => appDataDir());
+      setComfyLocation(`${path}${sep}ComfyUI`);
     }
 
     async function fetchVersion() {

@@ -1,6 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use settings::Settings;
 use std::collections::HashMap;
 use std::fs::File;
 use std::sync::OnceLock;
@@ -15,6 +16,7 @@ use tauri::{RunEvent, Window, WindowBuilder, WindowUrl};
 use tauri_plugin_upload;
 
 mod server;
+mod settings;
 mod show_path;
 
 static WINDOW: OnceLock<Window> = OnceLock::new();
@@ -54,6 +56,23 @@ fn main() {
             )
             .build()?;
 
+            let app_data_dir = app.path_resolver().app_data_dir().unwrap();
+            let _ = std::fs::create_dir_all(&app_data_dir);
+
+            let mut store_location = app_data_dir.clone();
+            store_location.push("settings.json");
+
+            let comfy_location = app_data_dir.clone();
+
+            settings::create_settings(
+                store_location,
+                Settings {
+                    comfyui_location: Box::new(comfy_location.to_str().unwrap().to_string()),
+                    comfyui_url: Box::new("http://localhost:5000".to_string()),
+                },
+            )
+            .unwrap();
+
             _ = WINDOW.set(window);
 
             Ok(())
@@ -62,7 +81,9 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             extract_comfy,
             launch_comfy,
-            show_path::show_in_folder
+            show_path::show_in_folder,
+            settings::get_setting,
+            settings::set_setting,
         ])
         .build(context)
         .expect("error while building tauri application")
@@ -78,12 +99,18 @@ fn main() {
 
 // tauri command to extract a zip from an arbitrary file path
 #[tauri::command]
-fn extract_comfy(
-    handle: tauri::AppHandle,
-    path: String,
-    target_dir: String,
-) -> Result<String, String> {
-    println!("extracting zip from {} to {}", path, target_dir);
+fn extract_comfy(handle: tauri::AppHandle) -> Result<String, String> {
+    let mut path = handle.path_resolver().app_data_dir().unwrap();
+    path.push("comfyui.zip");
+
+    let target_dir = *settings::SETTINGS
+        .get()
+        .unwrap()
+        .data
+        .comfyui_location
+        .clone();
+
+    println!("extracting zip from {:?} to {}", path, target_dir);
     let file = File::open(path).unwrap();
     let mut archive = zip::ZipArchive::new(file).unwrap();
 
@@ -95,25 +122,6 @@ fn extract_comfy(
 
     // dont block the main thread
     extract_thread.join().unwrap();
-
-    let default_graph = handle
-        .path_resolver()
-        .resolve_resource("resources/defaultGraph.js")
-        .expect("failed to resolve resource");
-    let stable_inputs = handle
-        .path_resolver()
-        .resolve_resource("resources/stableStudioInputs.js")
-        .expect("failed to resolve resource");
-
-    let mut dest = std::path::PathBuf::from(&target_dir);
-    dest.push("ComfyUI/ComfyUI/web/scripts/defaultGraph.js");
-    std::fs::create_dir_all(dest.parent().unwrap()).unwrap();
-    std::fs::copy(default_graph, dest).unwrap();
-
-    let mut dest = std::path::PathBuf::from(&target_dir);
-    dest.push("ComfyUI/ComfyUI/web/extensions/stableStudioInputs.js");
-    std::fs::create_dir_all(dest.parent().unwrap()).unwrap();
-    std::fs::copy(stable_inputs, dest).unwrap();
 
     println!("extracted zip");
     Ok("completed".to_string())
@@ -168,7 +176,17 @@ async fn watch_comfy(
 
 // tauri command to launch python process
 #[tauri::command]
-async fn launch_comfy(path: String) -> Result<String, String> {
+async fn launch_comfy() -> Result<String, String> {
+    let comfyui_location = *settings::SETTINGS
+        .get()
+        .unwrap()
+        .data
+        .comfyui_location
+        .clone();
+    let mut path = std::path::PathBuf::from(comfyui_location.clone());
+    path.push("ComfyUI");
+    let url = *settings::SETTINGS.get().unwrap().data.comfyui_url.clone();
+
     // set working directory
     std::env::set_current_dir(path.clone()).unwrap();
 
@@ -178,7 +196,7 @@ async fn launch_comfy(path: String) -> Result<String, String> {
         .connect_timeout(std::time::Duration::from_secs(1))
         .build()
         .unwrap();
-    let resp = client.get("http://localhost:5000").send().await;
+    let resp = client.get(url.clone()).send().await;
     if resp.is_ok() {
         println!("Comfy already running, skipping launch.");
         return Ok("completed".to_string());
@@ -198,7 +216,14 @@ async fn launch_comfy(path: String) -> Result<String, String> {
             panic!("Unsupported platform")
         }
     })
-    .args(["-s", "ComfyUI/main.py", "--port", "5000"])
+    .args([
+        "-s",
+        "ComfyUI/main.py",
+        "--port",
+        url.split(":").collect::<Vec<&str>>().last().unwrap(),
+        "--preview-method",
+        "auto",
+    ])
     .envs(HashMap::from([("PYTHONUNBUFFERED".into(), "1".into())]))
     .spawn()
     .expect("Failed to spawn ComfyUI process");

@@ -117,38 +117,40 @@ export namespace App {
       if (isSetup !== SetupState.NotStarted || nonce.current !== 0) return;
       nonce.current++;
 
+      const appDataPath = await appDataDir();
+      const comfyui_location = await invoke("get_setting", {
+        key: "comfyui_location",
+      })
+        .then((res) => res)
+        .catch(() => appDataPath);
+
       let entries: FileEntry[] = await listAppDataDir(
-        "comfyui/ComfyUI/models/checkpoints"
+        `${comfyui_location}/ComfyUI/ComfyUI/models/checkpoints`
       );
 
       // filter for actual files (not directories or symlinks or "put_checkpoints_here" files)
       entries = entries.filter((entry) => entry.name?.includes("."));
 
       console.log(entries);
-      const appDataPath = await appDataDir();
 
       if (entries.length === 0) {
-        const comfyExists = await exists("comdyui/ComfyUI/main.py", {
-          dir: BaseDirectory.AppData,
-        });
+        const comfyExists = await exists(
+          `${comfyui_location}/ComfyUI/ComfyUI/main.py`
+        );
 
         if (!comfyExists) {
           setIsSetup(SetupState.NotStarted);
           setMessage("Downloading ComfyUI...");
 
           // delete the old comfyui zip if it exists
-          if (
-            !(await exists("comfyui.zip", {
-              dir: BaseDirectory.AppData,
-            }))
-          ) {
+          if (!(await exists(`${comfyui_location}/comfyui.zip`))) {
             let comulativeProgress = 0;
 
             console.log("downloading comfyui");
 
             await download(
               "https://pub-5e5adf378ed14628a527d735b7743e4e.r2.dev/stability-downloads/ComfyUI/ComfyUI_windows_portable.zip",
-              `${appDataPath}\\comfyui.zip`,
+              `${comfyui_location}\\comfyui.zip`,
               (p, total) => {
                 comulativeProgress += p;
                 setProgress(comulativeProgress / total);
@@ -159,10 +161,7 @@ export namespace App {
           setMessage("Extracting ComfyUI...");
           setProgress(null);
           try {
-            const result = await invoke("extract_comfy", {
-              path: `${appDataPath}/comfyui.zip`,
-              targetDir: `${appDataPath}`,
-            });
+            const result = await invoke("extract_comfy");
 
             if (result !== "completed") {
               throw new Error("Failed to extract comfyui.zip");
@@ -174,9 +173,7 @@ export namespace App {
             return;
           }
 
-          await removeFile("comfyui.zip", {
-            dir: BaseDirectory.AppData,
-          });
+          await removeFile(`${comfyui_location}/comfyui.zip`);
         }
 
         setIsSetup(SetupState.ComfyInstalled);
@@ -188,7 +185,7 @@ export namespace App {
 
         await download(
           "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.safetensors",
-          `${appDataPath}/comfyui/ComfyUI/models/checkpoints/v2-1_768-ema-pruned.safetensors`,
+          `${comfyui_location}/ComfyUI/ComfyUI/models/checkpoints/v2-1_768-ema-pruned.safetensors`,
           (p, total) => {
             comulativeProgress += p;
             setProgress(comulativeProgress / total);
@@ -211,9 +208,7 @@ export namespace App {
       setUnlisteners([unlisten]);
 
       // start comfy
-      const result = await invoke("launch_comfy", {
-        path: `${appDataPath}/comfyui`,
-      });
+      const result = await invoke("launch_comfy");
 
       if (result !== "completed") {
         setMessage(`Error launching ComfyUI: ${result}`);

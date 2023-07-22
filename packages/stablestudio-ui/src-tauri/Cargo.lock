@@ -85,6 +85,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "tauri-plugin-store",
  "tauri-plugin-upload",
  "tiny_http",
  "zip 0.6.6",
@@ -3158,9 +3159,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "tauri-plugin-store"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#c3a6dab24ccbaeada2d15caaf79e97064730e54f"
+dependencies = [
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
+]
+
+[[package]]
 name = "tauri-plugin-upload"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#0863f800b81925884a6a37c042f3d92d433d4a37"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#c3a6dab24ccbaeada2d15caaf79e97064730e54f"
 dependencies = [
  "futures-util",
  "log",

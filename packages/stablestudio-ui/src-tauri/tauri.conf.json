@@ -13,7 +13,7 @@
     "allowlist": {
       "fs": {
         "all": true,
-        "scope": ["$APPDATA/**", "$RESOURCE/**"]
+        "scope": ["$APPDATA/**"]
       },
       "path": {
         "all": true
@@ -46,9 +46,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [
-        "resources/*"
-      ],
+      "resources": [],
       "shortDescription": "",
       "targets": "all",
       "windows": {

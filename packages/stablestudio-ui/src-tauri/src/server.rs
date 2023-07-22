@@ -7,6 +7,8 @@ use tauri::{
 };
 use tiny_http::{Header, Response as HttpResponse, Server};
 
+use crate::settings;
+
 pub struct Response {
     headers: HashMap<String, String>,
 }
@@ -36,14 +38,10 @@ impl Builder {
                 let server = Server::http(&format!("localhost:{port}")).expect("Unable to spawn server");
                 let server = Arc::new(server);
                 let mut guards = Vec::with_capacity(4);
-                
-                let path_resolver = app.path_resolver();
-                let appdata_path = path_resolver.app_data_dir().unwrap().as_os_str().to_str().unwrap().to_string();
 
                 for _ in 0..5 {
                     let server = server.clone();
                     let asset_resolver = app.asset_resolver();
-                    let appdata_path = appdata_path.clone();
                     let guard = std::thread::spawn(move || {
                         // aquire a copy of appdata_path
                         for mut req in server.incoming_requests() {
@@ -84,7 +82,7 @@ impl Builder {
                                     None,
                                     None,
                                     Some(
-                                        "http://localhost:5000/".to_string() + &sliced_path.join("/") + "?" + &req.url().split("?").collect::<Vec<&str>>()[1..].join("?"),
+                                        settings::SETTINGS.get().unwrap().data.comfyui_url.to_string() + "/" + &sliced_path.join("/") + "?" + &req.url().split("?").collect::<Vec<&str>>()[1..].join("?"),
                                     ),
                                 ),
                                 [] | [_, _, ..] | [&_] => (None, None, None),
@@ -93,7 +91,7 @@ impl Builder {
                             if let Some(file_name) = file_name {
                                 let path_name = format!(
                                     "{}/ComfyUI/ComfyUI/web/{}",
-                                    appdata_path.clone(),
+                                    settings::SETTINGS.get().unwrap().data.comfyui_location.to_string(),
                                     file_name
                                 );
                             
