@@ -63,7 +63,11 @@ impl Builder {
                             ) = match sliced_path {
                                 ["lib" | "scripts", ..] => (
                                     Some(sliced_path.clone().join("/")),
-                                    Some("application/javascript".to_string()),
+                                    Some(if sliced_path.last().unwrap().ends_with(".js") {
+                                        "text/javascript".to_string()
+                                    } else {
+                                        "text/css".to_string()
+                                    }),
                                     None,
                                 ),
                                 ["style.css"] => (
