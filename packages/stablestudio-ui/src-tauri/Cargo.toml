@@ -26,6 +26,8 @@ tiny_http = "0.12.0"
 portpicker = "0.1.1"
 http = "0.2.9"
 once_cell = "1.18.0"
+
+[target.'cfg(unix)'.dependencies]
 fork = "0.1.22"
 
 [features]
