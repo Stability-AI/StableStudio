@@ -116,6 +116,12 @@ type State = {
 
   unlisteners: (() => void)[];
   setUnlisteners: (unlisteners: (() => void)[]) => void;
+
+  runningPrompt: ID | null;
+  setRunningPrompt: (promptID: ID | null) => void;
+
+  lastOuput: ComfyOutput | null;
+  setLastOutput: (output: ComfyOutput | null) => void;
 };
 
 export namespace Comfy {
@@ -142,6 +148,12 @@ export namespace Comfy {
 
     unlisteners: [],
     setUnlisteners: (unlisteners) => set({ unlisteners }),
+
+    runningPrompt: null,
+    setRunningPrompt: (runningPrompt) => set({ runningPrompt }),
+
+    lastOuput: null,
+    setLastOutput: (lastOuput) => set({ lastOuput }),
   }));
 
   export const registerListeners = async () => {
@@ -152,10 +164,26 @@ export namespace Comfy {
       api = get()?.api;
     }
 
-    api.addEventListener("executed", async ({ detail }) => {
+    api.addEventListener("progress", ({ detail }) => {
+      console.log("progress", detail);
+      const runningPrompt = use.getState().runningPrompt;
+      if (runningPrompt) {
+        Generation.Image.Output.set({
+          ...Generation.Image.Output.get(runningPrompt),
+          progress: detail.value / detail.max,
+        });
+      }
+    });
+
+    api.addEventListener("b_preview", ({ detail }) => {
+      console.log("b_preview", detail);
+    });
+
+    const executed = async ({ detail }: any) => {
       const { output, prompt_id } = detail;
 
       console.log("executed_in_comfy_domain", detail);
+      use.getState().setRunningPrompt(null);
 
       const newInputs: Record<ID, Generation.Image.Input> = {};
       const responses: Generation.Images = [];
@@ -194,7 +222,7 @@ export namespace Comfy {
         const newInput = {
           ...Generation.Image.Input.initial(inputID),
           ...input,
-          seed: 0,
+          seed: (input?.seed ?? 0) + images.indexOf(image),
           id: inputID,
         };
 
@@ -211,11 +239,32 @@ export namespace Comfy {
       });
       responses.forEach(Generation.Image.add);
       Generation.Image.Output.received(prompt_id, responses);
+      use.getState().setLastOutput(detail);
+    };
+
+    api.addEventListener("executed", executed);
+    api.addEventListener("execution_cached", async ({ detail }) => {
+      const last: any = use.getState().lastOuput;
+      console.log("execution_cached", detail, last);
+      if (
+        use.getState().runningPrompt === detail.prompt_id &&
+        detail.nodes.includes(last?.node) &&
+        last.output
+      ) {
+        console.log("last", last);
+        const d = { ...last, prompt_id: detail.prompt_id };
+        await executed({ detail: d });
+      }
     });
 
     api.addEventListener("execution_error", ({ detail }) => {
       console.log("execution_error", detail);
       Generation.Image.Output.clear(detail.prompt_id);
+      use.getState().setRunningPrompt(null);
+    });
+
+    api.addEventListener("execution_start", ({ detail }) => {
+      use.getState().setRunningPrompt(detail?.prompt_id);
     });
 
     console.log("registered ComfyUI listeners");

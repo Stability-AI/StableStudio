@@ -48,6 +48,7 @@ export default defineConfig(({ mode }) => {
         "/queue": redirectComfy,
         "/history": redirectComfy,
         "/interrupt": redirectComfy,
+        "/upload": redirectComfy,
       },
     },
 

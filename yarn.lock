@@ -1263,6 +1263,7 @@ __metadata:
     prettier-plugin-tailwindcss: ^0.2.1
     query-string: ^8.1.0
     react: ^18.2.0
+    react-circular-progressbar: ^2.1.0
     react-dom: ^18.2.0
     react-konva: ^18.2.3
     react-konva-utils: ^0.3.1
@@ -6319,6 +6320,15 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: b676f8c040cdc5b12723ad2f91414d267605b26419d5c821ff03befa817ddd10e238d22b25d604920340fd73efd8ba795465a0377c4adf45a4a41e4234e42dc4
+  languageName: node
+  linkType: hard
+
+"react-circular-progressbar@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-circular-progressbar@npm:2.1.0"
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: dc118010a8f94733daafac586c969f7e889ad0736d96a0fda79406ee62e9410848abfd3dee4887bb0ff46b99e1f8c86ee1afabc88dfbf4dcb95107b22de1d6d7
   languageName: node
   linkType: hard
 

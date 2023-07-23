@@ -13,9 +13,11 @@ export type Output = {
 
   requestedAt?: Date;
   completedAt?: Date;
+  progress?: number;
 
   count: number;
   imageIDs: ID[];
+  progressImageIDs?: ID[];
 
   exception?: Generation.Image.Exception;
 };
@@ -61,6 +63,7 @@ export function Output({ outputID, placeholder, divider }: Props) {
         key={keys("image", images.length, images.length - index)}
         placeholder={placeholder}
         image={image}
+        progress={output?.progress}
         scale={1}
         example={
           Generation.Image.Prompt.Examples.images[
@@ -76,7 +79,14 @@ export function Output({ outputID, placeholder, divider }: Props) {
         {rendered}
       </div>
     );
-  }, [count, images, input?.id, placeholder, exampleStartIndex]);
+  }, [
+    count,
+    images,
+    input?.id,
+    placeholder,
+    output?.progress,
+    exampleStartIndex,
+  ]);
 
   const controls = useMemo(
     () => (

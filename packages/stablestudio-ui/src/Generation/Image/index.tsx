@@ -41,6 +41,7 @@ type Props = Styleable &
     example?: Generation.Image.Prompt.Examples.Example;
     hideControls?: boolean;
     placeholder?: boolean;
+    progress?: number;
 
     onClick?: () => void;
     onDelete?: () => void;
@@ -51,6 +52,7 @@ export function Image({
   // example,
   hideControls,
   placeholder,
+  progress,
 
   scale,
   preserveAspectRatio,
@@ -155,13 +157,14 @@ export function Image({
       <Image.SpecialEffects
         showing={shouldShowSpecialEffects}
         loading={!placeholder && shouldShowSpecialEffects}
+        progress={progress}
         variant={(style.height ?? 512) < 48 ? "small" : undefined}
         // example={example}
         // onClick={example ? onTryTemplate : undefined}
         // input={currentInput?.id}
       />
     ),
-    [placeholder, shouldShowSpecialEffects, style.height]
+    [placeholder, progress, shouldShowSpecialEffects, style.height]
   );
 
   return useMemo(

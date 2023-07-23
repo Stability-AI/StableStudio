@@ -1,3 +1,4 @@
+import { useLocalStorage } from "react-use";
 import { Generation } from "~/Generation";
 import { Theme } from "~/Theme";
 
@@ -5,14 +6,27 @@ export function Dropdown({ id, className }: Styleable & { id: ID }) {
   const { setInput, input } = Generation.Image.Input.use(id);
   const { data: models, isLoading } = Generation.Image.Models.use();
 
+  const [value, setValue] = useLocalStorage<string | undefined>(
+    "default-model-id",
+    undefined
+  );
+  useEffect(() => {
+    if (value) {
+      setInput((input) => {
+        input.model = value;
+      });
+    }
+  }, []);
+
   const onClick = useCallback(
     (value: string) => {
       setInput((input) => {
         console.log("model", value);
         input.model = value;
+        setValue(value);
       });
     },
-    [setInput]
+    [setInput, setValue]
   );
 
   const options = useMemo(

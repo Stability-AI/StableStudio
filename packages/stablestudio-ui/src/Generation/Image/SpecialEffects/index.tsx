@@ -1,5 +1,7 @@
+import { CircularProgressbar } from "react-circular-progressbar";
 import { Generation } from "~/Generation";
 import { Theme } from "~/Theme";
+import "react-circular-progressbar/dist/styles.css";
 
 import { Filter } from "./Filter";
 
@@ -10,6 +12,7 @@ export function SpecialEffects({
   example,
   onClick,
   input,
+  progress,
 }: {
   showing?: boolean;
   loading?: boolean;
@@ -21,6 +24,7 @@ export function SpecialEffects({
   onClick?: () => void;
   input?: ID;
   border?: boolean;
+  progress?: number;
 }) {
   if (!showing) return null;
   return (
@@ -74,13 +78,47 @@ export function SpecialEffects({
         </div>
       )}
       <div className="absolute flex h-full w-full items-center justify-center">
-        {loading && (
-          <Theme.Loading.Spinner
-            className={classes(
-              variant === "small" ? "h-1/2 w-1/2" : "h-10 w-10"
-            )}
-          />
-        )}
+        {loading &&
+          (typeof progress === "number" ? (
+            <div
+              className={classes(
+                variant === "small" ? "h-1/2 w-1/2" : "h-10 w-10"
+              )}
+            >
+              <CircularProgressbar
+                value={progress}
+                maxValue={1}
+                styles={{
+                  // Customize the path, i.e. the "completed progress"
+                  path: {
+                    // Path color
+                    stroke: "#ffffff",
+                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                    strokeLinecap: "butt",
+                    // Customize transition animation
+                    transition: "stroke-dashoffset 0.5s ease 0s",
+                    transformOrigin: "center center",
+                    strokeWidth: 8,
+                  },
+                  // Customize the circle behind the path, i.e. the "total progress"
+                  trail: {
+                    // Trail color
+                    stroke: "#4c4c4d",
+                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                    strokeLinecap: "butt",
+                    transformOrigin: "center center",
+                    strokeWidth: 8,
+                  },
+                }}
+              />
+            </div>
+          ) : (
+            <Theme.Loading.Spinner
+              className={classes(
+                variant === "small" ? "h-1/2 w-1/2" : "h-10 w-10"
+              )}
+            />
+          ))}
       </div>
     </div>
   );

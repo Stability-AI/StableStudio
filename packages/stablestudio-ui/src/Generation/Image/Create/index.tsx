@@ -57,6 +57,9 @@ export namespace Create {
         pluginInput.width = Math.ceil((pluginInput.width ?? 512) / 64) * 64;
       }
 
+      const startingSeed =
+        input.seed === 0 ? Math.round(Math.random() * 100000) : input.seed;
+
       Comfy.get()
         ?.graph._nodes?.filter((node) => node.type === "StableStudioNode")
         .forEach((node) => {
@@ -73,10 +76,7 @@ export namespace Create {
             positive_prompt:
               input.prompts.find((p) => p.weight > 0)?.text ??
               node.stableValues.positive_prompt,
-            seed:
-              input.seed === 0
-                ? Math.round(Math.random() * 100000)
-                : input.seed,
+            seed: startingSeed,
             steps: input.steps,
             cfg: input.cfgScale ?? node.stableValues.cfg,
             sampler_name:
@@ -97,6 +97,7 @@ export namespace Create {
           ...inputs,
           [prompt_id]: {
             ...input,
+            seed: startingSeed,
             id: prompt_id,
           },
         }));
