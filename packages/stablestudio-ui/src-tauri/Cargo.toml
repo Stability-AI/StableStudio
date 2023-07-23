@@ -26,6 +26,7 @@ tiny_http = "0.12.0"
 portpicker = "0.1.1"
 http = "0.2.9"
 once_cell = "1.18.0"
+fork = "0.1.22"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
