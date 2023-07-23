@@ -71,12 +71,12 @@ export namespace Tab {
       GlobalState.shallow
     );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       setTab(props.name, { enabled: true, ...props });
       return () => setTab(props.name);
     }, [props, setTab]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       (window.location.pathname === props.route ||
         (window.location.pathname === "/" && props.defaultActive)) &&
         setSidebar((sidebar) => ({ ...sidebar, tab: props.name }));
