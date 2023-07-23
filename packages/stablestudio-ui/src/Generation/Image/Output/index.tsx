@@ -63,6 +63,7 @@ export function Output({ outputID, placeholder, divider }: Props) {
         key={keys("image", images.length, images.length - index)}
         placeholder={placeholder}
         image={image}
+        outputID={output?.id}
         progress={output?.progress}
         scale={1}
         example={

@@ -226,10 +226,13 @@ export namespace Comfy {
           id: inputID,
         };
 
-        const cropped = await cropImage(image, newInput);
-        if (!cropped) continue;
-
-        responses.push(cropped);
+        responses.push({
+          id: image.id,
+          inputID: newInput.id,
+          created: new Date(),
+          src: URL.createObjectURL(image.blob),
+          finishReason: 0,
+        });
         newInputs[inputID] = newInput;
       }
 
@@ -291,52 +294,4 @@ export namespace Comfy {
       </div>
     );
   };
-}
-
-function cropImage(
-  image: StableStudio.StableDiffusionImage,
-  input: Generation.Image.Input
-) {
-  return new Promise<Generation.Image | void>((resolve) => {
-    const id = image.id;
-    const blob = image.blob;
-    if (!blob || !id) return resolve();
-
-    // crop image to box size
-    const croppedCanvas = document.createElement("canvas");
-    croppedCanvas.width = input.width;
-    croppedCanvas.height = input.height;
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const croppedCtx = croppedCanvas.getContext("2d")!;
-
-    const img = new window.Image();
-    img.src = URL.createObjectURL(blob);
-    img.onload = () => {
-      croppedCtx.drawImage(
-        img,
-        0,
-        0,
-        input.width,
-        input.height,
-        0,
-        0,
-        input.width,
-        input.height
-      );
-
-      croppedCanvas.toBlob((blob) => {
-        if (blob) {
-          const objectURL = URL.createObjectURL(blob);
-          resolve({
-            id,
-            inputID: input.id,
-            created: new Date(),
-            src: objectURL,
-            finishReason: 0,
-          });
-        }
-      });
-    };
-  });
 }

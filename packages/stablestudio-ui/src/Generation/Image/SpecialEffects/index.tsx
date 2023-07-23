@@ -12,6 +12,7 @@ export function SpecialEffects({
   example,
   onClick,
   input,
+  output,
   progress,
 }: {
   showing?: boolean;
@@ -23,10 +24,26 @@ export function SpecialEffects({
   };
   onClick?: () => void;
   input?: ID;
+  output?: ID;
   border?: boolean;
   progress?: number;
 }) {
   if (!showing) return null;
+  const [starting] = useState(
+    output ? Generation.Image.Output.get(output).requestedAt : undefined
+  );
+  const [eta, setETA] = useState<number | undefined>();
+
+  useEffect(() => {
+    if (!loading) return;
+    if (typeof progress !== "number") return;
+    if (!starting) return;
+
+    const seconds = (Date.now() - starting.getTime()) / 1000;
+    const eta = seconds / progress - seconds;
+    setETA(eta);
+  }, [loading, progress, starting]);
+
   return (
     <div
       className={classes(
@@ -80,37 +97,46 @@ export function SpecialEffects({
       <div className="absolute flex h-full w-full items-center justify-center">
         {loading &&
           (typeof progress === "number" ? (
-            <div
-              className={classes(
-                variant === "small" ? "h-1/2 w-1/2" : "h-10 w-10"
-              )}
-            >
-              <CircularProgressbar
-                value={progress}
-                maxValue={1}
-                styles={{
-                  // Customize the path, i.e. the "completed progress"
-                  path: {
-                    // Path color
-                    stroke: "#ffffff",
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: "butt",
-                    // Customize transition animation
-                    transition: "stroke-dashoffset 0.5s ease 0s",
-                    transformOrigin: "center center",
-                    strokeWidth: 8,
-                  },
-                  // Customize the circle behind the path, i.e. the "total progress"
-                  trail: {
-                    // Trail color
-                    stroke: "#4c4c4d",
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: "butt",
-                    transformOrigin: "center center",
-                    strokeWidth: 8,
-                  },
-                }}
-              />
+            <div className="relative flex flex-col items-center justify-center gap-1">
+              <div
+                className={classes(
+                  variant === "small" ? "h-1/2 w-1/2" : "h-10 w-10"
+                )}
+              >
+                <CircularProgressbar
+                  value={progress}
+                  maxValue={1}
+                  styles={{
+                    // Customize the path, i.e. the "completed progress"
+                    path: {
+                      // Path color
+                      stroke: "#ffffff",
+                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                      strokeLinecap: "butt",
+                      // Customize transition animation
+                      transition: "stroke-dashoffset 0.5s ease 0s",
+                      transformOrigin: "center center",
+                      strokeWidth: 8,
+                    },
+                    // Customize the circle behind the path, i.e. the "total progress"
+                    trail: {
+                      // Trail color
+                      stroke: "#4c4c4d",
+                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                      strokeLinecap: "butt",
+                      transformOrigin: "center center",
+                      strokeWidth: 8,
+                    },
+                  }}
+                />
+              </div>
+              <p className="absolute top-full mt-1">
+                {(eta ?? 0) > 0 && (
+                  <span className="text-sm text-white">
+                    {Math.round(eta ?? 0)}s
+                  </span>
+                )}
+              </p>
             </div>
           ) : (
             <Theme.Loading.Spinner

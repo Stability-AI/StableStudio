@@ -42,6 +42,7 @@ type Props = Styleable &
     hideControls?: boolean;
     placeholder?: boolean;
     progress?: number;
+    outputID?: ID;
 
     onClick?: () => void;
     onDelete?: () => void;
@@ -53,6 +54,7 @@ export function Image({
   hideControls,
   placeholder,
   progress,
+  outputID,
 
   scale,
   preserveAspectRatio,
@@ -158,6 +160,7 @@ export function Image({
         showing={shouldShowSpecialEffects}
         loading={!placeholder && shouldShowSpecialEffects}
         progress={progress}
+        output={outputID}
         variant={(style.height ?? 512) < 48 ? "small" : undefined}
         // example={example}
         // onClick={example ? onTryTemplate : undefined}
