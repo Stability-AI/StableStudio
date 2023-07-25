@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { App } from "~/App";
+import { Comfy } from "~/Comfy";
 import { Generation } from "~/Generation";
 import { Theme } from "~/Theme";
 
@@ -11,6 +12,20 @@ export function Sidebar() {
   const location = useLocation();
 
   if (!input?.id) return null;
+
+  const bottom = (
+    <App.Sidebar.Tab.Bottom>
+      <div className="flex flex-col gap-2">
+        <Comfy.Output small />
+        <Generation.Image.Create.Button
+          id={input.id}
+          onIdleClick={() => createDream()}
+          fullWidth
+        />
+      </div>
+    </App.Sidebar.Tab.Bottom>
+  );
+
   return (
     <>
       <App.Sidebar.Tab.Set
@@ -25,15 +40,7 @@ export function Sidebar() {
           location.pathname.startsWith("/edit") ||
           location.pathname.startsWith("/nodes")
         }
-        bottom={
-          <App.Sidebar.Tab.Bottom>
-            <Generation.Image.Create.Button
-              id={input.id}
-              onIdleClick={() => createDream()}
-              fullWidth
-            />
-          </App.Sidebar.Tab.Bottom>
-        }
+        bottom={bottom}
       >
         <Sidebar.Tab id={input.id} />
       </App.Sidebar.Tab.Set>
@@ -49,15 +56,7 @@ export function Sidebar() {
           location.pathname.startsWith("/edit") ||
           location.pathname.startsWith("/nodes")
         }
-        bottom={
-          <App.Sidebar.Tab.Bottom>
-            <Generation.Image.Create.Button
-              id={input.id}
-              onIdleClick={() => createDream()}
-              fullWidth
-            />
-          </App.Sidebar.Tab.Bottom>
-        }
+        bottom={bottom}
       >
         <Sidebar.Tab id={input.id} />
       </App.Sidebar.Tab.Set>

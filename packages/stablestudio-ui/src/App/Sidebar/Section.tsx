@@ -47,7 +47,7 @@ export function Section(props: Section.Props) {
       )}
     >
       {title && (
-        <div className="flex items-center py-2 px-2">
+        <div className="flex items-center px-2 py-2">
           <Theme.Button
             {...buttonProps}
             className={classes(

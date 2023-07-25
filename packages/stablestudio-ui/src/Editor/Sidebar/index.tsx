@@ -1,4 +1,5 @@
 import { App } from "~/App";
+import { Comfy } from "~/Comfy";
 import { Editor } from "~/Editor";
 import { Generation } from "~/Generation";
 import { Router } from "~/Router";
@@ -39,17 +40,20 @@ export function Sidebar() {
 
   const bottom = selectedID && (
     <App.Sidebar.Tab.Bottom>
-      <Generation.Image.Create.Button
-        id={inputID}
-        onIdleClick={() => createDream()}
-        fullWidth
-        disabled={
-          !inputID ||
-          generating ||
-          !(dreams.filter((d) => d.id === selectedID).length > 0)
-        }
-        loading={generating}
-      />
+      <div className="flex flex-col gap-2">
+        <Comfy.Output small />
+        <Generation.Image.Create.Button
+          id={inputID}
+          onIdleClick={() => createDream()}
+          fullWidth
+          disabled={
+            !inputID ||
+            generating ||
+            !(dreams.filter((d) => d.id === selectedID).length > 0)
+          }
+          loading={generating}
+        />
+      </div>
     </App.Sidebar.Tab.Bottom>
   );
 

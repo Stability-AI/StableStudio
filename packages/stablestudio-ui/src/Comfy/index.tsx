@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { create } from "zustand";
-import { shallow } from "zustand/shallow";
 import { Generation } from "~/Generation";
 
 export type ComfyApp = {
@@ -122,6 +121,9 @@ type State = {
 
   lastOuput: ComfyOutput | null;
   setLastOutput: (output: ComfyOutput | null) => void;
+
+  inlineExpanded: boolean;
+  setInlineExpanded: (expanded: boolean) => void;
 };
 
 export namespace Comfy {
@@ -154,6 +156,9 @@ export namespace Comfy {
 
     lastOuput: null,
     setLastOutput: (lastOuput) => set({ lastOuput }),
+
+    inlineExpanded: false,
+    setInlineExpanded: (inlineExpanded) => set({ inlineExpanded }),
   }));
 
   export const registerListeners = async () => {
@@ -274,12 +279,34 @@ export namespace Comfy {
     use.getState().setRunning(true);
   };
 
-  export const Output = () => {
-    const output = Comfy.use(({ output }) => output, shallow);
+  export const Output = ({
+    className,
+    small,
+  }: Styleable & {
+    small?: boolean;
+  }) => {
+    const { output, inlineExpanded, setInlineExpanded } = Comfy.use(
+      (state) => ({
+        output: state.output,
+        inlineExpanded: state.inlineExpanded,
+        setInlineExpanded: state.setInlineExpanded,
+      })
+    );
 
     return (
-      <div className="flex max-h-[25rem] flex-col-reverse overflow-y-auto whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm">
-        {[...output].reverse().map((line, index) => (
+      <div
+        className={classes(
+          "flex max-h-[25rem] flex-col-reverse overflow-y-auto overflow-x-hidden whitespace-pre-wrap rounded bg-black/25 p-2 font-mono text-sm leading-4",
+          small && !inlineExpanded && "overflow-y-hidden",
+          small && "cursor-pointer",
+          className
+        )}
+        onClick={() => setInlineExpanded(!inlineExpanded)}
+      >
+        {(small && !inlineExpanded
+          ? output.slice(-1)
+          : [...output].reverse()
+        ).map((line, index) => (
           <p
             key={`${index}-${line}`}
             className={classes(
