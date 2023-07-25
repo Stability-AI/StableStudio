@@ -1,4 +1,3 @@
-import * as StableStudio from "@stability/stablestudio-plugin";
 import { useLocation } from "react-router-dom";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
@@ -7,7 +6,7 @@ import { Generation } from "~/Generation";
 export type ComfyApp = {
   setup: () => void;
   registerNodes: () => void;
-  loadGraphData: (graph: Graph) => void;
+  loadGraphData: (graph?: Graph) => void;
   graphToPrompt: () => Promise<{
     workflow: any;
     prompt: any;
@@ -18,6 +17,7 @@ export type ComfyApp = {
   clean: () => void;
   api: ComfyAPI;
   graph: {
+    serialize: () => any;
     _nodes: {
       title: string;
       type: string;

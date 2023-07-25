@@ -18,6 +18,7 @@ use tauri_plugin_upload;
 mod server;
 mod settings;
 mod show_path;
+mod workflows;
 
 static WINDOW: OnceLock<Window> = OnceLock::new();
 
@@ -84,6 +85,9 @@ fn main() {
             show_path::show_in_folder,
             settings::get_setting,
             settings::set_setting,
+            workflows::fetch_workflows,
+            workflows::save_workflow,
+            workflows::delete_workflow,
         ])
         .build(context)
         .expect("error while building tauri application")

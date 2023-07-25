@@ -24,6 +24,7 @@ import { Style, Styles } from "./Style";
 import { TopBar } from "./TopBar";
 import { Upscale, Upscales } from "./Upscale";
 import { Variations } from "./Variation";
+import { Workflow } from "./Workflow";
 
 export * from "./Images";
 
@@ -227,6 +228,7 @@ export declare namespace Image {
     Upscales,
     Upscale,
     Exception,
+    Workflow,
   };
 }
 
@@ -260,6 +262,7 @@ export namespace Image {
   Image.Upscales = Upscales;
   Image.Upscale = Upscale;
   Image.Exception = Exception;
+  Image.Workflow = Workflow;
 
   export const get = (id: ID): Image | undefined =>
     Images.State.use(({ images }) => images[id]);

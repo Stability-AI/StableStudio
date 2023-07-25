@@ -425,6 +425,70 @@ export function Upscale(props: Props) {
   ));
 }
 
+export function Rotate(props: Props) {
+  return defaults(props)(({ width, height, color, ...props }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M7 12C7 12.9889 7.29324 13.9556 7.84265 14.7778C8.39206 15.6001 9.17295 16.241 10.0866 16.6194C11.0002 16.9978 12.0055 17.0969 12.9754 16.9039C13.9454 16.711 14.8363 16.2348 15.5355 15.5355C16.2348 14.8363 16.711 13.9454 16.9039 12.9754C17.0969 12.0055 16.9978 11.0002 16.6194 10.0866C16.241 9.17295 15.6001 8.39206 14.7778 7.84265C13.9556 7.29324 12.9889 7 12 7C10.6022 7.00526 9.26054 7.55068 8.25556 8.52222L7 9.77778"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+      />
+      <path
+        d="M7 7V10H10"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+      />
+    </svg>
+  ));
+}
+
+export function Save(props: Props) {
+  return defaults(props)(({ width, height, color, ...props }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      strokeWidth="0.9"
+      {...props}
+    >
+      <path
+        d="M15.8889 17H8.11111C7.81643 17 7.53381 16.8829 7.32544 16.6746C7.11706 16.4662 7 16.1836 7 15.8889V8.11111C7 7.81643 7.11706 7.53381 7.32544 7.32544C7.53381 7.11706 7.81643 7 8.11111 7H14.2222L17 9.77778V15.8889C17 16.1836 16.8829 16.4662 16.6746 16.6746C16.4662 16.8829 16.1836 17 15.8889 17Z"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+      />
+      <path
+        d="M15 17V13H9V17"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+      />
+      <path
+        d="M9 7V10H13"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+      />
+    </svg>
+  ));
+}
+
 const defaults =
   (props: Props) =>
   (render: (props: Props) => JSX.Element): JSX.Element =>

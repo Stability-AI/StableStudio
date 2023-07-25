@@ -77,6 +77,8 @@ import {
   Instagram,
   ModelIcon,
   Rectangle,
+  Rotate,
+  Save,
   Scale,
   ShareIcon,
   SlidersIcon,
@@ -169,6 +171,8 @@ export declare namespace Icon {
     Upscale,
     Keyboard,
     ChevronsLeftRight,
+    Rotate,
+    Save,
   };
 }
 
@@ -262,6 +266,8 @@ export namespace Icon {
   Icon.Upscale = makeComponent(Upscale);
   Icon.Keyboard = makeComponent(Keyboard);
   Icon.ChevronsLeftRight = makeComponent(ChevronsLeftRight);
+  Icon.Rotate = makeComponent(Rotate);
+  Icon.Save = makeComponent(Save);
 
   export function Invisible(props: Props) {
     return (

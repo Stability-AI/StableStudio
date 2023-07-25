@@ -5,11 +5,18 @@ import { Box } from "~/Geometry";
 import { Theme } from "~/Theme";
 
 export type Option = {
-  name: React.ReactNode;
   value: any;
   image?: string;
   disabled?: boolean;
-};
+  onDelete?: () => void;
+} & (
+  | {
+      name: React.ReactNode;
+    }
+  | {
+      component: (onClick: (value: any) => void) => React.ReactNode;
+    }
+);
 
 export function Popout({
   onClick,
@@ -109,7 +116,11 @@ export function Popout({
             />
           )}
           <h1 className="w-full grow select-none">
-            {valueOption?.name ?? placeholder ?? "Select"}
+            {(valueOption && "name" in valueOption
+              ? valueOption?.name
+              : undefined) ??
+              placeholder ??
+              "Select"}
           </h1>
           <Theme.Icon.ChevronRight className="h-6 w-6" strokeWidth={1.5} />
         </div>
@@ -154,40 +165,61 @@ function Floating({
       >
         {!!children
           ? children
-          : options.map((option, index) => (
-              <div
-                key={index}
-                onClick={
-                  option.disabled ? doNothing : () => onClick(option.value)
-                }
-                className={classes(
-                  "group flex cursor-pointer flex-col rounded duration-100",
-                  option.disabled && "opacity-muted cursor-not-allowed"
-                )}
-              >
-                {option.image ? (
-                  <img
-                    className="mb-2 aspect-square h-full w-full rounded-lg border border-transparent duration-100 group-hover:border-zinc-200"
-                    src={option.image}
-                    alt="Preset Image"
-                  />
-                ) : (
-                  hasImages && (
-                    <div className="mb-2 flex aspect-square w-full items-center justify-center rounded-lg border border-transparent bg-black/20 duration-100 group-hover:border-zinc-200">
-                      <Theme.Icon.Slash className="opacity-muted h-12 w-12" />
-                    </div>
-                  )
-                )}
-                <h1
-                  className={classes(
-                    "w-full grow select-none text-zinc-400 group-hover:text-zinc-200",
-                    option.value === value && "font-medium text-white"
-                  )}
-                >
-                  {option.name}
-                </h1>
-              </div>
-            ))}
+          : options.map(
+              (option, index) =>
+                ("component" in option && option.component(onClick)) || (
+                  <div
+                    key={`${option.value}-${index}-option`}
+                    onClick={
+                      option.disabled ? doNothing : () => onClick(option.value)
+                    }
+                    className={classes(
+                      "group relative flex cursor-pointer flex-col rounded duration-100",
+                      option.disabled && "opacity-muted cursor-not-allowed"
+                    )}
+                  >
+                    {option.onDelete && (
+                      <Theme.Tooltip
+                        content="Delete"
+                        placement="right"
+                        showArrow
+                        distance={15}
+                      >
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            option.onDelete?.();
+                          }}
+                          className="group/delete pointer-events-none absolute -right-4 -top-4 h-fit w-fit scale-50 cursor-pointer rounded-xl bg-zinc-900 p-1 text-white/75 opacity-0 duration-150 ease-in-out hover:text-white group-hover:pointer-events-auto group-hover:-right-2 group-hover:-top-2 group-hover:scale-100 group-hover:opacity-100"
+                        >
+                          <Theme.Icon.X color="currentColor" />
+                        </div>
+                      </Theme.Tooltip>
+                    )}
+                    {option.image ? (
+                      <img
+                        className="mb-2 aspect-square w-full select-none rounded-lg border border-transparent object-cover duration-100 group-hover:border-zinc-200"
+                        src={option.image}
+                        alt="Preset Image"
+                      />
+                    ) : (
+                      hasImages && (
+                        <div className="mb-2 flex aspect-square w-full items-center justify-center rounded-lg border border-transparent bg-black/20 duration-100 group-hover:border-zinc-200">
+                          <Theme.Icon.Slash className="opacity-muted h-12 w-12" />
+                        </div>
+                      )
+                    )}
+                    <h1
+                      className={classes(
+                        "w-full grow select-none text-zinc-400 group-hover:text-zinc-200",
+                        option.value === value && "font-medium text-white"
+                      )}
+                    >
+                      {"name" in option && option.name}
+                    </h1>
+                  </div>
+                )
+            )}
       </div>
     </div>
   );
