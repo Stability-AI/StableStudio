@@ -91,3 +91,26 @@ Here are some useful links...
 - [Open Issues](https://github.com/Stability-AI/StableStudio/issues)
 - [Open Pull Requests](https://github.com/Stability-AI/StableStudio/pulls)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
+
+## TODO
+### Model download
+- [ ] Design & implement a community model browser w/ download flow
+- [ ] A way to parse URLs into a URL that downloads a model (from say an input)
+- [ ] A universal way to download models from URLs
+- [ ] BONUS: A way to pick up model downloads if app is closed suddenly
+      
+### ComfyUI/SD install config
+- [ ] Ability to change comfy location in settings (file choose dialog w/ tauri & write to settings.json)
+- [ ] Ability to change comfy install location when/before downloading during first setup
+- [ ] Ability to change the particular SD model & location when/before downloading during first setup
+- [ ] Ability to change comfyui url in settings
+- [ ] Ability to change comfyui cli flags in settings
+
+### Custom inputs
+- [ ] define & implement a strategy for arbitrary inputs in stablestudio UI
+
+### Global job UI
+- [ ] List model downloads
+- [ ] List current/pending gens
+- [ ] Ability to cancel jobs (global job API?)
+- [ ] Floating UI for jobs - minimalistic
