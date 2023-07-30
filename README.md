@@ -56,10 +56,14 @@ _Yes!_ Stability's hosted deployment of StableStudio will remain [DreamStudio](h
 git clone https://github.com/Stability-AI/StableStudio
 ```
 
-2. Install yarn dependencies
+2. Install dependencies
 
 ```
 yarn install
+```
+
+```
+cargo install tauri-cli
 ```
 
 3. Build
