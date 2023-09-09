@@ -23,8 +23,8 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.2",
-    "rimraf": "^3.0.2",
+    "lint-staged": "^14.0.1",
+    "rimraf": "^5.0.1",
     "yarn": "^1.22.19"
   },
   "lint-staged": {
