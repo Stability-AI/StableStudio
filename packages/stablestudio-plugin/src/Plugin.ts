@@ -194,7 +194,7 @@ export type Plugin<P extends PluginTypeHelper = PluginTypeHelperDefault> = {
   /** If you want to provide a list of resolutions in pixels to choose from, you can return them via this function and they will be presented as a slider in the UI */
   getStableDiffusionAllowedResolutions?: (
     model?: ID
-  ) => { width: number; height: number }[] | undefined;
+  ) => MaybePromise<{ width: number; height: number }[] | undefined>;
 
   /** Determines the default count passed to `createStableDiffusionImages` */
   getStableDiffusionDefaultCount?: () => number | undefined;
