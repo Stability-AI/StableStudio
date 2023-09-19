@@ -1,5 +1,8 @@
+import * as ReactQuery from "@tanstack/react-query";
+
 import { Generation } from "~/Generation";
 import { Size } from "~/Geometry";
+import { Plugin } from "~/Plugin";
 import { Theme } from "~/Theme";
 
 export type Ratio = Size & { label?: string };
@@ -151,8 +154,30 @@ export namespace Ratios {
     { width: 4, height: 1 },
   ] as const;
 
+  const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+  const simplifyAspectRatio = (width: number, height: number) => {
+    const divisor = gcd(width, height);
+    return { width: width / divisor, height: height / divisor } as Ratio;
+  };
+
+  export const usePluginResolutions = (model?: ID) => {
+    const getStableDiffusionAllowedResolutions = Plugin.use(
+      ({ getStableDiffusionAllowedResolutions }) =>
+        getStableDiffusionAllowedResolutions
+    );
+
+    return ReactQuery.useQuery({
+      enabled: !!getStableDiffusionAllowedResolutions,
+
+      queryKey: ["Generation.Image.Ratio.PluginResolutions.use"],
+      queryFn: async () =>
+        (await getStableDiffusionAllowedResolutions?.(model)) ?? [],
+    });
+  };
+
   export const use = (id?: ID, fullControl = false) => {
     const { input } = Generation.Image.Input.use(id);
+    const { data: pluginResolutions } = usePluginResolutions(input?.model);
     const bounds = Generation.Image.Size.Bounds.use(id);
     const ratios = useMemo(() => {
       if (!input?.width || !input?.height || !bounds) return [];
@@ -168,9 +193,19 @@ export namespace Ratios {
         };
       };
 
-      const ratios = (fullControl ? presets : presets.slice(0, -2))
-        .map(sizing)
-        .filter(({ input }) => input.width * input.height <= bounds.area.max);
+      const ratios = pluginResolutions
+        ? pluginResolutions.map(({ width, height }) => ({
+            ...simplifyAspectRatio(width, height),
+            input: {
+              width,
+              height,
+            },
+          }))
+        : (fullControl ? presets : presets.slice(0, -2))
+            .map(sizing)
+            .filter(
+              ({ input }) => input.width * input.height <= bounds.area.max
+            );
 
       const flipped = ratios.map(({ width, height, input }) => ({
         width: height,
