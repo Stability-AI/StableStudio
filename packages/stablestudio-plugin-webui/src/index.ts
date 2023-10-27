@@ -13,7 +13,7 @@ import {
 const manifest = {
   name: "stable-diffusion-webui",
   author: "Terry Jia",
-  link: "https://github.com/jtydhr88",
+  link: "https://github.com/Aniruddha1701",
   icon: `${window.location.origin}/DummyImage.png`,
   version: "0.0.0",
   license: "MIT",
