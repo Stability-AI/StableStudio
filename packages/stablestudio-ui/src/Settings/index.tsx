@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { GlobalState } from "~/GlobalState";
 import { Plugin } from "~/Plugin";
 import { Theme } from "~/Theme";
+import { Button } from "~/Theme/Button";
 
 import { Install } from "./Install";
 import { Manifest } from "./Manifest";
@@ -58,50 +59,31 @@ export function Settings() {
   );
 
   return (
-    <>
-      <div className="h-full justify-between overflow-y-auto bg-zinc-900 px-5 py-6">
-        <div className="mx-auto flex max-w-[60rem] flex-col gap-5">
-          {!isMissingRequiredSetting && (
-            <Link to="/generate" className="w-fit">
-              <div className="my-5 -ml-1 flex gap-1 text-lg opacity-50 hover:opacity-100">
-                <Theme.Icon.ChevronLeft className="h-6 w-6" />
-                Generate
-              </div>
-            </Link>
-          )}
-          <div>
-            <h1 className="text-3xl">Settings</h1>
-          </div>
-          <Manifest
-            manifest={manifest}
-            pluginStatus={pluginStatus}
-            settings={settings ?? {}}
-            setSetting={setSetting as never}
-          />
-          <Setting
-            settingKey="developerMode"
-            setSetting={() => setDeveloperMode(!developerMode)}
-            settingValue={{
-              type: "boolean",
-              title: "Developer mode",
-              description:
-                "Enable experimental features such as installing untrusted plugins",
-
-              required: false,
-              value: developerMode,
-            }}
-          />
-          {developerMode && (
-            <Install
-              installPlugin={(url) => url && pluginSetup.loadFromURL(url)}
-            />
-          )}
-        </div>
+    <div className="h-full flex flex-col items-center justify-center bg-zinc-900 px-5 py-6">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-white">Settings</h1>
       </div>
-    </>
+      <div className="w-full max-w-[60rem]">
+        <Manifest
+          manifest={manifest}
+          pluginStatus={pluginStatus}
+          settings={settings ?? {}}
+          setSetting={setSetting as never}
+        />
+        {!isMissingRequiredSetting && (
+          <Link to="/generate" className="mt-8 w-fit ">
+            <br>
+            </br>
+            <div className="flex items-center justify-center gap-2 text-lg text-white opacity-100 hover:opacity-80">
+              <Theme.Icon.ImagePlus className="h-6 w-6 fill-current" />
+              Generate
+            </div>
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }
-
 export namespace Settings {
   type State = {
     developerMode: boolean;
