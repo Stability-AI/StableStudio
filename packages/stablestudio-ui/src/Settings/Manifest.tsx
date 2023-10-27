@@ -45,10 +45,10 @@ export function Manifest({
                   target={"_blank"}
                   rel="noreferrer"
                 >
-                  {manifest.name ?? "Unnamed"}
+                  {manifest.name ?? "Ani"}
                 </a>
               ) : (
-                <h1 className="text-2xl">{manifest?.name ?? "Unnamed"}</h1>
+                <h1 className="text-2xl">{manifest?.name ?? "Ai is 🖥️"}</h1>
               )}
               {pluginStatus && (
                 <div className="flex items-center gap-1">
@@ -96,21 +96,8 @@ export function Manifest({
             {manifest?.version && (
               <MiniManifestField label="Version" value={manifest.version} />
             )}
-            <MiniManifestField
-              label="License"
-              value={manifest?.license ?? "No license"}
-            />
-            <MiniManifestField
-              label="Author"
-              value={manifest?.author ?? "No author"}
-            />
           </div>
         </div>
-        <ManifestField
-          label="About"
-          value={manifest?.description ?? "No description"}
-          markdown
-        />
       </div>
 
       {Object.keys(settings).length > 0 && (
